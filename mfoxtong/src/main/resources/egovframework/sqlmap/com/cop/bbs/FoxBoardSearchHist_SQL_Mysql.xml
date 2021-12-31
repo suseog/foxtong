@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<!-- 
+	수정일                 수정자                          수정내용
+  =========     =======    =================================================
+  2011.09.21    서준식              NTT_ID를 IDGENT서비스를 사용해서 생성하므로 FoxSearchHistManageDAO.selectMaxNttId문은 실제 사용하지 않음
+-->
+<sqlMap namespace="SearchBoardHist">
+ 
+	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	<typeAlias  alias="searchBoardHist" type="egovframework.fox.com.cop.bbs.service.SearchBoardHist"/>
+
+	<resultMap id="searchHistList" class="egovframework.fox.com.cop.bbs.service.SearchBoardHist">
+		<result property="sn" column="SN" columnIndex="1"/>
+		<result property="mberId" column="MBER_ID" columnIndex="2"/>
+		<result property="srchWrd" column="SRCHWRD" columnIndex="3"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID" columnIndex="4"/>
+	</resultMap>
+
+	<resultMap id="searchHisttopFive" class="egovframework.fox.com.cop.bbs.service.SearchBoardHist">
+		<result property="srchWrd" column="SRCHWRD" columnIndex="1"/>
+	</resultMap>
+
+
+ 	<select id="FoxSearchHistManageDAO.selectMaxSn" resultClass="java.lang.Integer">
+ 		<![CDATA[
+			SELECT IFNULL(MAX(SN),0)+1 AS SN  FROM FOXTHNTTSEARCHHIST
+ 		]]>
+ 	</select>
+ 	
+ 	
+	<insert id="FoxSearchHistManageDAO.insertBoardSearchHist" parameterClass="searchBoardHist" >
+		<![CDATA[
+			INSERT INTO FOXTHNTTSEARCHHIST
+			(SN, MBER_ID, SRCHWRD, USE_AT,
+			 FRST_REGISTER_ID, FRST_REGIST_PNTTM
+			 )
+			VALUES
+			( #sn#, #mberId#, #srchWrd#, 'Y',
+			  #mberId#, SYSDATE()
+			 )			
+		]]>
+	</insert>
+	
+	<select id="FoxSearchHistManageDAO.selectBoarSearchHitFive" parameterClass="searchBoardHist" resultMap="searchHisttopFive" >
+		<![CDATA[
+			 SELECT 
+			       A.SRCHWRD
+			  FROM (
+					 SELECT SRCHWRD, COUNT(*) as Cnt
+					   FROM FOXTHNTTSEARCHHIST a 
+					 WHERE 1=1 
+					   AND A.USE_AT = 'Y'   
+					 GROUP BY SRCHWRD
+					 ORDER BY Cnt DESC
+					 LIMIT 5
+				   ) A
+		]]>
+	</select>	
+	
+			
+	<select id="FoxSearchHistManageDAO.selectBoarSearchHistList" parameterClass="searchBoardHist" resultMap="searchHistList" >
+		<![CDATA[
+			SELECT
+				a.SN, a.MBER_ID, a.SRCHWRD, a.FRST_REGISTER_ID
+			FROM
+				FOXTHNTTSEARCHHIST a
+		   WHERE 1=1 
+		]]>				   
+		<isEqual  property="searchFlag" compareValue="1">
+			AND A.USE_AT = 'Y'
+			LIMIT 5 OFFSET 0
+		</isEqual>
+		<isEqual  property="searchFlag" compareValue="2">
+			AND a.MBER_ID = #mberId#
+			AND A.USE_AT = 'Y'
+			ORDER BY a.SN DESC
+			LIMIT 20 OFFSET 0
+		</isEqual>				
+	</select>	
+	
+	<select id="FoxSearchHistManageDAO.selectBoarSearchHistListCnt" parameterClass="searchBoardHist" resultClass="java.lang.Integer" >
+		<![CDATA[
+			SELECT
+				COUNT(a.SN)
+			FROM
+				FOXTHNTTSEARCHHIST a
+			WHERE 1=1
+		]]>
+		<isEqual  property="searchFlag" compareValue="1">
+			AND A.USE_AT = 'Y'
+		</isEqual>
+		<isEqual  property="searchFlag" compareValue="2">
+			AND a.MBER_ID = #mberId#
+			AND A.USE_AT = 'Y'
+		</isEqual>	
+	</select>	
+	
+ 
+ 	<update id="FoxSearchHistManageDAO.updateBoarSearchHistList" parameterClass="searchBoardHist">
+ 		<![CDATA[
+			UPDATE FOXTHNTTSEARCHHIST SET 
+				USE_AT = #useAt#, 
+				LAST_UPDUSR_ID = #mberId#,
+				LAST_UPDT_PNTTM = SYSDATE()
+			WHERE MBER_ID = #mberId#
+			AND SN = #sn#
+ 		]]>
+ 	</update>
+ 	
+	
+</sqlMap>

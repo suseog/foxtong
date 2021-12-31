@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<!-- 
+	수정일                 수정자                          수정내용
+  =========     =======    =================================================
+  2021.12.23    정수석       게시물 주제 코드를 조회하여 사용하기 위해 추 
+-->
+
+<sqlMap namespace="CmmnDetailCodeManage">
+
+	<typeAlias  alias="cmmnDetailCodeVO" type="egovframework.com.sym.ccm.cde.service.CmmnDetailCodeVO"/>
+
+	<resultMap id="detailCodeList" class="egovframework.com.sym.ccm.cde.service.CmmnDetailCodeVO">
+		<result property="codeId" column="CODE_ID" columnIndex="1"/>
+		<result property="code" column="CODE" columnIndex="2"/>
+		<result property="codeNm" column="CODE_NM" columnIndex="3"/>
+		<result property="useAt" column="USE_AT" columnIndex="4"/>
+	</resultMap>
+
+	<select id="CmmnDetailCodeManage.selectCmmnDetailCodeList" parameterClass="cmmnDetailCodeVO" resultMap="detailCodeList">
+		<![CDATA[
+			SELECT  A.CODE_ID
+			     ,  A.CODE
+			     ,  A.CODE_NM
+			     ,  A.USE_AT
+			  FROM  COMTCCMMNDETAILCODE A
+			     ,  COMTCCMMNCODE       B
+			 WHERE 	1=1
+			   AND  A.CODE_ID = B.CODE_ID
+			   AND  A.CODE_ID = #codeId#
+   			   AND  A.USE_AT  = 'Y'
+   			   AND  B.USE_AT  = 'Y'
+		]]>
+	</select>
+
+
+</sqlMap>
