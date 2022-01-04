@@ -334,7 +334,7 @@
         <li><a href="${pageContext.request.contextPath}/cop/bbs/anonymous/selectBoardList.fo?bbsId=BBSMSTR_000000000002" rel="external" data-icon="navigation" data-icon="comment">여우생활</a></li>
         <li><a href="${pageContext.request.contextPath}/cop/bbs/anonymous/selectBoardList.fo?bbsId=BBSMSTR_000000000003" rel="external" data-icon="navigation" data-icon="comment">여우생활</a></li>
          -->
-        <li><a href="javascript:alert('구현 예정');" data-icon="user">내정보</a></li>
+        <li><a href="${pageContext.request.contextPath}/uat/uia/egovLoginUsr.fo" data-icon="user" rel="external">내정보</a></li> 
       </ul>
     </div>
   </div>
