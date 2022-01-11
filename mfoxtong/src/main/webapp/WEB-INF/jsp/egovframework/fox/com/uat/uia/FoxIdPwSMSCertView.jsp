@@ -57,7 +57,7 @@
 			if(suserCertNum == code2){
 				jAlert("메인페이지 호출" + suserCertNum + code2); 
 				
-				document.loginForm.action="${pageContext.request.contextPath}/uat/uia/foxIdPwSearchResult.fo";
+				document.loginForm.action="/FoxMobileMain.fo";
 				document.loginForm.submit();
 			}else{
 				jAlert("입력하신 인증번호가 일치하지 않습니다.",'알림', 'b');
