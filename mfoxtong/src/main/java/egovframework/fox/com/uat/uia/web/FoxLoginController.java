@@ -403,7 +403,7 @@ public class FoxLoginController implements Serializable{
 		requestUrl += serviceId + requestUrlType;
 		String apiUrl = hostNameUrl + requestUrl;
 		
-		int randomNumber = (int)((Math.random()* (9999 - 1000 + 1)) + 1000);//난수 생성 
+		int randomNumber = (int)((Math.random()* (999999 - 100000 + 1)) + 100000);//난수 6자리 생성 
 		
 		
 		// JSON 을 활용한 body data 생성
