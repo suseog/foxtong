@@ -18,9 +18,55 @@
         <script type="text/javascript" src="${pageContext.request.contextPath}/js/egovframework/mbl/cmm/EgovMobile-1.4.5.js"></script>
 
 		<script type="text/javascript">
+		
 		<!--
-
-		function certRequest() {
+		function certRequest(){
+			var code2 = ""; 			
+			var smoblphonNo = $("#moblphonNo").val(); 			
+			
+			if (document.loginForm.moblphonNo.value =="") {
+				jAlert("휴대폰 번호를 입력해주시기 바랍니다.",'알림', 'a');
+				return false;
+			} else {
+			
+			$.ajax({ 
+				type:"POST", 
+				url:"${pageContext.request.contextPath}/uat/uai/phoneCheck.fo?smoblphonNo=" + smoblphonNo, 
+				cache : false, 
+				success:function(data){
+					if(data == "error"){
+						alert("휴대폰 번호가 올바르지 않습니다.") 						
+					}else{						
+						code2 = data;
+						document.loginForm.tockenCertNum.value = code2;}
+					}
+				});				
+			}
+		}
+		
+		function searchResult(){					
+			var suserCertNum = $("#userCertNum").val(); 
+			var code2 = document.loginForm.tockenCertNum.value;
+			
+			if (userCertNum == "") {
+				jAlert("인증번호를 입력하여 주시기 바랍니다.",'알림', 'b');
+				return false;
+			}
+			
+			//휴대폰 인증번호 대조 			
+			if(suserCertNum == code2){
+				jAlert("메인페이지 호출" + suserCertNum + code2); 
+				
+				document.loginForm.action="${pageContext.request.contextPath}/uat/uia/foxIdPwSearchResult.fo";
+				document.loginForm.submit();
+			}else{
+				jAlert("입력하신 인증번호가 일치하지 않습니다.",'알림', 'b');
+				return false;				
+			}			
+		}
+		
+				
+		function certRequest2() {
 			
 			if (document.loginForm.moblphonNo.value =="") {
 				jAlert("휴대폰 번호를 입력해주시기 바랍니다.",'알림', 'a');
@@ -29,16 +75,18 @@
 			} else {
 				
 				// 신규 개발 필요  : 비동기 방식 
+				document.loginForm.action="${pageContext.request.contextPath}/uat/uia/actionLogin2.fo"; // 인증url로 변경 필요 
+				document.loginForm.submit();
 		        //document.loginForm.action="${pageContext.request.contextPath}/uat/uia/actionLogin.fo"; // 인증url로 변경 필요 
 				//document.loginForm.submit();
 		        
 		        // 임시 인증번호 셋팅 : 제거 필요 
-		        alert('인증번호를 전송하였습니다. 123456');
-				document.loginForm.tockenCertNum.value = "123456";
+		       // alert('인증번호를 전송하였습니다. 123456');
+				//document.loginForm.tockenCertNum.value = "123456";
 			}
 		}	
 		
-		function searchResult() {
+		function searchResult2() {
 			
 			
 			var tockenNum = document.loginForm.tockenCertNum.value;
@@ -54,13 +102,15 @@
 				return false;
 			}else{
 				
-		        document.loginForm.action="${pageContext.request.contextPath}/uat/uia/foxIdPwSearchResult.fo";
+		       document.loginForm.action="${pageContext.request.contextPath}/uat/uia/foxIdPwSearchResult.fo";
 				document.loginForm.submit();
 			}
 		}
 		
-		function clearText(obj) {
+		function clearText(obj) {			
 			obj.value = "";
+			//this.value=this.value.replace(/[^0-9]/g,'') ;
+			
 		}
 
 		$(document).ready(fnInit);
@@ -71,8 +121,6 @@
 				alert(message);
 			}
 		}
-		
-		
 		
 		//-->
 		</script>
@@ -94,6 +142,7 @@
 </div>
 <!-- header end -->
 
+
 <!-- content start -->
  <div data-role="content" class="com-logContent">   
  	<br/>
@@ -112,14 +161,15 @@
 	<input type="hidden" id="userSe" name="userSe" value="USR"/>
 	<input type="hidden" id="rdoSlctUsr" name="rdoSlctUsr" value="GNR"/>
 	<input type="hidden" id="searchSe" name="searchSe" value="ID"/>
-	<input type="hidden" id="tockenCertNum" name="tockenCertNum" value="123456"/>
+	<input type="hidden" id="tockenCertNum" name="tockenCertNum" value=""/>	
+	
 
 	<div data-role="fieldcontain"  class="com-logPw">
         <table border="1" width = "100%">
 			<tr>
 				<td width = "100%" hdight="100" align="left">
 					<span align="left">휴대폰번호</span><br/>
-					<input type="text" name="moblphonNo" id="moblphonNo" value="휴대번호를 입력해 주세요  예)01012341234" data-theme="c" onclick="javascript:clearText(this);" />
+					<input type="text" name="moblphonNo" id="moblphonNo" value="휴대번호를 입력해 주세요  예)01012341234" data-theme="c" onclick="javascript:clearText(this);" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"/> 
 				</td>
 				<td width = "100%" hdight="100" align="center">
 					<span align="left">  </span><br/>
@@ -127,12 +177,13 @@
 				</td>
 			</tr>
 		</table>
+
 	</div>
 	<br/>
 	<br/>
 	
 	<div data-role="fieldcontain"  class="com-logPw">
-		<input type="text" name="userCertNum" id="userCertNum" value="인증번호를 입력해주세요" data-theme="c" onclick="javascript:clearText(this);"/>
+		<input type="text" name="userCertNum" id="userCertNum" value="인증번호를 입력해주세요" data-theme="c" onclick="javascript:clearText(this);" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"/>
 	</div>
 	<br/>
 	
@@ -159,4 +210,3 @@
 <!-- 메인 페이지 end -->
 </body>
 </html>
-
