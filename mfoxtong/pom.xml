@@ -376,6 +376,20 @@
 		    <artifactId>jaxrpc-api-osgi</artifactId>
 		    <version>1.1-b01</version>
 		</dependency>
+		
+<!--  문자 인증관련 라이브러리 start -->		
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20211205</version>
+		</dependency>
+		<dependency>
+			<groupId>com.googlecode.json-simple</groupId>
+			<artifactId>json-simple</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+<!--  문자 인증관련 라이브러리  end -->	
+
 
 		<!-- 대한민국정보포털 검색API 
 		<dependency>
