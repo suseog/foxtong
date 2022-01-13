@@ -16,9 +16,12 @@
         <script type="text/javascript" src="${pageContext.request.contextPath}/js/egovframework/mbl/cmm/jquery-1.11.2.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/js/egovframework/mbl/cmm/jquery.mobile-1.4.5.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/js/egovframework/mbl/cmm/EgovMobile-1.4.5.js"></script>
+        <!-- 카카오 스크립트 -->
+		<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 
 		<script type="text/javascript">
-		<!--
+		//<![CDATA[
+			
 		function clearText(obj) {
 			obj.value = "";
 		}
@@ -67,8 +70,67 @@
 			}
 		}
 		
-		-->
-		</script>
+		
+		Kakao.init('1647e3d12b4da2d05dd2d4c1f2e78770'); //발급받은 키 중 javascript키를 사용해준다.
+        console.log(Kakao.isInitialized()); // sdk초기화여부판단
+        
+        //카카오로그인
+        function kakaoLogin() {        	
+            Kakao.Auth.login({
+              success: function (response) {
+                Kakao.API.request({
+                  url: '/v2/user/me',
+                  success: function (response) {
+                	  console.log(response)
+                	  document.getElementById("kakaoserial").value = response.id;
+                	  document.getElementById("nickname").value = response.properties.nickname;
+                	  document.getElementById("kakaoimg").value = response.properties.profile_image;
+                	  document.getElementById("kakaoemail").value = response.kakao_account.email;
+                	  document.getElementById("mberEmailAddres").value = response.kakao_account.email;
+                	  var imgroot = response.properties.profile_image;
+                	  document.getElementById("kkoicon").src = imgroot;
+                	  document.getElementById("spankkoicon").style.display = "true";
+                	
+                  },
+                  fail: function (error) {
+                    console.log(error)
+                  },
+                })
+              },
+              fail: function (error) {
+                console.log(error)
+              },
+            })
+          }
+        
+        //카카오로그아웃  
+        function kakaoLogout() {
+            if (Kakao.Auth.getAccessToken()) {
+              Kakao.API.request({
+                url: '/v1/user/unlink',
+                success: function (response) {
+                	console.log(response)
+                	
+              	  
+                },
+                fail: function (error) {
+                  console.log(error)
+                },
+              })
+              Kakao.Auth.setAccessToken(undefined)
+            }
+			  document.getElementById("id").value = "";
+	      	  document.getElementById("kakaoserial").value = "";
+	    	  document.getElementById("nickname").value = "";
+	    	  document.getElementById("kakaoimg").value = "";
+	    	  document.getElementById("kakaoemail").value = "";   	 
+	    	  document.getElementById("kkoicon").src = "";
+          } 
+        
+		
+        //]]>  
+		</script>		
+
 </head>
 
 <body>
@@ -101,6 +163,11 @@
 	<input type="hidden" id="searchSe" name="searchSe" value=""/>
 	<input type="hidden" id="searchSeNm" name="searchSeNm" value=""/>
 	
+	<input type="hidden" id="kakaoserial" name="kakaoserial" value=""/>
+	<input type="hidden" id="nickname" name="nickname" value=""/>
+	<input type="hidden" id="kakaoimg" name="kakaoimg" value=""/>
+	<input type="hidden" id="kakaoemail" name="kakaoemail" value=""/>
+	
 	
 	<div data-role="fieldcontain" class="com-logId">
 		<input type="text" name="mberEmailAddres" id="mberEmailAddres" value="이메일 아이디를 입력해 주세요" data-theme="c" onclick="javascript:clearText(this)"/>
@@ -120,12 +187,11 @@
 				 <a href="javascript:searchIdPw('B');" >비밀번호 찾기    
 				</td>
 				<td width = "35%" align="left">
-				 | <a href="${pageContext.request.contextPath}/uss/umt/foxStplatAgre.fo" rel="external" >회원가입 </a>
+				  | <a href="${pageContext.request.contextPath}/uss/umt/foxStplatAgre.fo" rel="external" >회원가입 </a>
 				</td>
 			</tr>
 		</table>
 	</div>
-	
 	
 	<div data-role="fieldcontain" class="com-logLogin" >   
 		<a href="javascript:actionLogin();" data-role="button" data-thema="z">로그인</a>
@@ -134,21 +200,34 @@
 	<br/>
 	
 	<div align="center">   
-		<span>간편로그인</span>
+		<span>간편로그인</span> </br>
+			<span id = "spankkoicon" >
+				<img id = kkoicon src= "" width="70" height="70"></img>
+			</span>
+					<ul>
+						<!-- <li id=login2 onclick="kakaoLogin();">
+					      <a href="javascript:void(0)">
+					          <span>카카오 로그인</span>
+					      </a>
+						</li> -->
+						<br></br>
+						<li id=logout onclick="kakaoLogout();">
+					      <a href="javascript:void(0)">
+					          <span>카카오 로그아웃</span>
+					      </a>
+						</li>
+					</ul>
+					
 	</div>
-	<div data-role="fieldcontain" class="com-logLogin" align="center">   
-		<a href="#" >
-		<img src="${pageContext.request.contextPath}/images/egovframework/fox/com/smp/icon_kakao_login.png" width="60" height="60" alt="카카오로그인"> 
-		</a>
-		<a href="#" >
-		<img src="${pageContext.request.contextPath}/images/egovframework/fox/com/smp/icon_naver_login.png" width="60" height="60" alt="네이버로그인"> 
-		</a>
+	<div data-role="fieldcontain" class="com-logLogin" align="center">   		
+			<a href="#" rel="external" >
+				<img id=login onclick="kakaoLogin();" src="${pageContext.request.contextPath}/images/egovframework/fox/com/smp/icon_kakao_login.png" width="60" height="60" alt="카카오로그인"> 
+			</a>
+			<a href="#" >
+				<img src="${pageContext.request.contextPath}/images/egovframework/fox/com/smp/icon_naver_login.png" width="60" height="60" alt="네이버로그인"> 
+			</a>
 	</div>
-	
 	<br/>
-	
-	
-	
 	<input name="j_username" type="hidden"/>
 	</form>
 
@@ -167,5 +246,3 @@
 <!-- 메인 페이지 end -->
 </body>
 </html>
-
-
