@@ -128,7 +128,7 @@ public class FoxBsshInfoManageController {
 	public String BbsshInMain(@ModelAttribute("foxBsshInfoManageVO") FoxBsshInfoManageVO foxBsshInfoManageVO, Model model)
 			throws Exception{
 		
-		//  업소관리자 권한 확인 
+		//  업소관리자 권한 확인  
 		
 		
 		//  업소정보 조회 
