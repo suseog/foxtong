@@ -52,6 +52,27 @@ public class LoginVO implements Serializable{
 	private String ip;
 	/** GPKI인증 DN */
 	private String dn;
+	
+	/** 휴대폰번호 2022-01-04 */
+	private String moblphonNo;
+	
+	/** IDPW 검색구분명 2022-01-04*/
+	private String searchSeNm;
+	
+	/** IDPW 검색구분 2022-01-04*/
+	private String searchSe;
+	
+	/** IDPW 검색구분 2022-01-04*/
+	private String ncnm;
+	
+	/** IDPW 검색구분 2022-01-04*/
+	private String mberEmailAddres;
+	
+	
+	/** IDPW 검색구분 2022-01-04*/
+	private String mberNm;
+	
+	
 	/**
 	 * id attribute 를 리턴한다.
 	 * @return String
@@ -246,5 +267,79 @@ public class LoginVO implements Serializable{
 	public void setOrgnztNm(String orgnztNm) {
 		this.orgnztNm = orgnztNm;
 	}
+	/**
+	 * @return the searchSe
+	 */
+	public String getSearchSe() {
+		return searchSe;
+	}
+	/**
+	 * @param searchSe the searchSe to set
+	 */
+	public void setSearchSe(String searchSe) {
+		this.searchSe = searchSe;
+	}
+	/**
+	 * @return the searchSeNm
+	 */
+	public String getSearchSeNm() {
+		return searchSeNm;
+	}
+	/**
+	 * @param searchSeNm the searchSeNm to set
+	 */
+	public void setSearchSeNm(String searchSeNm) {
+		this.searchSeNm = searchSeNm;
+	}
+	/**
+	 * @return the moblphonNo
+	 */
+	public String getMoblphonNo() {
+		return moblphonNo;
+	}
+	/**
+	 * @param moblphonNo the moblphonNo to set
+	 */
+	public void setMoblphonNo(String moblphonNo) {
+		this.moblphonNo = moblphonNo;
+	}
+	/**
+	 * @return the ncnm
+	 */
+	public String getNcnm() {
+		return ncnm;
+	}
+	/**
+	 * @param ncnm the ncnm to set
+	 */
+	public void setNcnm(String ncnm) {
+		this.ncnm = ncnm;
+	}
+	/**
+	 * @return the mberEmailAddres
+	 */
+	public String getMberEmailAddres() {
+		return mberEmailAddres;
+	}
+	/**
+	 * @param mberEmailAddres the mberEmailAddres to set
+	 */
+	public void setMberEmailAddres(String mberEmailAddres) {
+		this.mberEmailAddres = mberEmailAddres;
+	}
+	/**
+	 * @return the mberNm
+	 */
+	public String getMberNm() {
+		return mberNm;
+	}
+	/**
+	 * @param mberNm the mberNm to set
+	 */
+	public void setMberNm(String mberNm) {
+		this.mberNm = mberNm;
+	}
+	
+	
 	
 }

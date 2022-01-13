@@ -19,11 +19,18 @@
 
 		<script type="text/javascript">
 		<!--
-
+		function clearText(obj) {
+			obj.value = "";
+		}
+		
 		function actionLogin() {
-			if (document.loginForm.id.value =="") {
-				jAlert("아이디를 입력하세요",'알림', 'a');
-			} else if (document.loginForm.password.value =="") {
+			
+			//to-do: email 형식 validation 추가 필요
+			
+			
+			if (document.loginForm.mberEmailAddres.value == "" || document.loginForm.mberEmailAddres.value == "이메일 아이디를 입력해 주세요" ) {
+				jAlert("이메일 아이디를 입력하세요",'알림', 'a');
+			} else if (document.loginForm.password.value == "" || document.loginForm.password.value == "비밀번호를 입력해 주세요" ) {
 				jAlert("비밀번호를 입력하세요",'알림', 'a');
 			}
 			else {
@@ -31,7 +38,6 @@
 				$('#userSe').val(check);
 
 		        document.loginForm.action="${pageContext.request.contextPath}/uat/uia/actionLogin.fo";
-
 				document.loginForm.submit();
 			}
 		}
@@ -39,6 +45,14 @@
 		function searchIdPw(searchSe) {
 			
 			document.loginForm.searchSe.value = searchSe;
+			if(searchSe =="A"){
+				document.loginForm.searchSeNm.value = "아이디 찾기";
+			}else if(searchSe =="B"){
+				document.loginForm.searchSeNm.value = "패스워드 찾기";
+			}else{
+				alert("알수없는 요청");
+				return false;
+			}
 		 	document.loginForm.action="${pageContext.request.contextPath}/uat/uia/foxIdPwSMSCertView.fo";
 			document.loginForm.submit();
 			
@@ -85,15 +99,15 @@
 	<form name="loginForm" action ="${pageContext.request.contextPath}/mbl/com/uat/uia/actionLogin.do" method="post">
 	<input type="hidden" id="userSe" name="userSe" value="USR"/>
 	<input type="hidden" id="searchSe" name="searchSe" value=""/>
-	<input type="hidden" id="rdoSlctUsr" name="rdoSlctUsr" value="GNR"/>
+	<input type="hidden" id="searchSeNm" name="searchSeNm" value=""/>
 	
 	
 	<div data-role="fieldcontain" class="com-logId">
-		<input type="text" name="id" id="id" value="이메일 아이디를 입력해 주세요" data-theme="c"/>
+		<input type="text" name="mberEmailAddres" id="mberEmailAddres" value="이메일 아이디를 입력해 주세요" data-theme="c" onclick="javascript:clearText(this)"/>
     </div>
 
 	<div data-role="fieldcontain"  class="com-logPw">
-		<input type="text" name="password" id="password" value="비밀번호를 입력해 주세요" data-theme="c"/>
+		<input type="text" name="password" id="password" value="비밀번호를 입력해 주세요" data-theme="c" onclick="javascript:clearText(this)"/>
 	</div>
 	<br/>
     <div>
@@ -106,11 +120,12 @@
 				 <a href="javascript:searchIdPw('B');" >비밀번호 찾기    
 				</td>
 				<td width = "35%" align="left">
-				 | 회원가입  
+				 | <a href="${pageContext.request.contextPath}/uss/umt/foxStplatAgre.fo" rel="external" >회원가입 </a>
 				</td>
 			</tr>
 		</table>
 	</div>
+	
 	
 	<div data-role="fieldcontain" class="com-logLogin" >   
 		<a href="javascript:actionLogin();" data-role="button" data-thema="z">로그인</a>
@@ -129,6 +144,7 @@
 		<img src="${pageContext.request.contextPath}/images/egovframework/fox/com/smp/icon_naver_login.png" width="60" height="60" alt="네이버로그인"> 
 		</a>
 	</div>
+	
 	<br/>
 	
 	
@@ -151,4 +167,5 @@
 <!-- 메인 페이지 end -->
 </body>
 </html>
+
 

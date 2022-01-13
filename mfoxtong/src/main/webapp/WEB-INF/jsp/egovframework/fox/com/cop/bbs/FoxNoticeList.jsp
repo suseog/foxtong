@@ -261,19 +261,27 @@
 	<!-- contents end -->
 	
 <!-- footer start -->
+  
   <div data-role="footer" style="text-align:center;" data-position="fixed">
    <div data-role="navbar">
       <ul>
         <li><a href="${pageContext.request.contextPath}/FoxMobileMain.fo" data-icon="home" rel="external">홈 </a></li>
         <li><a href="javascript:alert('구현 예정');" data-icon="navigation">내주변 </a></li>
         <li><a href="javascript:alert('구현 예정');" data-icon="check">쿠폰북 </a></li>
-        <li><a href="${pageContext.request.contextPath}/cop/bbs/anonymous/selectBoardList.fo?bbsId=BBSMSTR_000000000002"  data-icon="navigation" data-icon="comment">여우수다 </a></li>
+        <li><a href="${pageContext.request.contextPath}/cop/bbs/anonymous/selectBoardList.fo?bbsId=BBSMSTR_000000000002" rel="external" data-icon="navigation" data-icon="comment">여우수다 </a></li>
         <!-- 
         /cop/bbs/selectBoardList.fo?bbsId=BBSMSTR_000000000001
         <li><a href="${pageContext.request.contextPath}/cop/bbs/anonymous/selectBoardList.fo?bbsId=BBSMSTR_000000000002" rel="external" data-icon="navigation" data-icon="comment">여우생활</a></li>
         <li><a href="${pageContext.request.contextPath}/cop/bbs/anonymous/selectBoardList.fo?bbsId=BBSMSTR_000000000003" rel="external" data-icon="navigation" data-icon="comment">여우생활</a></li>
          -->
-        <li><a href="javascript:alert('구현 예정');" data-icon="user">내정보</a></li>
+         <c:choose>
+         	<c:when test="${sessionScope.loginVO.email eq null}">
+         		<li><a href="${pageContext.request.contextPath}/uat/uia/egovLoginUsr.fo" data-icon="user" rel="external">로그인</a></li> 
+         	</c:when>
+         	<c:otherwise>
+		        <li><a href="${pageContext.request.contextPath}/uat/uia/egovLoginUsr.fo" data-icon="user" rel="external">내정보</a></li> 
+         	</c:otherwise>
+         </c:choose>
       </ul>
     </div>
   </div>

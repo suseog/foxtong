@@ -3,9 +3,11 @@ package egovframework.com.cmm.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.service.EgovUserDetailsService;
-
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
 /**
@@ -69,7 +71,7 @@ public class EgovTestUserDetailsServiceImpl extends EgovAbstractServiceImpl impl
 	public Boolean isAuthenticated() {
 		// 인증된 유저인지 확인한다.
 
-		/*if (RequestContextHolder.getRequestAttributes() == null) {
+		if (RequestContextHolder.getRequestAttributes() == null) {
 			return false;
 		} else {
 
@@ -79,9 +81,9 @@ public class EgovTestUserDetailsServiceImpl extends EgovAbstractServiceImpl impl
 			} else {
 				return true;
 			}
-		}*/
+		}
 
-		return true;
+//		return true;
 	}
 
 }
