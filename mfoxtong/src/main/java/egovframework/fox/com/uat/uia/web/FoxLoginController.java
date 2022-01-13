@@ -150,7 +150,7 @@ public class FoxLoginController implements Serializable{
         LoginVO resultVO = foxLoginService.actionLogin(loginVO);
 
 
-        if (resultVO != null && resultVO.getId() != null && !resultVO.getId().equals("")) {
+        if (resultVO != null && resultVO.getMberEmailAddres() != null && !resultVO.getMberEmailAddres().equals("")) {
 
         	// 2-1. 로그인 정보를 세션에 저장
         	request.getSession().setAttribute("loginVO", resultVO);
@@ -338,7 +338,7 @@ public class FoxLoginController implements Serializable{
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value="/fox/com/uat/uia/actionLogout.fo")
+    @RequestMapping(value="/uat/uia/actionLogout.fo")
 	public String actionLogout(HttpServletRequest request, ModelMap model)
 			throws Exception {
 
@@ -350,7 +350,9 @@ public class FoxLoginController implements Serializable{
     	request.getSession().setAttribute("loginVO", null);
 
 
-    	return "redirect:" + request.getRequestURI();
+    	//return "redirect:" + request.getRequestURI();  href="${pageContext.request.contextPath}/FoxMobileMain.fo"
+//    	return "/index";
+    	return "forward:/FoxMobileMain.fo";
     }
     
 	/**
@@ -366,6 +368,8 @@ public class FoxLoginController implements Serializable{
 			HttpServletResponse response,
 			ModelMap model)
 			throws Exception {
+    	
+    	model.addAttribute("loginVO", loginVO);
 
     	return "egovframework/fox/com/uat/uia/FoxIdPwSMSCertView";
 	}
@@ -383,11 +387,40 @@ public class FoxLoginController implements Serializable{
 			HttpServletResponse response,
 			ModelMap model)
 			throws Exception {
-
+    	
+        LoginVO resultVO = foxLoginService.searchId(loginVO);
+    	
+    	model.addAttribute("loginVO", loginVO);
+    	model.addAttribute("resultVO", resultVO);
+    	
     	return "egovframework/fox/com/uat/uia/FoxIdPWSearchResult";
 	}
     
-    //20220107 naver sms 문자인증 start    
+    
+    
+	/**
+	 * 나의 페이지 (여우정보)
+	 * @param 
+	 * @return 로그인 페이지
+	 * @exception Exception
+	 */
+    @RequestMapping(value="/uat/uia/foxMypage.fo")
+	public String foxMyPage(@ModelAttribute("loginVO") LoginVO loginVO,
+			HttpServletRequest request,
+			HttpServletResponse response,
+			ModelMap model)
+			throws Exception {
+    	
+        LoginVO resultVO = foxLoginService.searchId(loginVO);
+    	
+    	model.addAttribute("loginVO", loginVO);
+    	model.addAttribute("resultVO", resultVO);
+    	
+    	return "egovframework/fox/com/uat/uia/FoxMyPage";
+	}
+    
+
+  //20220107 naver sms 문자인증 start    
     @RequestMapping(value = "/uat/uai/phoneCheck.fo", method = RequestMethod.POST)     
     @ResponseBody 
     private String sendSMS(@RequestParam("smoblphonNo") String userPhoneNumber) {
@@ -403,7 +436,7 @@ public class FoxLoginController implements Serializable{
 		requestUrl += serviceId + requestUrlType;
 		String apiUrl = hostNameUrl + requestUrl;
 		
-		int randomNumber = (int)((Math.random()* (999999 - 100000 + 1)) + 100000);//난수 6자리 생성 
+		int randomNumber = (int)((Math.random()* (9999 - 1000 + 1)) + 1000);//난수 생성 
 		
 		
 		// JSON 을 활용한 body data 생성
@@ -508,5 +541,4 @@ public class FoxLoginController implements Serializable{
  	  return encodeBase64String;
  	}
  	  //20220107 naver sms 문자인증 end  
-
 }

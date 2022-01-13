@@ -11,7 +11,7 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>전자정부 모바일 프레임워크 fox 메인 </title>
+<title> fox 메인 </title>
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/egovframework/mbl/cmm/jquery.mobile-1.4.5.css"/>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/egovframework/mbl/cmm/EgovMobile-1.4.5.css"/>
@@ -40,7 +40,6 @@
     -->
     </script>
 </head>  
-
 <body>
 <!-- 모바일 페이지 start -->
 <div data-role="page" >
@@ -112,8 +111,8 @@
 	     <c:choose> 
 	      	<c:when test="${empty resultCodeList}">
 				<li class="com-egovNodata">
-	             			없어요 
-	             		</li>			
+	             	<span>입점 가테고리 정보가 없습니다.</span>
+           		</li>			
 			</c:when>
 			<c:otherwise>
 				<c:forEach var="result" items="${resultCodeList}">
@@ -326,15 +325,21 @@
    <div data-role="navbar">
       <ul>
         <li><a href="${pageContext.request.contextPath}/FoxMobileMain.fo" data-icon="home" rel="external">홈 </a></li>
-        <li><a href="javascript:alert('구현 예정');" data-icon="navigation">내주변 </a></li>
+        <li><a href="${pageContext.request.contextPath}/fox/bsh/bsshInMain.fo" data-icon="navigation">내주변(사용자)/업소정보관리(업체)</a></li>
         <li><a href="javascript:alert('구현 예정');" data-icon="check">쿠폰북 </a></li>
         <li><a href="${pageContext.request.contextPath}/cop/bbs/anonymous/selectBoardList.fo?bbsId=BBSMSTR_000000000002" rel="external" data-icon="navigation" data-icon="comment">여우수다 </a></li>
         <!-- 
         /cop/bbs/selectBoardList.fo?bbsId=BBSMSTR_000000000001
         <li><a href="${pageContext.request.contextPath}/cop/bbs/anonymous/selectBoardList.fo?bbsId=BBSMSTR_000000000002" rel="external" data-icon="navigation" data-icon="comment">여우생활</a></li>
-        <li><a href="${pageContext.request.contextPath}/cop/bbs/anonymous/selectBoardList.fo?bbsId=BBSMSTR_000000000003" rel="external" data-icon="navigation" data-icon="comment">여우생활</a></li>
          -->
-        <li><a href="${pageContext.request.contextPath}/uat/uia/egovLoginUsr.fo" data-icon="user" rel="external">내정보</a></li> 
+         <c:choose>
+         	<c:when test="${sessionScope.loginVO.ncnm eq null}">
+         		<li><a href="${pageContext.request.contextPath}/uat/uia/egovLoginUsr.fo" data-icon="user" rel="external">로그인</a></li> 
+         	</c:when>
+         	<c:otherwise>
+		        <li><a href="${pageContext.request.contextPath}/uat/uia/foxMypage.fo" data-icon="user" rel="external">내정보</a></li> 
+         	</c:otherwise>
+         </c:choose>
       </ul>
     </div>
   </div>

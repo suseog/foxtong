@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="FoxMber">
+
+    <typeAlias  alias="egovMap"      	type = "egovframework.rte.psl.dataaccess.util.EgovMap"/>
+    <typeAlias  alias="foxUserSearchVO" type = "egovframework.fox.com.uss.umt.service.FoxUserDefaultVO"/>
+    <typeAlias  alias="foxMberVO"       type = "egovframework.fox.com.uss.umt.service.FoxMberManageVO"/>
+    
+
+    <resultMap id="stplatMap" class="egovframework.com.uss.umt.service.StplatVO">
+        <result property="useStplatId"         column="USE_STPLAT_ID"          columnIndex="1"/>
+        <result property="useStplatCn"         column="USE_STPLAT_CN"          columnIndex="2"/>
+        <result property="infoProvdAgeCn"      column="INFO_PROVD_AGRE_CN"     columnIndex="3"/>
+    </resultMap>
+
+
+    
+   <insert id="foxMberManageDAO.insertMber">
+        <![CDATA[
+            INSERT INTO COMTNGNRLMBERNEW 
+                (   
+                    BSSH_ESNTL_ID         	,
+                    BRTC_CODE 				,
+                    SIGNGU_CODE				,
+                    DONGLI_CODE         	,
+                    MTLTY_NM    			,
+                    BSSH_CMPGN_WORDS	    ,
+                    BSSH_PHOTO_ID          	,
+                    BSN_BEGIN_TIME     		,
+                    BSN_END_TIME            ,
+                    TLPHON_NO            	,
+                    MOBLPHON_NO          	,
+                    POST_NO       			,
+                    ADRES    				,
+                    DETAIL_ADRES        	,
+                    BULD_NM      			,
+                    BSN_STTUS      			,
+                    COPRTN_STTUS			,
+                    PREFER_CO    			,
+                    POSTSCRIPT_CO     		,
+                    CTGRY_ID        )
+              VALUES(
+                    #bsshEsntlId#,
+                    #brtcCode#,
+                    #signguCode#,
+                    #dongliCode#,
+                    #mtltyNm#,
+                    #bsshCmpgnWords#,
+                    #bsshPhotoId#,
+                    #bsnBeginTime#,
+                    #bsnEndTime#,
+                    #tlphonNo#,
+                    #moblphonNo#,
+                    #postNo#,
+                    #adres#,
+                    #detailAdres#,
+                    #buldNm#,
+                    '01',
+                    '01',
+                    '0',
+                    '0',
+                    #ctgryId#  )              
+        ]]>
+    </insert>
+    
+    	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+    
+    
+    
+        
+ <select id="foxMberManageDAO.selectMberList" parameterClass="foxUserSearchVO" resultClass="egovMap">
+SELECT 
+    uniqId, userTy, userId , userNm, emailAdres, areaNo, middleTelno, endTelno, moblphonNo, groupId, sttus, sbscrbDe
+FROM(
+    SELECT 
+        ESNTL_ID               uniqId,
+        'USR01'               userTy,
+        MBER_ID               userId,
+        MBER_NM               userNm,
+        MBER_EMAIL_ADRES      emailAdres,
+        AREA_NO               areaNo,
+        MIDDLE_TELNO          middleTelno,
+        END_TELNO             endTelno,
+        MBTLNUM           moblphonNo,
+        GROUP_ID              groupId,
+        MBER_STTUS            sttus,
+        SBSCRB_DE             sbscrbDe
+    FROM    COMTNGNRLMBERNEW
+    ) A
+        WHERE 1=1
+          AND MBER_STTUS != '99'
+        <isNotEqual prepend="AND" property="sbscrbSttus" compareValue="0">
+            sttus LIKE  #sbscrbSttus#
+        </isNotEqual>
+        <isEqual prepend="AND" property="searchCondition" compareValue="0">
+            userId LIKE #searchKeyword#
+        </isEqual>
+        <isEqual prepend="AND" property="searchCondition" compareValue="1">
+            userNm LIKE '%' #searchKeyword# '%'
+        </isEqual>
+        ORDER BY sbscrbDe DESC
+        LIMIT #recordCountPerPage# OFFSET #firstIndex#
+    </select>
+    
+    
+        <select id="foxMberManageDAO.selectMberListTotCnt" parameterClass="foxUserSearchVO" resultClass="int">
+            SELECT COUNT(1) totcnt
+            FROM(
+            SELECT 
+                ESNTL_ID               uniqId,
+                'USR01'               userTy,
+                MBER_ID               userId,
+                MBER_NM               userNm,
+                MBER_EMAIL_ADRES      emailAdres,
+                AREA_NO               areaNo,
+                MIDDLE_TELNO          middleTelno,
+                END_TELNO             endTelno,
+                MBTLNUM           moblphonNo,
+                GROUP_ID              groupId,
+                MBER_STTUS            sttus,
+                SBSCRB_DE             sbscrbDe
+            FROM    COMTNGNRLMBERNEW
+            ) A
+        WHERE 1=1
+          AND MBER_STTUS != '99'
+            <isNotEqual prepend="AND" property="sbscrbSttus" compareValue="0">
+                sttus LIKE  #sbscrbSttus#
+            </isNotEqual>
+            <isEqual prepend="AND" property="searchCondition" compareValue="0">
+                userId LIKE #searchKeyword#
+            </isEqual>
+            <isEqual prepend="AND" property="searchCondition" compareValue="1">
+                userNm LIKE '%' #searchKeyword# '%'
+            </isEqual>
+    </select>
+    
+    <select id="foxMberManageDAO.selectMber" resultClass="foxMberVO">
+        <![CDATA[
+            SELECT
+                ESNTL_ID         	   	esntlId,
+                MBER_EMAIL_ADRES       	mberEmailAdres,
+                MOBLPHON_NO            	moblphonNo,
+                NCNM          		   	ncnm,
+                MBER_NM         	 		mberNm,
+                SBSCRB_SE    	 			sbscrbSe,
+                MBER_SE    		 			mberSe,
+                PROFL_PHOTO__URL      		proflPhotoUrl,
+                SEXDSTN_CODE     		 	sexdstnCode,
+                MBER_STTUS              	mberSttus,
+                USE_STPLAT_AGRE_AT     		useStplatAgreAt,
+                INDVDLINFO_COLCT_AGRE_AT        indvdlinfoColctAgreAt,
+                MARKT_RECPTN_AGRE_AT      marktRecptnAgreAt,
+                LCINFO_USE_AGRE_AT         lcinfoUseAgreAt
+            FROM COMTNGNRLMBERNEW
+           WHERE 1=1
+             AND MBER_STTUS != '99'
+             AND MBER_EMAIL_ADRES=#mberEmailAdres#
+        ]]>
+    </select>
+    
+    <update id="foxMberManageDAO.updateMber">
+            <![CDATA[
+            UPDATE COMTNGNRLMBERNEW 
+            SET 
+                NCNM         	 			= #ncnm#,
+                MOBLPHON_NO    	 			= #moblphonNo#,
+             ]]>
+                <isNotEmpty property="mberNm">
+                	MBER_NM          			= #mberNm#,
+                </isNotEmpty>
+                <isNotEmpty property="sbscrbSe">
+	                SBSCRB_SE       			= #sbscrbSe#,
+                </isNotEmpty>
+                <isNotEmpty property="mberSe">
+	                MBER_SE     				= #mberSe#,
+                </isNotEmpty>
+                <isNotEmpty property="proflPhotoUrl">
+	                PROFL_PHOTO__URL        	= #proflPhotoUrl#,
+                </isNotEmpty>
+                <isNotEmpty property="sexdstnCode">
+	                SEXDSTN_CODE      			= #sexdstnCode#,
+                </isNotEmpty>
+                <isNotEmpty property="mberSttus">
+	                MBER_STTUS        	 		= #mberSttus#,
+                </isNotEmpty>
+                <isNotEmpty property="useStplatAgreAt">
+	                USE_STPLAT_AGRE_AT       	= #useStplatAgreAt#,
+                </isNotEmpty>
+                <isNotEmpty property="indvdlinfoColctAgreAt">
+	                INDVDLINFO_COLCT_AGRE_AT 	= #indvdlinfoColctAgreAt#,
+                </isNotEmpty>
+                <isNotEmpty property="marktRecptnAgreAt">
+	                MARKT_RECPTN_AGRE_AT     	= #marktRecptnAgreAt#,
+                </isNotEmpty>
+                <isNotEmpty property="lcinfoUseAgreAt">
+	                LCINFO_USE_AGRE_AT    		= #lcinfoUseAgreAt#,
+                </isNotEmpty>
+            <![CDATA[
+                LAST_UPDUSR_ID = #esntlId#, 
+            	LAST_UPDT_PNTTM = sysdate()
+            WHERE 1=1
+              AND MBER_EMAIL_ADRES=#mberEmailAdres#
+            ]]>
+    </update>
+    
+     <update id="foxMberManageDAO.deleteMber">
+        <![CDATA[
+           UPDATE COMTNGNRLMBERNEW 
+           SET 
+               MBER_STTUS = '99', 
+               LAST_UPDUSR_ID = #esntlId#, 
+           	   LAST_UPDT_PNTTM = sysdate()
+           WHERE 1=1
+             AND MBER_EMAIL_ADRES=#mberEmailAdres#
+           ]]>
+    </update>
+    
+    
+    <select id="foxMberManageDAO.selectStplat_S" resultMap="stplatMap">
+        <![CDATA[
+            SELECT
+                USE_STPLAT_ID           ,
+                USE_STPLAT_CN           ,
+                INFO_PROVD_AGRE_CN      
+            FROM COMTNSTPLATINFO
+            WHERE USE_STPLAT_ID=#stplatId#
+        ]]>
+    </select>
+    
+    <update id="foxMberManageDAO.updatePassword_S">
+        <![CDATA[
+            UPDATE COMTNGNRLMBERNEW 
+            SET 
+                   PASSWORD   =  #password#
+            WHERE  ESNTL_ID  = #uniqId#
+        ]]>
+    </update>
+    
+    <select id="foxMberManageDAO.selectPassword_S" resultClass="foxMberVO">
+        <![CDATA[
+            SELECT
+                    PASSWORD          password 
+            FROM    COMTNGNRLMBERNEW
+            WHERE   ESNTL_ID=#uniqId#
+        ]]>
+    </select>
+    
+</sqlMap>

@@ -14,19 +14,18 @@
 
 	<!-- 로그인 처리를 위한 resultMap -->
 	<resultMap id="login" class="egovframework.com.cmm.LoginVO">
-		<result property="id" column="id" columnIndex="1"/>
-		<result property="name" column="name" columnIndex="2"/>
-		<result property="ihidNum" column="ihidNum" columnIndex="3"/>
-		<result property="email" column="email" columnIndex="4"/>
-		<result property="password" column="password" columnIndex="5"/>
-		<result property="userSe" column="userSe" columnIndex="6"/>
-		<result property="orgnztId" column="orgnztId" columnIndex="7"/>
-		<result property="uniqId" column="uniqId" columnIndex="8"/>		
+		<result property="mberNm" column="mberNm" columnIndex="1"/>
+		<result property="mberEmailAddres" column="mberEmailAddres" columnIndex="2"/>
+		<result property="userSe" column="userSe" columnIndex="3"/>
+		<result property="orgnztId" column="orgnztId" columnIndex="4"/>
+		<result property="uniqId" column="uniqId" columnIndex="5"/>		
+		<result property="password" column="password" columnIndex="6"/>	
+		<result property="ncnm" column="ncnm" columnIndex="7"/>	
 	</resultMap>
 	
 	<!-- 아이디 찾기를 위한 resultMap -->
-	<resultMap id="id" class="egovframework.com.cmm.LoginVO">
-		<result property="id" column="id" columnIndex="1"/>
+	<resultMap id="email" class="egovframework.com.cmm.LoginVO">
+		<result property="email" column="email" columnIndex="1"/>
 	</resultMap>
 	
 	<!-- 비밀번호 처리를 위한 resultMap -->
@@ -38,23 +37,25 @@
 	<!-- 일반 로그인 -->
 	<select id="foxLoginDAO.actionLogin" resultMap="login">
 			<![CDATA[
-			SELECT mber_id AS id
-			     , mber_nm AS name
-			     , ihidNum AS ihidNum
-			     , password AS password
-			     , mber_email_adres AS email
-			     , 'GNR' AS userSe
-			     , '-' AS orgnztId
-			     , esntl_id AS uniqId
-			  FROM COMTNGNRLMBER
-			 WHERE mber_id = #id#
+			SELECT mber_email_adres AS mberEmailAddres
+			     , mber_nm 		AS mberNm
+			     , NCNM 		AS ncnm
+			     , '01' 		AS userSe
+			     , '-' 			AS orgnztId
+			     , esntl_id 	AS uniqId
+			     , password 	AS password
+			     , MOBLPHON_NO 	AS moblPhonNo
+			  FROM COMTNGNRLMBERNEW
+			 WHERE 1=1
+			   AND mber_email_adres = #mberEmailAddres#
 			   AND password = #password#
-			   AND mber_sttus = 'P'
+			   AND mber_sttus = '01'
 			]]>
 	</select>
 	
 
 	<!-- 아이디 찾기 -->
+	<!-- 
 	<select id="foxLoginDAO.searchId" resultMap="id">
 			<![CDATA[
 			SELECT mber_id AS id
@@ -62,6 +63,16 @@
 			 WHERE mber_nm = #name#
 			   AND mber_email_adres = #email#
 			   AND mber_sttus = 'P'
+			]]>
+	</select>
+	 -->
+	<select id="foxLoginDAO.searchId" resultMap="email">
+			<![CDATA[
+			SELECT mber_email_adres AS email
+			  FROM COMTNGNRLMBER
+			 WHERE 1=1
+			   AND MOBLPHON_NO =  #moblphonNo# 
+			   AND mber_sttus = '01'
 			]]>
 	</select>
 	
@@ -85,7 +96,9 @@
 			<![CDATA[
 			UPDATE COMTNGNRLMBER
 			   SET password = #password#
-			 WHERE mber_id = #id#
+			 WHERE 1=1
+			   AND mber_email_adres = #email#
+   			   AND MOBLPHON_NO =  #moblphonNo#  
 			]]>
 	</update>
 </sqlMap>

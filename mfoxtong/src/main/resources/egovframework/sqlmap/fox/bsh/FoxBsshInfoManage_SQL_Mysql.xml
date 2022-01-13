@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="FoxBsshInfo">
+
+    <typeAlias  alias="egovMap"      			type = "egovframework.rte.psl.dataaccess.util.EgovMap"/>
+    <typeAlias  alias="foxBsshInfoDefaultVO" 	type = "egovframework.fox.bsh.service.FoxBsshInfoDefaultVO"/>
+    <typeAlias  alias="foxEntrpsEmplyrSbscrbRequstVO" type = "egovframework.fox.bsh.service.FoxEntrpsEmplyrSbscrbRequstVO"/>
+    <typeAlias  alias="foxBsshInfoManageVO"       type = "egovframework.fox.bsh.service.FoxBsshInfoManageVO"/>
+    
+
+    
+    
+   <insert id="foxBsshInfoManageDAO.insertBsshInfo" parameterClass="foxBsshInfoManageVO">
+        <![CDATA[
+            INSERT INTO FOXTNBSSHBASSINFO 
+                (   
+                    BSSH_ESNTL_ID         	,
+                    BRTC_CODE 				,
+                    SIGNGU_CODE				,
+                    DONG_CODE         	,
+                    MTLTY_NM    			,
+                    BSSH_CMPGN_WORDS	    ,
+                    BSSH_PHOTO_ID          	,
+                    BSN_BEGIN_TIME     		,
+                    BSN_END_TIME            ,
+                    TLPHON_NO            	,
+                    MOBLPHON_NO          	,
+                    POST_NO       			,
+                    ADRES    				,
+                    DETAIL_ADRES        	,
+                    BULD_NM      			,
+                    BSN_STTUS      			,
+                    COPRTN_STTUS			,
+                    PREFER_CO    			,
+                    POSTSCRIPT_CO     		,
+                    CTGRY_ID        )
+              VALUES(
+                    #bsshEsntlId#,
+                    #brtcCode#,
+                    #signguCode#,
+                    #dongCode#,
+                    #mtltyNm#,
+                    #bsshCmpgnWords#,
+                    #bsshPhotoId#,
+                    #bsnBeginTime#,
+                    #bsnEndTime#,
+                    #tlphonNo#,
+                    #moblphonNo#,
+                    #postNo#,
+                    #adres#,
+                    #detailAdres#,
+                    #buldNm#,
+                    '01',
+                    '01',
+                    '0',
+                    '0',
+                    #ctgryId#  )               
+        ]]>
+    </insert>
+    
+     <insert id="foxBsshInfoManageDAO.insertMberBsshMap" parameterClass="foxEntrpsEmplyrSbscrbRequstVO">
+        <![CDATA[
+            INSERT INTO FOXTNMBERBSSHMAPNG 
+                (   
+                     ESNTL_ID 				
+                    ,BSSH_ESNTL_ID         	
+                    ,SBSCRB_STTUS			
+                    ,FRST_REGIST_PNTTM			)
+              VALUES(
+                     #esntlId#
+                    ,#bsshEsntlId#
+                    ,#sbscrbSttus#
+                    ,sysdate()
+                   )               
+        ]]>
+    </insert>
+    
+    <select id="foxBsshInfoManageDAO.selectBsshInfo" resultClass="foxBsshInfoManageVO">
+        <![CDATA[
+            SELECT
+                ESNTL_ID         	   	esntlId,
+                MBER_EMAIL_ADRES       	mberEmailAdres,
+                MOBLPHON_NO            	moblphonNo,
+                NCNM          		   	ncnm,
+                MBER_NM         	 		mberNm,
+                SBSCRB_SE    	 			sbscrbSe,
+                MBER_SE    		 			mberSe,
+                PROFL_PHOTO__URL      		proflPhotoUrl,
+                SEXDSTN_CODE     		 	sexdstnCode,
+                MBER_STTUS              	mberSttus,
+                USE_STPLAT_AGRE_AT     		useStplatAgreAt,
+                INDVDLINFO_COLCT_AGRE_AT        indvdlinfoColctAgreAt,
+                MARKT_RECPTN_AGRE_AT      marktRecptnAgreAt,
+                LCINFO_USE_AGRE_AT         lcinfoUseAgreAt
+            FROM FOXTNBSSHBASSINFO
+           WHERE 1=1
+             AND MBER_STTUS != '99'
+             AND MBER_EMAIL_ADRES=#mberEmailAdres#
+        ]]>
+    </select>
+    
+     <update id="foxBsshInfoManageDAO.updateBsshInfo">
+            <![CDATA[
+            UPDATE FOXTNBSSHBASSINFO 
+            SET 
+                NCNM         	 			= #ncnm#,
+                MOBLPHON_NO    	 			= #moblphonNo#,
+             ]]>
+                <isNotEmpty property="mberNm">
+                	MBER_NM          			= #mberNm#,
+                </isNotEmpty>
+                <isNotEmpty property="sbscrbSe">
+	                SBSCRB_SE       			= #sbscrbSe#,
+                </isNotEmpty>
+                <isNotEmpty property="mberSe">
+	                MBER_SE     				= #mberSe#,
+                </isNotEmpty>
+                <isNotEmpty property="proflPhotoUrl">
+	                PROFL_PHOTO__URL        	= #proflPhotoUrl#,
+                </isNotEmpty>
+                <isNotEmpty property="sexdstnCode">
+	                SEXDSTN_CODE      			= #sexdstnCode#,
+                </isNotEmpty>
+                <isNotEmpty property="mberSttus">
+	                MBER_STTUS        	 		= #mberSttus#,
+                </isNotEmpty>
+                <isNotEmpty property="useStplatAgreAt">
+	                USE_STPLAT_AGRE_AT       	= #useStplatAgreAt#,
+                </isNotEmpty>
+                <isNotEmpty property="indvdlinfoColctAgreAt">
+	                INDVDLINFO_COLCT_AGRE_AT 	= #indvdlinfoColctAgreAt#,
+                </isNotEmpty>
+                <isNotEmpty property="marktRecptnAgreAt">
+	                MARKT_RECPTN_AGRE_AT     	= #marktRecptnAgreAt#,
+                </isNotEmpty>
+                <isNotEmpty property="lcinfoUseAgreAt">
+	                LCINFO_USE_AGRE_AT    		= #lcinfoUseAgreAt#,
+                </isNotEmpty>
+            <![CDATA[
+                LAST_UPDUSR_ID = #esntlId#, 
+            	LAST_UPDT_PNTTM = sysdate()
+            WHERE 1=1
+              AND MBER_EMAIL_ADRES=#mberEmailAdres#
+            ]]>
+    </update>
+        
+	 <select id="foxBsshInfoManageDAO.selectBsshInfoList" parameterClass="foxBsshInfoDefaultVO" resultClass="egovMap">
+		SELECT 
+		    uniqId, userTy, userId , userNm, emailAdres, areaNo, middleTelno, endTelno, moblphonNo, groupId, sttus, sbscrbDe
+		FROM(
+		    SELECT 
+		        ESNTL_ID               uniqId,
+		        'USR01'               userTy,
+		        MBER_ID               userId,
+		        MBER_NM               userNm,
+		        MBER_EMAIL_ADRES      emailAdres,
+		        AREA_NO               areaNo,
+		        MIDDLE_TELNO          middleTelno,
+		        END_TELNO             endTelno,
+		        MBTLNUM           moblphonNo,
+		        GROUP_ID              groupId,
+		        MBER_STTUS            sttus,
+		        SBSCRB_DE             sbscrbDe
+		    FROM    FOXTNBSSHBASSINFO
+		    ) A
+		        WHERE 1=1
+		          AND MBER_STTUS != '99'
+		        <isNotEqual prepend="AND" property="sbscrbSttus" compareValue="0">
+		            sttus LIKE  #sbscrbSttus#
+		        </isNotEqual>
+		        <isEqual prepend="AND" property="searchCondition" compareValue="0">
+		            userId LIKE #searchKeyword#
+		        </isEqual>
+		        <isEqual prepend="AND" property="searchCondition" compareValue="1">
+		            userNm LIKE '%' #searchKeyword# '%'
+		        </isEqual>
+		        ORDER BY sbscrbDe DESC
+		        LIMIT #recordCountPerPage# OFFSET #firstIndex#
+	    </select>
+    
+    
+        <select id="foxBsshInfoManageDAO.selectBsshInfoListTotCnt" parameterClass="foxBsshInfoDefaultVO" resultClass="int">
+            SELECT COUNT(1) totcnt
+            FROM(
+            SELECT 
+                ESNTL_ID               uniqId,
+                'USR01'               userTy,
+                MBER_ID               userId,
+                MBER_NM               userNm,
+                MBER_EMAIL_ADRES      emailAdres,
+                AREA_NO               areaNo,
+                MIDDLE_TELNO          middleTelno,
+                END_TELNO             endTelno,
+                MBTLNUM           moblphonNo,
+                GROUP_ID              groupId,
+                MBER_STTUS            sttus,
+                SBSCRB_DE             sbscrbDe
+            FROM    FOXTNBSSHBASSINFO
+            ) A
+        WHERE 1=1
+          AND MBER_STTUS != '99'
+            <isNotEqual prepend="AND" property="sbscrbSttus" compareValue="0">
+                sttus LIKE  #sbscrbSttus#
+            </isNotEqual>
+            <isEqual prepend="AND" property="searchCondition" compareValue="0">
+                userId LIKE #searchKeyword#
+            </isEqual>
+            <isEqual prepend="AND" property="searchCondition" compareValue="1">
+                userNm LIKE '%' #searchKeyword# '%'
+            </isEqual>
+    </select>
+    
+
+    
+   
+    
+     <update id="foxBsshInfoManageDAO.deleteBsshInfo">
+        <![CDATA[
+           UPDATE FOXTNBSSHBASSINFO 
+           SET 
+               MBER_STTUS = '99', 
+               LAST_UPDUSR_ID = #esntlId#, 
+           	   LAST_UPDT_PNTTM = sysdate()
+           WHERE 1=1
+             AND MBER_EMAIL_ADRES=#mberEmailAdres#
+           ]]>
+    </update>
+    
+    
+</sqlMap>
