@@ -178,7 +178,7 @@ public class FoxMberManageController {
 		foxMberManageService.insertMber(foxMberManageVO);
 		
 		
-		return "/index";
+		return "forward:/FoxMobileMain.fo";
 	}
 	
 

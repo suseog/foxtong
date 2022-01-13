@@ -16,77 +16,55 @@
 
 
     
-   <insert id="foxMberManageDAO.insertMber">
+   <insert id="foxMberManageDAO.insertMber" parameterClass="foxMberVO" >
         <![CDATA[
             INSERT INTO COMTNGNRLMBERNEW 
                 (   
-                    BSSH_ESNTL_ID         	,
-                    BRTC_CODE 				,
-                    SIGNGU_CODE				,
-                    DONGLI_CODE         	,
-                    MTLTY_NM    			,
-                    BSSH_CMPGN_WORDS	    ,
-                    BSSH_PHOTO_ID          	,
-                    BSN_BEGIN_TIME     		,
-                    BSN_END_TIME            ,
-                    TLPHON_NO            	,
-                    MOBLPHON_NO          	,
-                    POST_NO       			,
-                    ADRES    				,
-                    DETAIL_ADRES        	,
-                    BULD_NM      			,
-                    BSN_STTUS      			,
-                    COPRTN_STTUS			,
-                    PREFER_CO    			,
-                    POSTSCRIPT_CO     		,
-                    CTGRY_ID        )
+                    ESNTL_ID         	,
+                    MBER_EMAIL_ADRES 				,
+                    MOBLPHON_NO				,
+                    NCNM         	,
+                    MBER_NM    			,
+                    PASSWORD	    ,
+                    SBSCRB_SE          	,
+                    MBER_SE     		,
+                    SEXDSTN_CODE            ,
+                    AGRDE            	,
+                    BIRTH_YEAR          	,
+                    PROFL_PHOTO__URL       			,
+                    GROUP_ID    				,
+                    SBSCRB_DE        	,
+                    MBER_STTUS      			,
+                    USE_STPLAT_AGRE_AT      			,
+                    INDVDLINFO_COLCT_AGRE_AT			,
+                    MARKT_RECPTN_AGRE_AT     		,
+                    LCINFO_USE_AGRE_AT     		,
+                    FRST_REGIST_PNTTM     		 )
               VALUES(
-                    #bsshEsntlId#,
-                    #brtcCode#,
-                    #signguCode#,
-                    #dongliCode#,
-                    #mtltyNm#,
-                    #bsshCmpgnWords#,
-                    #bsshPhotoId#,
-                    #bsnBeginTime#,
-                    #bsnEndTime#,
-                    #tlphonNo#,
+                    #esntlId#,
+                    #mberEmailAdres#,
                     #moblphonNo#,
-                    #postNo#,
-                    #adres#,
-                    #detailAdres#,
-                    #buldNm#,
+                    #ncnm#,
+                    #mberNm#,
+                    #password#,
+                    #sbscrbSe#,
                     '01',
+                    #sexdstnCode#,
+                    #agrde#,
+                    #birthYear#,
+                    #proflPhotoUrl#,
+                    #groupId#,
+                    sysdate(),
                     '01',
-                    '0',
-                    '0',
-                    #ctgryId#  )              
+                    #useStplatAgreAt#,
+                    #indvdlinfoColctAgreAt#,
+                    #marktRecptnAgreAt#,
+                    #lcinfoUseAgreAt#,
+                     sysdate() )              
         ]]>
     </insert>
     
     	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-    
-    
-    
         
  <select id="foxMberManageDAO.selectMberList" parameterClass="foxUserSearchVO" resultClass="egovMap">
 SELECT 

@@ -119,14 +119,13 @@
               })
               Kakao.Auth.setAccessToken(undefined)
             }
-			  document.getElementById("id").value = "";
-	      	  document.getElementById("kakaoserial").value = "";
-	    	  document.getElementById("nickname").value = "";
-	    	  document.getElementById("kakaoimg").value = "";
-	    	  document.getElementById("kakaoemail").value = "";   	 
-	    	  document.getElementById("kkoicon").src = "";
+	            $("#id").value = "";   //$("#id")
+	            $("#kakaoserial").value = "";
+	            $("#nickname").value = "";
+	            $("#kakaoimg").value = "";
+	            $("#kakaoemail").value = "";   	 
+	            $("#kkoicon").src = "";
           } 
-        
 		
         //]]>  
 		</script>		
