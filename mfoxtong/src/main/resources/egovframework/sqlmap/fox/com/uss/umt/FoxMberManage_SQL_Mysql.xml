@@ -153,6 +153,7 @@ FROM(
            WHERE 1=1
              AND MBER_STTUS != '99'
              AND MBER_EMAIL_ADRES=#mberEmailAdres#
+             Limit 1;
         ]]>
     </select>
     

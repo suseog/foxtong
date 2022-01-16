@@ -6,29 +6,6 @@ import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import egovframework.com.cmm.EgovMessageSource;
-import egovframework.com.cmm.LoginVO;
-import egovframework.com.cmm.service.EgovCmmUseService;
-import egovframework.com.cmm.service.Globals;
-import egovframework.com.cmm.util.EgovUserDetailsHelper;
-import egovframework.com.uss.umt.service.EgovMberManageService;
-import egovframework.fox.com.uat.uia.service.FoxLoginService;
-import egovframework.mbl.com.cmm.annotation.IncludedMblInfo;
-
 /*
 import com.gpki.servlet.GPKIHttpServletRequest;
 import com.gpki.servlet.GPKIHttpServletResponse;
@@ -52,11 +29,35 @@ import java.net.URL;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.util.List;
+
+import javax.annotation.Resource;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import egovframework.com.cmm.EgovMessageSource;
+import egovframework.com.cmm.LoginVO;
+import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.com.cmm.service.Globals;
+import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import egovframework.com.sym.ccm.cde.service.CmmnDetailCodeVO;
+import egovframework.com.sym.ccm.cde.service.EgovCcmCmmnDetailCodeManageService;
+import egovframework.fox.com.uat.uia.service.FoxLoginService;
+import egovframework.mbl.com.cmm.annotation.IncludedMblInfo;
 
 
 
@@ -80,6 +81,10 @@ import javax.crypto.spec.SecretKeySpec;
 public class FoxLoginController implements Serializable{
 
 	private static final long serialVersionUID = 1L;
+	
+	@Resource(name = "CmmnDetailCodeManageService")
+    private EgovCcmCmmnDetailCodeManageService cmmnDetailCodeManageService;
+	
 	
 	/** FoxLoginService */
 	@Resource(name = "foxLoginService")
@@ -210,6 +215,16 @@ public class FoxLoginController implements Serializable{
         	return "egovframework/fox/com/uat/uia/FoxLoginUsr";
     	}
     	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+    	
+    	//------------------------------
+        // 업체 카테고리 목록 조회 설정 
+        //------------------------------
+        CmmnDetailCodeVO cvo = new CmmnDetailCodeVO();
+        cvo.setCodeId("FOX001"); // 
+        List<CmmnDetailCodeVO> codeList = (List<CmmnDetailCodeVO>) cmmnDetailCodeManageService.selectCmmnDetailCodeList(cvo);
+        
+        model.addAttribute("resultCodeList", codeList);
+        
 
     	/*
     	// 2. 메뉴조회
