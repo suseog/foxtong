@@ -90,6 +90,30 @@ public class FoxBsshInfoManageDAO extends EgovComAbstractDAO {
 		
 		return (String) insert("foxBsshInfoManageDAO.insertMberBsshMap", foxBsshInfoManageVO);
 	}
+	
+	
+	/**
+	 *  회원의 업소고유 ID 목록 조회 
+	 * @param 
+	 * @return List<FoxBsshInfoManageVO> 일반회원목록정보
+	 */
+	public List<FoxBsshInfoManageVO> retrievBsshEsntlIdList(String esntlId) {
+		
+		return (List<FoxBsshInfoManageVO>) list("foxBsshInfoManageDAO.selectBsshEsntlIdList", esntlId);
+		
+	}
+	
+	
+    /**
+     * 영업점기본정보 수정
+     * @param foxBsshInfoDefaultVO 검색조건
+     * @return 
+     */
+	public void updateBsnBassInfo(FoxBsshInfoManageVO foxBsshInfoManageVO) {
+		
+		update("foxBsshInfoManageDAO.updateBsnBassInfo",foxBsshInfoManageVO);
+		
+	}
 
                       
 

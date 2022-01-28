@@ -21,6 +21,8 @@
 		<result property="uniqId" column="uniqId" columnIndex="5"/>		
 		<result property="password" column="password" columnIndex="6"/>	
 		<result property="ncnm" column="ncnm" columnIndex="7"/>	
+		<result property="esntlId" column="esntlId" columnIndex="8"/>	
+		<result property="mberSe" column="mberSe" columnIndex="9"/>	
 	</resultMap>
 	
 	<!-- 아이디 찾기를 위한 resultMap -->
@@ -42,9 +44,11 @@
 			     , NCNM 		AS ncnm
 			     , '01' 		AS userSe
 			     , '-' 			AS orgnztId
-			     , esntl_id 	AS uniqId
+			     , esntl_id 	AS esntlId
+   			     , esntl_id 	AS uniqId
 			     , password 	AS password
 			     , MOBLPHON_NO 	AS moblPhonNo
+   			     , MBER_SE	 	AS mberSe
 			  FROM COMTNGNRLMBERNEW
 			 WHERE 1=1
 			   AND mber_email_adres = #mberEmailAddres#
@@ -69,7 +73,7 @@
 	<select id="foxLoginDAO.searchId" resultMap="email">
 			<![CDATA[
 			SELECT mber_email_adres AS email
-			  FROM COMTNGNRLMBER
+			  FROM COMTNGNRLMBERNEW
 			 WHERE 1=1
 			   AND MOBLPHON_NO =  #moblphonNo# 
 			   AND mber_sttus = '01'
@@ -81,7 +85,7 @@
 		<!-- 일반회원 -->
 			<![CDATA[
 			SELECT password AS password
-			  FROM COMTNGNRLMBER
+			  FROM COMTNGNRLMBERNEW
 			 WHERE mber_id = #id#
 			   AND mber_nm = #name#
 			   AND mber_email_adres = #email#
@@ -94,7 +98,7 @@
 	<!-- 변경된 비밀번호를 저장 -->
 	<update id="foxLoginDAO.updatePassword">
 			<![CDATA[
-			UPDATE COMTNGNRLMBER
+			UPDATE COMTNGNRLMBERNEW
 			   SET password = #password#
 			 WHERE 1=1
 			   AND mber_email_adres = #email#

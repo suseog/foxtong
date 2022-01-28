@@ -19,6 +19,9 @@ package egovframework.fox.bsh.service;
 public class FoxBsshInfoManageVO {
 
 //	private static final long serialVersionUID = -4255594107023139972L;
+	
+	/** 업소고유ID */
+	private String esntlId = "";
 
 	/** 업소고유ID */
 	private String bsshEsntlId = "";
@@ -42,6 +45,9 @@ public class FoxBsshInfoManageVO {
 	
 	/** 업소캠페인문구 */
 	private String bsshCmpgnWords = "";
+	
+	/** 업소정보개요내용 */
+	private String bsshIntrcnCn = "";
 	
 	/** 업소사진ID */
 	private String bsshPhotoId = "";
@@ -85,7 +91,98 @@ public class FoxBsshInfoManageVO {
 	/** 후기수 */
 	private String postscriptCo = "";
 	
+	private String frstRegistPnttm = "";
+	private String frstRegisterId = "";
+	private String lastUpdtPnttm = "";
+	private String lastUpduseId = "";
 	
+	
+	
+	
+
+	/**
+	 * @return the esntlId
+	 */
+	public String getEsntlId() {
+		return esntlId;
+	}
+
+	/**
+	 * @param esntlId the esntlId to set
+	 */
+	public void setEsntlId(String esntlId) {
+		this.esntlId = esntlId;
+	}
+
+	/**
+	 * @return the bsshIntrcnCn
+	 */
+	public String getBsshIntrcnCn() {
+		return bsshIntrcnCn;
+	}
+
+	/**
+	 * @param bsshIntrcnCn the bsshIntrcnCn to set
+	 */
+	public void setBsshIntrcnCn(String bsshIntrcnCn) {
+		this.bsshIntrcnCn = bsshIntrcnCn;
+	}
+
+	/**
+	 * @return the frstRegistPnttm
+	 */
+	public String getFrstRegistPnttm() {
+		return frstRegistPnttm;
+	}
+
+	/**
+	 * @param frstRegistPnttm the frstRegistPnttm to set
+	 */
+	public void setFrstRegistPnttm(String frstRegistPnttm) {
+		this.frstRegistPnttm = frstRegistPnttm;
+	}
+
+	/**
+	 * @return the frstRegisterId
+	 */
+	public String getFrstRegisterId() {
+		return frstRegisterId;
+	}
+
+	/**
+	 * @param frstRegisterId the frstRegisterId to set
+	 */
+	public void setFrstRegisterId(String frstRegisterId) {
+		this.frstRegisterId = frstRegisterId;
+	}
+
+	/**
+	 * @return the lastUpdtPnttm
+	 */
+	public String getLastUpdtPnttm() {
+		return lastUpdtPnttm;
+	}
+
+	/**
+	 * @param lastUpdtPnttm the lastUpdtPnttm to set
+	 */
+	public void setLastUpdtPnttm(String lastUpdtPnttm) {
+		this.lastUpdtPnttm = lastUpdtPnttm;
+	}
+
+	/**
+	 * @return the lastUpduseId
+	 */
+	public String getLastUpduseId() {
+		return lastUpduseId;
+	}
+
+	/**
+	 * @param lastUpduseId the lastUpduseId to set
+	 */
+	public void setLastUpduseId(String lastUpduseId) {
+		this.lastUpduseId = lastUpduseId;
+	}
 
 	/**
 	 * @return the bsshEsntlId

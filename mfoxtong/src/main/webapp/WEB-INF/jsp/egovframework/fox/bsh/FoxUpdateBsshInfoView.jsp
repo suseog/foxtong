@@ -23,12 +23,27 @@
 			obj.value = "";
 		}
 		
-		function regist() {
+		
+		function modifyBsnBassInfoView() {
+			
+			document.foxBsshInfoManageVO.action="${pageContext.request.contextPath}/fox/bsh/updateBsnBassInfoView.fo";
+			document.foxBsshInfoManageVO.submit();
+			
+		}
+		
+		function modifyBassInfoView() {
+			
+			document.foxBsshInfoManageVO.action="${pageContext.request.contextPath}/fox/bsh/updateBsshInfoView.fo";
+			document.foxBsshInfoManageVO.submit();
+			
+		}
+		
+		function modifyBsshInfo() { 
 			
 			 if($("#ctgryId").val() == "" || $("#ctgryId").val()=="000000"){
 			 	jAlert("업종분류를 선택 해주세요.",'알림', 'b');
 				return false;
-			 }   000000
+			 }  
 			 
 			 if($("#mtltyNm").val() == "" || $("#mtltyNm").val()=="상호를 입력해 주세요"){
 				 	jAlert("상호명을 입력 해주세요 .",'알림', 'b');
@@ -50,9 +65,15 @@
 					return false;
 			}
 
-			document.foxEntrpsEmplyrSbscrbRequstVO.action="${pageContext.request.contextPath}/fox/bsh/entrpsEmplyrSbscrbRequst.fo";
-			document.foxEntrpsEmplyrSbscrbRequstVO.submit();
+			document.foxBsshInfoManageVO.action="${pageContext.request.contextPath}/fox/bsh/updateBsshInfo.fo";
+			document.foxBsshInfoManageVO.submit();
 			
+		}
+		
+		function modifySvcGoodsInfoView() {
+			
+			document.foxBsshInfoManageVO.action="${pageContext.request.contextPath}/fox/bsh/updateSvcGoodsInfoView.fo";
+			document.foxBsshInfoManageVO.submit();
 		}
 		
 		
@@ -69,18 +90,32 @@
 <!-- header start -->
 <div data-role="header">
 <table width="100%">
-	<tr> 
-		<td align="left" width="20%"><a href="${pageContext.request.contextPath}/index.jsp"  class="ui-btn ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" rel="external">뒤로</a></td>
-		<td align="center" width="80%"><h1 class="bodyLogo" style="font-size:14pt">업체사용자가입요청</h1></td>
+	<tr>   
+		<td align="left" width="10%"><a href="${pageContext.request.contextPath}/FoxMobileMain.fo"  class="ui-btn ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" rel="external">뒤로</a></td>
+		<td align="center" width="90%"><h1 class="bodyLogo" style="font-size:14pt">업소기본정보관리</h1></td>
 	</tr>
 </table>
 </div>
 <!-- header end -->
 
+
 <!-- content start -->
  <div data-role="content" class="com-logContent">   
 
-	<form name="foxEntrpsEmplyrSbscrbRequstVO"  method="post">	
+	<form name="foxBsshInfoManageVO"  method="post">	
+	<input type="hidden" id="bsshEsntlId" name="bsshEsntlId" value="<c:out value='${result.bsshEsntlId}'/>" />
+	<input type="hidden" id="esntlId" name="esntlId" value="<c:out value='${result.esntlId}'/>" />
+	<br/>
+	<!--  네비게이션 탭영역 strt -->
+	<div data-role = "navbar">
+       <ul>
+          <li><a href = "javascript:modifyBsnBassInfoView();"  rel="external">영업정보관리</a></li>
+          <li><a href = "javascript:modifySvcGoodsInfoView();" rel="external">서비스정보관리</a></li>  
+          <li><a href = "javascript:modifyBassInfoView();"     rel="external">업소기정본정보관리</a></li>
+       </ul>
+    </div>
+    <br/>
+	<!--  네비게이션 탭영역	end -->
 	
 	<!--업체카테고리 선택 -->
 	<br/>
@@ -88,36 +123,37 @@
         <label for="ctgryId">업체 분류 선택</label>
         <select name="ctgryId" id="ctgryId">
 	     	<c:choose> 
-	     		<c:when test="${empty resultCodeList}">
+	     		<c:when test="${empty codeList}">
            	 			<option value="000000">선택사항없음</option>
             	</c:when>
             	<c:otherwise>
             		<option value="000000">업종분류선택</option>
-					<c:forEach var="result" items="${resultCodeList}">
-					 	<option value="<c:out value='${result.codeId}'/>"><c:out value="${result.codeNm}"/></option>
+					<c:forEach var="codeResult" items="${codeList}">
+						<c:if test="${codeResult.code eq result.ctgryId}">
+					 		<option value="<c:out value='${codeResult.code}'/>" selected><c:out value="${codeResult.codeNm}"/></option>
+						</c:if>
+					 		<option value="<c:out value='${codeResult.code}'/>"><c:out value="${codeResult.codeNm}"/></option>
 					</c:forEach>
             	</c:otherwise>
             </c:choose>
-            
         </select>
     </fieldset>
    	<!--업체카테고리 선택 -->
-	<br/>
 	
 	<!--상호명입력 -->
 	<div data-role="fieldcontain">
 		<span align="left">상호명</span><br/>
-		<input type="text" name="mtltyNm" id="mtltyNm" value="상호를 입력해 주세요" data-theme="c" onclick="javascript:clearText(this);"/>
+		<input type="text" name="mtltyNm" id="mtltyNm" value="<c:out value='${result.mtltyNm}'/>" data-theme="c" onclick="javascript:clearText(this);"/>
 	</div>
 	
 	<!-- 휴대폰번호 입력 -->
 	<div data-role="fieldcontain">
 		<span align="left">전화번호</span><br/>
-		<input type="text" name="tlphonNo" id="tlphonNo" value="업소 전화번호를 입력해주세요" data-theme="c" onclick="javascript:clearText(this);"/>
+		<input type="text" name="tlphonNo" id="tlphonNo" value="<c:out value='${result.tlphonNo}'/>" data-theme="c" onclick="javascript:clearText(this);"/>
 	</div>
 	<div data-role="fieldcontain">
 		<span align="left">휴대폰번호</span><br/>
-		<input type="text" name="moblphonNo" id="moblphonNo" value="휴대폰번호를 입력해 주세요" data-theme="c" onclick="javascript:clearText(this);"/>
+		<input type="text" name="moblphonNo" id="moblphonNo" value="<c:out value='${result.moblphonNo}'/>" data-theme="c" onclick="javascript:clearText(this);"/>
 	</div>
 	
 	<!-- 주소입력 -->
@@ -126,7 +162,7 @@
 			<tr>
 				<td width = "100%" hdight="100" align="left">
 					<span align="left">우편번호</span><br/>
-					<input type="text" name="postNo" id="postNo" value="" data-theme="c" readonly/>
+					<input type="text" name="postNo" id="postNo" value="<c:out value='${result.postNo}'/>" data-theme="c" readonly/>
 				</td>
 				<td width = "100%" hdight="100" align="center">
 					<span align="left">  </span><br/>
@@ -135,31 +171,36 @@
 			</tr>
 		</table>
 			<span align="left">주소</span><br/>
-			<input type="text" name="adres" id="adres" value="주소를 입력해주세요" data-theme="c" onclick="javascript:clearText(this);"/>
+			<input type="text" name="adres" id="adres" value="<c:out value='${result.adres}'/>" data-theme="c" onclick="javascript:clearText(this);"/>
 			<span align="left">상세주소</span><br/>
-			<input type="text" name="detailAdres" id="detailAdres" value="상세 주소를 입력해주세요" data-theme="c" onclick="javascript:clearText(this);"/>
+			<input type="text" name="detailAdres" id="detailAdres" value="<c:out value='${result.detailAdres}'/>" data-theme="c" onclick="javascript:clearText(this);"/>
 			<span align="left">건물명</span><br/>
-			<input type="text" name="buldNm" id="buldNm" value="건물명 입력" data-theme="c" onclick="javascript:clearText(this);"/>
+			<input type="text" name="buldNm" id="buldNm" value="<c:out value='${result.buldNm}'/>" data-theme="c" onclick="javascript:clearText(this);"/>
 	</div>
 	<br/>
 	<br/>
 	<br/>
 	<div data-role="fieldcontain" class="com-logLogin" >   
-		<a href="javascript:regist();" data-role="button" data-thema="z">가입요청</a>
+		<a href="javascript:modifyBsshInfo();" data-role="button" data-thema="z">수정완료</a>
 	</div>
 	<br/>
-	
+	<br/> 
 	</form>
-
 </div>
 <!-- content end -->
 
 <!-- footer start -->
-<!-- 
-<div data-role="footer"  data-theme="z" data-position="fixed">
-	<h4>Copyright (c) MINISTRY OF SECURITY AND PUBLIC ADMINISTRATION.</h4>
-</div>
- -->
+  <div data-role="footer" style="text-align:center;" data-position="fixed">
+   <div data-role="navbar">
+      <ul>
+        <li><a href="${pageContext.request.contextPath}/FoxMobileMain.fo" data-icon="home" rel="external">여우홈</a></li>
+        <li><a href="${pageContext.request.contextPath}/fox/bsh/bsshInMain.fo" data-icon="navigation">예약관리</a></li>
+        <li><a href="javascript:alert('구현 예정');" data-icon="check">쿠폰관리</a></li>
+        <li><a href="${pageContext.request.contextPath}/cop/bbs/anonymous/selectBoardList.fo?bbsId=BBSMSTR_000000000002" rel="external" data-icon="navigation" data-icon="comment">후기관리</a></li>
+        <li><a href="${pageContext.request.contextPath}/uat/uia/foxMypage.fo" data-icon="user" rel="external">샵정보관리</a></li> 
+      </ul>
+    </div>
+  </div>
 <!-- footer end -->
 
 </div>

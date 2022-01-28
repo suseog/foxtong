@@ -164,6 +164,9 @@ FROM(
                 NCNM         	 			= #ncnm#,
                 MOBLPHON_NO    	 			= #moblphonNo#,
              ]]>
+                <isNotEmpty property="password">
+                	PASSWORD          			= #password#,
+                </isNotEmpty>
                 <isNotEmpty property="mberNm">
                 	MBER_NM          			= #mberNm#,
                 </isNotEmpty>
@@ -201,6 +204,19 @@ FROM(
               AND MBER_EMAIL_ADRES=#mberEmailAdres#
             ]]>
     </update>
+    
+    <update id="foxMberManageDAO.updateMberSe" parameterClass="foxMberVO">
+            <![CDATA[
+            UPDATE COMTNGNRLMBERNEW 
+            SET 
+                MBER_SE     				= #mberSe#,
+                LAST_UPDUSR_ID 				= #esntlId#, 
+            	LAST_UPDT_PNTTM = sysdate()
+            WHERE 1=1
+              AND ESNTL_ID  = #esntlId#
+            ]]>
+    </update>
+    
     
      <update id="foxMberManageDAO.deleteMber">
         <![CDATA[

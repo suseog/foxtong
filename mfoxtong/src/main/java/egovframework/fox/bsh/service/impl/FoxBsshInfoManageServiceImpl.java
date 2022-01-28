@@ -10,6 +10,8 @@ import egovframework.fox.bsh.service.FoxBsshInfoDefaultVO;
 import egovframework.fox.bsh.service.FoxBsshInfoManageService;
 import egovframework.fox.bsh.service.FoxBsshInfoManageVO;
 import egovframework.fox.bsh.service.FoxEntrpsEmplyrSbscrbRequstVO;
+import egovframework.fox.com.uss.umt.service.FoxMberManageService;
+import egovframework.fox.com.uss.umt.service.FoxMberManageVO;
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import egovframework.rte.fdl.idgnr.EgovIdGnrService;
 
@@ -42,6 +44,10 @@ public class FoxBsshInfoManageServiceImpl extends EgovAbstractServiceImpl implem
 	@Resource(name="egovUsrCnfrmIdGnrService")
 	private EgovIdGnrService idgenService;
 	
+	/** mberManageService */
+	@Resource(name = "foxMberManageService")
+	private FoxMberManageService foxMberManageService;
+	
 	/**
 	 * 업체사용자 가입요청  
 	 * 처음 가입시 일반사용자 이며, 이후 본인의 업소를 등록요청 하는 기능 
@@ -50,14 +56,17 @@ public class FoxBsshInfoManageServiceImpl extends EgovAbstractServiceImpl implem
 	 */
 	public void entrpsEmplyrSbscrbRequst(FoxEntrpsEmplyrSbscrbRequstVO foxEntrpsEmplyrSbscrbRequstVO) throws Exception {
 		
+		// 사용자 고유 ID 셋팅 
+		String esntlId = foxEntrpsEmplyrSbscrbRequstVO.getEsntlId();
 		
         //업소 고유ID 셋팅
-    	String uniqId = idgenService.getNextStringId();
+    	String bsshEsntlId = idgenService.getNextStringId();
+		
 		
 		// 업소기본정보	
     	//vo를 둘로 나누어 등록 한다.
     	FoxBsshInfoManageVO vo = new FoxBsshInfoManageVO();
-    	vo.setBsshEsntlId(uniqId);   // get 코드 추출이 필요 
+    	vo.setBsshEsntlId(bsshEsntlId);  
 		vo.setCtgryId(foxEntrpsEmplyrSbscrbRequstVO.getCtgryId());
 		vo.setMtltyNm(foxEntrpsEmplyrSbscrbRequstVO.getMtltyNm());
 		vo.setBsshPhotoId(foxEntrpsEmplyrSbscrbRequstVO.getBsshPhotoId());
@@ -79,13 +88,20 @@ public class FoxBsshInfoManageServiceImpl extends EgovAbstractServiceImpl implem
 		
 		
 		// 업체기본정보 등록 
-		String resulta = foxBsshInfoManageDAO.createBsshInfo(foxEntrpsEmplyrSbscrbRequstVO);
+		String resulta = foxBsshInfoManageDAO.createBsshInfo(vo);
 		
 		// 매핑테이블 등록 
-		foxEntrpsEmplyrSbscrbRequstVO.setBsshEsntlId(uniqId);
+		foxEntrpsEmplyrSbscrbRequstVO.setEsntlId(esntlId);
+		foxEntrpsEmplyrSbscrbRequstVO.setBsshEsntlId(bsshEsntlId);
 		foxEntrpsEmplyrSbscrbRequstVO.setSbscrbSttus("01");
 		String resultb= foxBsshInfoManageDAO.createMberBsshMap(foxEntrpsEmplyrSbscrbRequstVO);
 		
+		
+		// 회웥구분 변경
+		FoxMberManageVO foxMberManageVO = new FoxMberManageVO();
+		foxMberManageVO.setEsntlId(esntlId);
+		foxMberManageVO.setMberSe("02");
+		foxMberManageService.updateMberSe(foxMberManageVO);
 		
 	}
 	
@@ -115,13 +131,14 @@ public class FoxBsshInfoManageServiceImpl extends EgovAbstractServiceImpl implem
 	 * @throws Exception
 	 */
 	@Override
-	public FoxBsshInfoManageVO retrieveBsshInfo(String uniqid) {
-		FoxBsshInfoManageVO foxBsshInfoManageVO = foxBsshInfoManageDAO.retrieveBsshInfo(uniqid);
+	public FoxBsshInfoManageVO retrieveBsshInfo(String bsshEsntlId) {
+		
+		FoxBsshInfoManageVO foxBsshInfoManageVO = foxBsshInfoManageDAO.retrieveBsshInfo(bsshEsntlId);
 		return foxBsshInfoManageVO;
 	}
 	
 	/**
-	 * 화면에 조회된 일반회원의 기본정보를 수정하여 항목의 정합성을 체크하고 수정된 데이터를 데이터베이스에 반영
+	 * 업소기본정보 수정
 	 * @param foxBsshInfoManageVO 일반회원수정정보
 	 * @throws Exception
 	 */
@@ -132,6 +149,28 @@ public class FoxBsshInfoManageServiceImpl extends EgovAbstractServiceImpl implem
 		
 	}
 	
+	/**
+	 * 영업기본정보 수정 
+	 * @param foxBsshInfoManageVO 일반회원수정정보
+	 * @throws Exception
+	 */
+	@Override
+	public void updateBsnBassInfo(FoxBsshInfoManageVO foxBsshInfoManageVO) throws Exception {
+		foxBsshInfoManageDAO.updateBsnBassInfo(foxBsshInfoManageVO);
+		
+	}
+	
+	
+	/**
+	 *  회원의 업소고유 ID 목록 조회 
+	 * @param 
+	 * @return List<FoxBsshInfoManageVO> 일반회원목록정보
+	 */
+	@Override
+	public List<FoxBsshInfoManageVO> retrievBsshEsntlIdList(String esntlId) throws Exception{
+		return foxBsshInfoManageDAO.retrievBsshEsntlIdList(esntlId);
+	}
+	 
 	
 
 	/**
@@ -177,6 +216,8 @@ public class FoxBsshInfoManageServiceImpl extends EgovAbstractServiceImpl implem
 //		}
 		foxBsshInfoManageDAO.deleteBsshInfo(bsshEsntlId);
 	}
+
+
 
 
 }

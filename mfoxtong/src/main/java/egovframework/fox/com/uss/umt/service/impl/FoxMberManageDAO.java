@@ -105,5 +105,19 @@ public class FoxMberManageDAO extends EgovComAbstractDAO{
     public FoxMberManageVO selectPassword(FoxMberManageVO foxMberManageVO){
     	return (FoxMberManageVO) select("foxMberManageDAO.selectPassword_S", foxMberManageVO);
     }
+    
+    
+    /**
+     * 회원구분 변경 
+     * 업체사용자 요청시 회원정보를 일반회원에서 업체 사용자로 변경 01--> '02'
+     * @param foxMberManageVO 일반회원암호 조회조건정보
+     * @return FoxMberManageVO 일반회원 암호정보
+     */
+    public void updateMberSe(FoxMberManageVO foxMberManageVO) {
+    	update ("foxMberManageDAO.updateMberSe", foxMberManageVO);
+    }
+    
+    
+    
 
 }

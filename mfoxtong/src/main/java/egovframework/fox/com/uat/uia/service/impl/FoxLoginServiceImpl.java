@@ -183,4 +183,5 @@ public class FoxLoginServiceImpl extends EgovAbstractServiceImpl implements FoxL
 
     	return result;
     }
+    
 }

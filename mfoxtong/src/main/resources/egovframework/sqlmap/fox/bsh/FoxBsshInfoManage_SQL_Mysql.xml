@@ -18,7 +18,7 @@
                     BSSH_ESNTL_ID         	,
                     BRTC_CODE 				,
                     SIGNGU_CODE				,
-                    DONG_CODE         	,
+                    DONG_CODE         		,
                     MTLTY_NM    			,
                     BSSH_CMPGN_WORDS	    ,
                     BSSH_PHOTO_ID          	,
@@ -34,6 +34,8 @@
                     COPRTN_STTUS			,
                     PREFER_CO    			,
                     POSTSCRIPT_CO     		,
+                    FRST_REGISTER_ID		,
+                    FRST_REGIST_PNTTM		,
                     CTGRY_ID        )
               VALUES(
                     #bsshEsntlId#,
@@ -55,6 +57,8 @@
                     '01',
                     '0',
                     '0',
+                    #frstRegisterId#,
+                    sysdate(),
                     #ctgryId#  )               
         ]]>
     </insert>
@@ -62,170 +66,271 @@
      <insert id="foxBsshInfoManageDAO.insertMberBsshMap" parameterClass="foxEntrpsEmplyrSbscrbRequstVO">
         <![CDATA[
             INSERT INTO FOXTNMBERBSSHMAPNG 
-                (   
+            (   
                      ESNTL_ID 				
                     ,BSSH_ESNTL_ID         	
                     ,SBSCRB_STTUS			
-                    ,FRST_REGIST_PNTTM			)
-              VALUES(
+                    ,FRST_REGIST_PNTTM			
+             )VALUES(
                      #esntlId#
                     ,#bsshEsntlId#
-                    ,#sbscrbSttus#
+                    ,'01'
                     ,sysdate()
-                   )               
+            )               
         ]]>
     </insert>
+    
+    <update id="foxBsshInfoManageDAO.updateSbscrbSttus" parameterClass="foxEntrpsEmplyrSbscrbRequstVO">
+           <![CDATA[
+	           UPDATE FOXTNMBERBSSHMAPNG 
+	              SET   SBSCRB_STTUS 	= #sbscrbSttus#
+	              	  , LAST_UPDT_PNTTM 	= sysdate()
+	            WHERE 1=1
+	              AND BSSH_ESNTL_ID=#bsshEsntlId#
+           ]]>
+    </update>
+    
+   	<select id="foxBsshInfoManageDAO.selectBsshEsntlIdList" parameterClass="java.lang.String" resultClass="egovMap">
+       <![CDATA[
+		       SELECT 	A.BSSH_ESNTL_ID  	AS    bsshEsntlId
+		       		,	B.MTLTY_NM  		AS    mtltyNm
+		         FROM	FOXTNMBERBSSHMAPNG 		AS A 
+		                JOIN FOXTNBSSHBASSINFO 	AS B 
+		                ON  A.BSSH_ESNTL_ID = B.BSSH_ESNTL_ID
+		        WHERE 	1=1
+		          AND 	A.ESNTL_ID=#esntlId# 
+       ]]>
+    </select>
     
     <select id="foxBsshInfoManageDAO.selectBsshInfo" resultClass="foxBsshInfoManageVO">
         <![CDATA[
             SELECT
-                ESNTL_ID         	   	esntlId,
-                MBER_EMAIL_ADRES       	mberEmailAdres,
-                MOBLPHON_NO            	moblphonNo,
-                NCNM          		   	ncnm,
-                MBER_NM         	 		mberNm,
-                SBSCRB_SE    	 			sbscrbSe,
-                MBER_SE    		 			mberSe,
-                PROFL_PHOTO__URL      		proflPhotoUrl,
-                SEXDSTN_CODE     		 	sexdstnCode,
-                MBER_STTUS              	mberSttus,
-                USE_STPLAT_AGRE_AT     		useStplatAgreAt,
-                INDVDLINFO_COLCT_AGRE_AT        indvdlinfoColctAgreAt,
-                MARKT_RECPTN_AGRE_AT      marktRecptnAgreAt,
-                LCINFO_USE_AGRE_AT         lcinfoUseAgreAt
+                 BSSH_ESNTL_ID  	AS    bsshEsntlId
+				,CTGRY_ID   		AS    ctgryId
+				,BRTC_CODE   		AS    brtcCode
+				,SIGNGU_CODE   		AS    signguCode
+				,DONG_CODE   		AS    dongCode
+				,MTLTY_NM   		AS    mtltyNm
+				,BSSH_CMPGN_WORDS   AS    bsshCmpgnWords
+				,BSSH_INTRCN_CN    	AS    bsshIntrcnCn
+				,BSSH_PHOTO_ID   	AS    bsshPhotoId
+				,BSN_BEGIN_TIME   	AS    bsnBeginTime
+				,BSN_END_TIME   	AS    bsnEndTime
+				,TLPHON_NO   		AS    tlphonNo
+				,MOBLPHON_NO   		AS    moblphonNo
+				,POST_NO   			AS    postNo
+				,ADRES   			AS    adres
+				,DETAIL_ADRES   	AS    detailAdres
+				,BULD_NM   			AS    buldNm
+				,BSN_STTUS   		AS    bsnSttus
+				,COPRTN_STTUS   	AS    coprtnSttus
+				,PREFER_CO   		AS    preferCo
+				,POSTSCRIPT_CO   	AS    postscriptCo
+				,FRST_REGIST_PNTTM  AS 	  frstRegistPnttm
+				,FRST_REGISTER_ID  	AS 	  frstRegisterId
+				,LAST_UPDT_PNTTM  	AS 	  lastUpdtPnttm
+				,LAST_UPDUSR_ID  	AS    lastUpduseId
             FROM FOXTNBSSHBASSINFO
            WHERE 1=1
-             AND MBER_STTUS != '99'
-             AND MBER_EMAIL_ADRES=#mberEmailAdres#
+             AND BSSH_ESNTL_ID=#bsshEsntlId#
         ]]>
     </select>
     
-     <update id="foxBsshInfoManageDAO.updateBsshInfo">
+     <update id="foxBsshInfoManageDAO.updateBsshInfo" parameterClass="foxBsshInfoManageVO">
             <![CDATA[
             UPDATE FOXTNBSSHBASSINFO 
-            SET 
-                NCNM         	 			= #ncnm#,
-                MOBLPHON_NO    	 			= #moblphonNo#,
+            SET LAST_UPDUSR_ID = #esntlId#, 
              ]]>
-                <isNotEmpty property="mberNm">
-                	MBER_NM          			= #mberNm#,
+                <isNotEmpty property="ctgryId">
+                	CTGRY_ID        = #ctgryId#,
                 </isNotEmpty>
-                <isNotEmpty property="sbscrbSe">
-	                SBSCRB_SE       			= #sbscrbSe#,
+                <isNotEmpty property="brtcCode">
+	                BRTC_CODE       = #brtcCode#,
                 </isNotEmpty>
-                <isNotEmpty property="mberSe">
-	                MBER_SE     				= #mberSe#,
+                <isNotEmpty property="signguCode">
+	                SIGNGU_CODE     = #signguCode#,
                 </isNotEmpty>
-                <isNotEmpty property="proflPhotoUrl">
-	                PROFL_PHOTO__URL        	= #proflPhotoUrl#,
+                <isNotEmpty property="dongCode">
+	                DONG_CODE       = #dongCode#,
                 </isNotEmpty>
-                <isNotEmpty property="sexdstnCode">
-	                SEXDSTN_CODE      			= #sexdstnCode#,
+                <isNotEmpty property="mtltyNm">
+	                MTLTY_NM      	= #mtltyNm#,
                 </isNotEmpty>
-                <isNotEmpty property="mberSttus">
-	                MBER_STTUS        	 		= #mberSttus#,
+                <isNotEmpty property="bsshCmpgnWords">
+	                BSSH_CMPGN_WORDS= #bsshCmpgnWords#,
                 </isNotEmpty>
-                <isNotEmpty property="useStplatAgreAt">
-	                USE_STPLAT_AGRE_AT       	= #useStplatAgreAt#,
+                <isNotEmpty property="bsshIntrcnCn">
+	                BSSH_INTRCN_CN  = #bsshIntrcnCn#,
                 </isNotEmpty>
-                <isNotEmpty property="indvdlinfoColctAgreAt">
-	                INDVDLINFO_COLCT_AGRE_AT 	= #indvdlinfoColctAgreAt#,
+                <isNotEmpty property="bsshPhotoId">
+	                BSSH_PHOTO_ID 	= #bsshPhotoId#,
                 </isNotEmpty>
-                <isNotEmpty property="marktRecptnAgreAt">
-	                MARKT_RECPTN_AGRE_AT     	= #marktRecptnAgreAt#,
+                <isNotEmpty property="bsnBeginTime">
+	                BSN_BEGIN_TIME  = #bsnBeginTime#,
                 </isNotEmpty>
-                <isNotEmpty property="lcinfoUseAgreAt">
-	                LCINFO_USE_AGRE_AT    		= #lcinfoUseAgreAt#,
+                <isNotEmpty property="bsnEndTime">
+	                BSN_END_TIME    = #bsnEndTime#,
+                </isNotEmpty>
+                <isNotEmpty property="tlphonNo">
+	                TLPHON_NO    	= #tlphonNo#,
+                </isNotEmpty>
+                <isNotEmpty property="moblphonNo">
+	                MOBLPHON_NO    	= #moblphonNo#,
+                </isNotEmpty>
+                <isNotEmpty property="postNo">
+	                POST_NO    		= #postNo#,
+                </isNotEmpty>
+                <isNotEmpty property="adres">
+	                ADRES    		= #adres#,
+                </isNotEmpty>
+                <isNotEmpty property="detailAdres">
+	                DETAIL_ADRES    = #detailAdres#,
+                </isNotEmpty>
+                <isNotEmpty property="bsnEndTime">
+	                BSN_END_TIME    = #bsnEndTime#,
+                </isNotEmpty>
+                <isNotEmpty property="buldNm">
+	                BULD_NM    		= #buldNm#,
+                </isNotEmpty>
+                <isNotEmpty property="bsnSttus">
+	                BSN_STTUS    	= #bsnSttus#,
                 </isNotEmpty>
             <![CDATA[
-                LAST_UPDUSR_ID = #esntlId#, 
             	LAST_UPDT_PNTTM = sysdate()
             WHERE 1=1
-              AND MBER_EMAIL_ADRES=#mberEmailAdres#
+              AND BSSH_ESNTL_ID=#bsshEsntlId#
             ]]>
     </update>
+    
+     <update id="foxBsshInfoManageDAO.updateBsnBassInfo" parameterClass="foxBsshInfoManageVO">
+            <![CDATA[
+            UPDATE FOXTNBSSHBASSINFO 
+            SET LAST_UPDUSR_ID = #esntlId#, 
+             ]]>
+                <isNotEmpty property="bsshCmpgnWords">
+	                BSSH_CMPGN_WORDS= #bsshCmpgnWords#,
+                </isNotEmpty>
+                <isNotEmpty property="bsshIntrcnCn">
+	                BSSH_INTRCN_CN  = #bsshIntrcnCn#,
+                </isNotEmpty>
+                <isNotEmpty property="bsshPhotoId">
+	                BSSH_PHOTO_ID 	= #bsshPhotoId#,
+                </isNotEmpty>
+                <isNotEmpty property="bsnBeginTime">
+	                BSN_BEGIN_TIME  = #bsnBeginTime#,
+                </isNotEmpty>
+                <isNotEmpty property="bsnEndTime">
+	                BSN_END_TIME    = #bsnEndTime#,
+                </isNotEmpty>
+            <![CDATA[
+            	LAST_UPDT_PNTTM = sysdate()
+            WHERE 1=1
+              AND BSSH_ESNTL_ID=#bsshEsntlId#
+            ]]>
+    </update>
+    
+    <update id="foxBsshInfoManageDAO.updateCoprtnSttus" parameterClass="foxBsshInfoManageVO">
+           <![CDATA[
+	           UPDATE FOXTNBSSHBASSINFO 
+	              SET COPRTN_STTUS = #coprtnSttus#
+	            WHERE 1=1
+	              AND BSSH_ESNTL_ID=#bsshEsntlId#
+           ]]>
+    </update>  
+    
+    <update id="foxBsshInfoManageDAO.updatePostscriptCo" parameterClass="foxBsshInfoManageVO">
+           <![CDATA[
+	           UPDATE FOXTNBSSHBASSINFO 
+	              SET POSTSCRIPT_CO = POSTSCRIPT_CO + 1
+	            WHERE 1=1
+	              AND BSSH_ESNTL_ID=#bsshEsntlId#
+           ]]>
+    </update>
+    
+    <update id="foxBsshInfoManageDAO.updatePreferCo" parameterClass="foxBsshInfoManageVO">
+           <![CDATA[
+	           UPDATE FOXTNBSSHBASSINFO 
+	              SET PREFER_CO = PREFER_CO + 1
+	            WHERE 1=1
+	              AND BSSH_ESNTL_ID=#bsshEsntlId#
+           ]]>
+    </update>
+    
         
 	 <select id="foxBsshInfoManageDAO.selectBsshInfoList" parameterClass="foxBsshInfoDefaultVO" resultClass="egovMap">
 		SELECT 
-		    uniqId, userTy, userId , userNm, emailAdres, areaNo, middleTelno, endTelno, moblphonNo, groupId, sttus, sbscrbDe
+		      bsshEsntlId, ctgryId, brtcCode , signguCode, dongCode, mtltyNm, bsshCmpgnWords, bsshIntrcnCn, bsshPhotoId, bsnBeginTime, bsnEndTime
+		    , tlphonNo ,moblphonNo ,postNo ,adres ,detailAdres ,buldNm ,bsnSttus ,coprtnSttus ,coprtnSttus ,preferCo , postscriptCo
+		    , frstRegistPnttm ,frstRegisterId , lastUpdtPnttm ,lastUpduseId
 		FROM(
 		    SELECT 
-		        ESNTL_ID               uniqId,
-		        'USR01'               userTy,
-		        MBER_ID               userId,
-		        MBER_NM               userNm,
-		        MBER_EMAIL_ADRES      emailAdres,
-		        AREA_NO               areaNo,
-		        MIDDLE_TELNO          middleTelno,
-		        END_TELNO             endTelno,
-		        MBTLNUM           moblphonNo,
-		        GROUP_ID              groupId,
-		        MBER_STTUS            sttus,
-		        SBSCRB_DE             sbscrbDe
-		    FROM    FOXTNBSSHBASSINFO
+                 BSSH_ESNTL_ID  	AS    bsshEsntlId
+				,CTGRY_ID   		AS    ctgryId
+				,BRTC_CODE   		AS    brtcCode
+				,SIGNGU_CODE   		AS    signguCode
+				,DONG_CODE   		AS    dongCode
+				,MTLTY_NM   		AS    mtltyNm
+				,BSSH_CMPGN_WORDS   AS    bsshCmpgnWords
+				,BSSH_INTRCN_CN    	AS    bsshIntrcnCn
+				,BSSH_PHOTO_ID   	AS    bsshPhotoId
+				,BSN_BEGIN_TIME   	AS    bsnBeginTime
+				,BSN_END_TIME   	AS    bsnEndTime
+				,TLPHON_NO   		AS    tlphonNo
+				,MOBLPHON_NO   		AS    moblphonNo
+				,POST_NO   			AS    postNo
+				,ADRES   			AS    adres
+				,DETAIL_ADRES   	AS    detailAdres
+				,BULD_NM   			AS    buldNm
+				,BSN_STTUS   		AS    bsnSttus
+				,COPRTN_STTUS   	AS    coprtnSttus
+				,PREFER_CO   		AS    preferCo
+				,POSTSCRIPT_CO   	AS    postscriptCo
+				,FRST_REGIST_PNTTM  AS 	  frstRegistPnttm
+				,FRST_REGISTER_ID  	AS 	  frstRegisterId
+				,LAST_UPDT_PNTTM  	AS 	  lastUpdtPnttm
+				,LAST_UPDUSR_ID  	AS    lastUpduseId
+		    FROM FOXTNBSSHBASSINFO
 		    ) A
 		        WHERE 1=1
-		          AND MBER_STTUS != '99'
-		        <isNotEqual prepend="AND" property="sbscrbSttus" compareValue="0">
-		            sttus LIKE  #sbscrbSttus#
-		        </isNotEqual>
-		        <isEqual prepend="AND" property="searchCondition" compareValue="0">
-		            userId LIKE #searchKeyword#
-		        </isEqual>
-		        <isEqual prepend="AND" property="searchCondition" compareValue="1">
-		            userNm LIKE '%' #searchKeyword# '%'
-		        </isEqual>
-		        ORDER BY sbscrbDe DESC
+		          AND BSN_STTUS != '99'
+		        <isNotEmpty prepend="AND" property="ctgryId">
+	                CTGRY_ID    = #ctgryId#
+                </isNotEmpty>
+		        <isNotEmpty prepend="AND" property="brtcCode">
+		            BRTC_CODE LIKE #brtcCode#
+		        </isNotEmpty>
+		        <isNotEmpty prepend="AND" property="signguCode">
+		            SIGNGU_CODE LIKE #signguCode#
+		        </isNotEmpty>
+		        <isNotEmpty prepend="AND" property="dongCode">
+		            DONG_CODE LIKE #dongCode#
+		        </isNotEmpty>
+		        <isNotEmpty prepend="AND" property="mtltyNm">
+		            MTLTY_NM LIKE '%' #mtltyNm# '%'
+		        </isNotEmpty>
+		        ORDER BY BSSH_ESNTL_ID DESC
 		        LIMIT #recordCountPerPage# OFFSET #firstIndex#
 	    </select>
     
     
         <select id="foxBsshInfoManageDAO.selectBsshInfoListTotCnt" parameterClass="foxBsshInfoDefaultVO" resultClass="int">
-            SELECT COUNT(1) totcnt
-            FROM(
-            SELECT 
-                ESNTL_ID               uniqId,
-                'USR01'               userTy,
-                MBER_ID               userId,
-                MBER_NM               userNm,
-                MBER_EMAIL_ADRES      emailAdres,
-                AREA_NO               areaNo,
-                MIDDLE_TELNO          middleTelno,
-                END_TELNO             endTelno,
-                MBTLNUM           moblphonNo,
-                GROUP_ID              groupId,
-                MBER_STTUS            sttus,
-                SBSCRB_DE             sbscrbDe
-            FROM    FOXTNBSSHBASSINFO
-            ) A
-        WHERE 1=1
-          AND MBER_STTUS != '99'
-            <isNotEqual prepend="AND" property="sbscrbSttus" compareValue="0">
-                sttus LIKE  #sbscrbSttus#
-            </isNotEqual>
-            <isEqual prepend="AND" property="searchCondition" compareValue="0">
-                userId LIKE #searchKeyword#
-            </isEqual>
-            <isEqual prepend="AND" property="searchCondition" compareValue="1">
-                userNm LIKE '%' #searchKeyword# '%'
-            </isEqual>
-    </select>
-    
-
+             <![CDATA[
+		            SELECT 
+		                ESNTL_ID               bsshEsntlId
+		            FROM FOXTNBSSHBASSINFO
+	        		WHERE 1=1
+			          AND BSN_STTUS != '99'
+                ]]>
+    	</select>
     
    
-    
-     <update id="foxBsshInfoManageDAO.deleteBsshInfo">
-        <![CDATA[
-           UPDATE FOXTNBSSHBASSINFO 
-           SET 
-               MBER_STTUS = '99', 
-               LAST_UPDUSR_ID = #esntlId#, 
-           	   LAST_UPDT_PNTTM = sysdate()
-           WHERE 1=1
-             AND MBER_EMAIL_ADRES=#mberEmailAdres#
+     <update id="foxBsshInfoManageDAO.deleteBsshInfo" parameterClass="foxBsshInfoManageVO">
+           <![CDATA[
+	           UPDATE FOXTNBSSHBASSINFO 
+	              SET BSN_STTUS = '99'
+	            WHERE 1=1
+	              AND BSSH_ESNTL_ID=#bsshEsntlId#
            ]]>
     </update>
-    
     
 </sqlMap>

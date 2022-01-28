@@ -157,7 +157,7 @@
 		</table>
 	</div>
 
-	<form name="loginForm" action ="${pageContext.request.contextPath}/mbl/com/uat/uia/actionLogin.do" method="post">
+	<form name="loginForm" method="post">
 	<input type="hidden" id="userSe" name="userSe" value="USR"/>
 	<input type="hidden" id="searchSe" name="searchSe" value=""/>
 	<input type="hidden" id="searchSeNm" name="searchSeNm" value=""/>

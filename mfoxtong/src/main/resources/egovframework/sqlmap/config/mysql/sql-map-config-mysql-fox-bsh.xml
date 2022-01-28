@@ -4,4 +4,5 @@
 
 <sqlMapConfig>
 	<sqlMap resource="egovframework/sqlmap/fox/bsh/FoxBsshInfoManage_SQL_Mysql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/fox/bsh/FoxSvcGoodsInfoManage_SQL_Mysql.xml"/>
 </sqlMapConfig>

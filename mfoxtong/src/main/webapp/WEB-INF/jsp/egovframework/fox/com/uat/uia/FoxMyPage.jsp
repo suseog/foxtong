@@ -18,7 +18,7 @@
         <script type="text/javascript" src="${pageContext.request.contextPath}/js/egovframework/mbl/cmm/EgovMobile-1.4.5.js"></script>
 
 		<script type="text/javascript">
-		<!--
+		
 		function allAgree(){
 			
 			var allCheckVar = $("#allCheck").val();
@@ -42,13 +42,24 @@
 			}
 		}
 		
+		// 나의 정보 관리
 		function myFoxInfoModify(){
 			   document.foxMberManageVO.action="${pageContext.request.contextPath}/uss/umt/foxMberSelectUpdtView.fo";
 			   document.foxMberManageVO.submit();
 		}
 		
+		// 영업점 관리 
+		function modifyBsnBassInfoView(str){
+		   	if(str == ""){
+			   alert("관리할수 없습니다.");
+			   return false;
+		   	}else{
+			   document.foxMberManageVO.bsshEsntlId.value = str;
+			   document.foxMberManageVO.action="${pageContext.request.contextPath}/fox/bsh/updateBsnBassInfoView.fo";
+			   document.foxMberManageVO.submit();
+			}
+		}
 		
-		//-->
 		</script>
 </head>
 
@@ -71,8 +82,9 @@
 <!-- content start -->
  <div data-role="content" class="com-logContent">   
 
-	<form name="foxMberManageVO" action ="${pageContext.request.contextPath}/uss/umt/EgovMberInsert.fo" method="post">
-	<input type="hidden" id="allCheck" name="allCheck" value="false"/>
+	<form name="foxMberManageVO" method="post">
+	<input type="hidden" id="bsshEsntlId" name="bsshEsntlId" value=""/>
+	<input type="hidden" id="esntlId" name="esntlId" value="<c:out value='${sessionScope.loginVO.esntlId}'/>""/>
 	<input type="hidden" id="mberEmailAdres" name="mberEmailAdres" value="<c:out value='${sessionScope.loginVO.mberEmailAddres}'/>"/>
 	<br/>
 	<div>
@@ -82,15 +94,22 @@
 		<a href="javascript:next();" class="ui-btn ui-corner-all ui-shadow ui-icon-gear ui-btn-icon-right"  rel="external">설정</a>
 	</div>
 	
-	<!-- 일반회원인경우 -->
-	<div >   
-		<a href="${pageContext.request.contextPath}/fox/bsh/entrpsEmplyrSbscrbRequstView.fo" class="ui-btn ui-corner-all ui-shadow ui-icon-gear ui-btn-icon-right"  rel="external">업체사용자가입요청</a>
-	</div>
-	
-	<!-- 업체관리자인경우-->
-	<div >   
-		<a href="${pageContext.request.contextPath}/fox/bsh/bsshInMain.fo" class="ui-btn ui-corner-all ui-shadow ui-icon-gear ui-btn-icon-right"  rel="external">영업점관리</a>
-	</div>
+     <c:choose> 
+      	<c:when test="${empty sessionScope.BsshEsntlIdList}">
+			<!-- 일반회원인경우 -->
+			<div >   
+				<a href="${pageContext.request.contextPath}/fox/bsh/entrpsEmplyrSbscrbRequstView.fo" class="ui-btn ui-corner-all ui-shadow ui-icon-gear ui-btn-icon-right"  rel="external">업체사용자가입요청</a>
+			</div>		
+		</c:when>
+		<c:otherwise>
+			<c:forEach var="list" items="${sessionScope.BsshEsntlIdList}">
+		 		<!-- 업체관리자인경우-->
+				<div >   
+					<a href="javascript:modifyBsnBassInfoView('<c:out value="${list.bsshEsntlId}"/>')" class="ui-btn ui-corner-all ui-shadow ui-icon-gear ui-btn-icon-right"  rel="external"><c:out value="${list.mtltyNm}"/>(영업점관리)</a>
+				</div>
+			</c:forEach>
+     	   </c:otherwise>
+	</c:choose>
 	<br/>
 	<hr>
 	<br/>

@@ -56,6 +56,8 @@ import egovframework.com.cmm.service.Globals;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.sym.ccm.cde.service.CmmnDetailCodeVO;
 import egovframework.com.sym.ccm.cde.service.EgovCcmCmmnDetailCodeManageService;
+import egovframework.fox.bsh.service.FoxBsshInfoManageService;
+import egovframework.fox.bsh.service.FoxBsshInfoManageVO;
 import egovframework.fox.com.uat.uia.service.FoxLoginService;
 import egovframework.mbl.com.cmm.annotation.IncludedMblInfo;
 
@@ -89,6 +91,11 @@ public class FoxLoginController implements Serializable{
 	/** FoxLoginService */
 	@Resource(name = "foxLoginService")
     private FoxLoginService foxLoginService;
+	
+	/** FoxBsshInfoManageService */
+	@Resource(name = "foxBsshInfoManageService")
+	private FoxBsshInfoManageService foxBsshInfoManageService;
+	
 
 	/** EgovCmmUseService */
 	@Resource(name="EgovCmmUseService")
@@ -153,12 +160,22 @@ public class FoxLoginController implements Serializable{
 
     	// 1. 일반 로그인 처리
         LoginVO resultVO = foxLoginService.actionLogin(loginVO);
+        String id = resultVO.getEsntlId();
 
 
         if (resultVO != null && resultVO.getMberEmailAddres() != null && !resultVO.getMberEmailAddres().equals("")) {
 
         	// 2-1. 로그인 정보를 세션에 저장
         	request.getSession().setAttribute("loginVO", resultVO);
+        	
+        	
+        	// 2-2. 업소정보 확인 및 조회 
+        	if(resultVO.getMberSe().equals("02") && !resultVO.getEsntlId().equals("")) {
+        		
+        		List <FoxBsshInfoManageVO> list = foxBsshInfoManageService.retrievBsshEsntlIdList(resultVO.getEsntlId());
+        		request.getSession().setAttribute("BsshEsntlIdList", list);
+        		
+        	}
 
     		return "redirect:/uat/uia/actionMain.fo";
 
@@ -426,10 +443,10 @@ public class FoxLoginController implements Serializable{
 			ModelMap model)
 			throws Exception {
     	
-        LoginVO resultVO = foxLoginService.searchId(loginVO);
+//        LoginVO resultVO = foxLoginService.searchId(loginVO);
     	
-    	model.addAttribute("loginVO", loginVO);
-    	model.addAttribute("resultVO", resultVO);
+//    	model.addAttribute("loginVO", loginVO);
+//    	model.addAttribute("resultVO", resultVO);
     	
     	return "egovframework/fox/com/uat/uia/FoxMyPage";
 	}

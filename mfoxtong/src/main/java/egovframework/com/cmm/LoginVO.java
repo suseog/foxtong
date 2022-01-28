@@ -56,23 +56,52 @@ public class LoginVO implements Serializable{
 	/** 휴대폰번호 2022-01-04 */
 	private String moblphonNo;
 	
-	/** IDPW 검색구분명 2022-01-04*/
+	/** 검색구분 이름 2022-01-04*/
 	private String searchSeNm;
 	
-	/** IDPW 검색구분 2022-01-04*/
+	/** 검색구분 2022-01-04*/
 	private String searchSe;
 	
-	/** IDPW 검색구분 2022-01-04*/
+	/** 닉네임 2022-01-04*/
 	private String ncnm;
 	
-	/** IDPW 검색구분 2022-01-04*/
+	/** 회id(이메일주소) 2022-01-04*/
 	private String mberEmailAddres;
 	
 	
-	/** IDPW 검색구분 2022-01-04*/
+	/** 회원이름 2022-01-04*/
 	private String mberNm;
 	
+	/** 회원구분 2022-01-04*/
+	private String mberSe; /** 01: 일반회원 , 02: 업체회원, 03: 다중입점회원 98: 시스템관리자 , 99: 시스템수퍼유저 */
 	
+	/** 회원고유ID 2022-01-04*/
+	private String esntlId; 
+
+	/**
+	 * @return the mberSe
+	 */
+	public String getMberSe() {
+		return mberSe;
+	}
+	/**
+	 * @param mberSe the mberSe to set
+	 */
+	public void setMberSe(String mberSe) {
+		this.mberSe = mberSe;
+	}
+	/**
+	 * @return the esntlId
+	 */
+	public String getEsntlId() {
+		return esntlId;
+	}
+	/**
+	 * @param esntlId the esntlId to set
+	 */
+	public void setEsntlId(String esntlId) {
+		this.esntlId = esntlId;
+	}
 	/**
 	 * id attribute 를 리턴한다.
 	 * @return String

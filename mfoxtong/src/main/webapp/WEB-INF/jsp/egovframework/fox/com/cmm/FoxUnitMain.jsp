@@ -325,7 +325,15 @@
    <div data-role="navbar">
       <ul>
         <li><a href="${pageContext.request.contextPath}/FoxMobileMain.fo" data-icon="home" rel="external">홈 </a></li>
-        <li><a href="${pageContext.request.contextPath}/fox/bsh/bsshInMain.fo" data-icon="navigation">내주변(사용자)/업소정보관리(업체)</a></li>
+       
+        <c:choose>
+         	<c:when test="${sessionScope.loginVO.mberSe eq '02'}">
+         		<li><a href="${pageContext.request.contextPath}/fox/bsh/bsshInMain.fo" data-icon="user" rel="external">샵정보관리(예약)</a></li> 
+         	</c:when>
+         	<c:otherwise>
+		         <li><a href="${pageContext.request.contextPath}/fox/bsh/bsshInMain.fo" data-icon="navigation">내주변</a></li>
+         	</c:otherwise>
+         </c:choose>
         <li><a href="javascript:alert('구현 예정');" data-icon="check">쿠폰북 </a></li>
         <li><a href="${pageContext.request.contextPath}/cop/bbs/anonymous/selectBoardList.fo?bbsId=BBSMSTR_000000000002" rel="external" data-icon="navigation" data-icon="comment">여우수다 </a></li>
         <!-- 

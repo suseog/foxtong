@@ -131,9 +131,6 @@
  <div data-role="content" class="com-logContent">   
 
 	<form name="foxMberManageVO"  method="post">	
-	<input type="hidden" id="userSe" name="userSe" value="01"/>
-	<input type="hidden" id="mberSe" name="mberSe" value="01"/>
-	<input type="hidden" id="mberSttus" name="mberSttus" value="01"/>
 	<input type="hidden" id="tockenCertNum" name="tockenCertNum" value=""/>
 	
 	<!-- 이메일 -->

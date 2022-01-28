@@ -47,7 +47,7 @@ public interface FoxBsshInfoManageService {
 	/**
 	 * 업소기본정보 목록조회 
 	 * @param foxBsshInfoDefaultVO 검색조건
-	 * @return List<FoxBsshInfoManageVO> 일반회원목록정보
+	 * @return List<FoxBsshInfoManageVO> 
 	 * @throws Exception
 	 */
 	public List<FoxBsshInfoManageVO> retrieveBsshInfoList(FoxBsshInfoDefaultVO foxBsshInfoDefaultVO) throws Exception;
@@ -64,7 +64,7 @@ public interface FoxBsshInfoManageService {
 
 	/**
 	 * 업소기본정보삭제 (수정) 
-	 * @param bsshEsntlId 삭제대상 일반회원아이디
+	 * @param bsshEsntlId 삭제대상 
 	 * @throws Exception
 	 */
 	public void deleteBsshInfo(String bsshEsntlId) throws Exception;
@@ -75,6 +75,24 @@ public interface FoxBsshInfoManageService {
 	 * @throws Exception
 	 */
 	public void entrpsEmplyrSbscrbRequst(FoxEntrpsEmplyrSbscrbRequstVO foxEntrpsEmplyrSbscrbRequstVO) throws Exception;
+	
+	
+	/**
+	 *  회원의 업소고유 ID 목록 조회 
+	 * @param 
+	 * @return List<FoxBsshInfoManageVO> 
+	 */
+	public List<FoxBsshInfoManageVO> retrievBsshEsntlIdList(String id) throws Exception;
+
+	
+	
+	/**
+	 *  영업기본정보 수정 
+	 * @param 
+	 * @return List<FoxBsshInfoManageVO> 
+	 */
+	public void updateBsnBassInfo(FoxBsshInfoManageVO foxBsshInfoManageVO)throws Exception;
+	
 	
 }
 

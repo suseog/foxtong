@@ -1,6 +1,7 @@
 package egovframework.fox.bsh.web;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -10,10 +11,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.com.cmm.service.EgovFileMngService;
+import egovframework.com.cmm.service.EgovFileMngUtil;
+import egovframework.com.cmm.service.FileVO;
 import egovframework.com.sym.ccm.cde.service.CmmnDetailCodeVO;
 import egovframework.com.sym.ccm.cde.service.EgovCcmCmmnDetailCodeManageService;
 import egovframework.fox.bsh.service.FoxBsshInfoDefaultVO;
@@ -58,6 +64,13 @@ public class FoxBsshInfoManageController {
 	@Resource(name = "CmmnDetailCodeManageService")
     private EgovCcmCmmnDetailCodeManageService cmmnDetailCodeManageService;
 	
+    @Resource(name = "EgovFileMngService")
+    private EgovFileMngService fileMngService;
+
+    @Resource(name = "EgovFileMngUtil")
+    private EgovFileMngUtil fileUtil;
+    
+	
 
 	/** DefaultBeanValidator beanValidator */
 	@Autowired
@@ -70,8 +83,9 @@ public class FoxBsshInfoManageController {
 	 * @return 등록결과
 	 * @throws Exception   
 	 */
+	
 	@RequestMapping("/fox/bsh/entrpsEmplyrSbscrbRequstView.fo")
-	public String Bbss(@ModelAttribute("foxBsshInfoManageVO") FoxBsshInfoManageVO foxBsshInfoManageVO,@ModelAttribute("foxMberManageVO") FoxMberManageVO foxMberManageVO, Model model)
+	public String entrpsEmplyrSbscrbRequstView(@ModelAttribute("foxBsshInfoManageVO") FoxBsshInfoManageVO foxBsshInfoManageVO,@ModelAttribute("foxMberManageVO") FoxMberManageVO foxMberManageVO, Model model)
 			throws Exception{
 		
 	    //------------------------------
@@ -83,10 +97,7 @@ public class FoxBsshInfoManageController {
 	    
 		model.addAttribute("resultCodeList", codeList);
 	    
-		
 		return "egovframework/fox/bsh/FoxEntrpsEmplyrSbscrbRequstView";
-		
-		
 	}
 	
 	
@@ -125,20 +136,28 @@ public class FoxBsshInfoManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/fox/bsh/bsshInMain.fo")
-	public String BbsshInMain(@ModelAttribute("foxBsshInfoManageVO") FoxBsshInfoManageVO foxBsshInfoManageVO, Model model)
+	public String BbsshInMain(@ModelAttribute("foxBsshInfoManageVO") FoxBsshInfoManageVO foxBsshInfoManageVO, HttpServletRequest request, Model model)
 			throws Exception{
 		
-		//  업소관리자 권한 확인 
+		//  업소관리자 권한 확인  // 멥에서 사용자와 업id 추
 		
+		
+		// 세션에서 사용자 정보 가져오기 
+		LoginVO logVO = (LoginVO) request.getSession().getAttribute("loginVO");
+		String bsshEsntlId = foxBsshInfoManageVO.getBsshEsntlId();
 		
 		//  업소정보 조회 
+		FoxBsshInfoManageVO resultFoxBsshInfo = foxBsshInfoManageService.retrieveBsshInfo(bsshEsntlId);
+		
+		model.addAttribute("result", resultFoxBsshInfo);
 		return "egovframework/fox/bsh/FoxBbsshInMain";
+		
 	}
 	
 	
 	
 	/**
-	 * 업소기본정보등록화면
+	 * 업소기본정보등록화면 
 	 * @param foxBsshInfoManageVO 일반회원 등록정보
 	 * @return 등록결과
 	 * @throws Exception
@@ -147,7 +166,10 @@ public class FoxBsshInfoManageController {
 	public String createBsshInfView(@ModelAttribute("foxBsshInfoManageVO") FoxBsshInfoManageVO foxBsshInfoManageVO, Model model)
 			throws Exception{
 		
-		
+//		String bsshEsntlId = foxBsshInfoManageVO.getBsshEsntlId();
+//		
+//		FoxBsshInfoManageVO resultFoxBsshInfo = foxBsshInfoManageService.retrieveBsshInfo(bsshEsntlId);
+//		model.addAttribute("result", resultFoxBsshInfo);
 		
 		return "egovframework/fox/bsh/FoxCreateBsshInfoView";
 	}
@@ -183,19 +205,144 @@ public class FoxBsshInfoManageController {
 	
 	
 	/**
-	 * 업소기본정보수정
+	 * 업소기본정보수정화면
 	 * @parm bsshEsntlId	상세조회대상 업소고id
 	 * @return foxBsshInfoManageVO 일반회원상세정보
 	 * @throws Exception
 	 */
 	@RequestMapping("/fox/bsh/updateBsshInfoView.fo")
-	public String updateBsshInfo (@ModelAttribute("foxBsshInfoManageVO") FoxBsshInfoManageVO foxBsshInfoManageVO, Model model)
+	public String updateBsshInfoView (@ModelAttribute("foxBsshInfoManageVO") FoxBsshInfoManageVO foxBsshInfoManageVO,  Model model)
 			throws Exception{
 		
+		//------------------------------
+	    // 업체카테고리 정보 조회 (공통코드) 
+	    //------------------------------
+	    CmmnDetailCodeVO cvo = new CmmnDetailCodeVO();
+	    cvo.setCodeId("FOX001"); // 
+	    List<CmmnDetailCodeVO> codeList = (List<CmmnDetailCodeVO>) cmmnDetailCodeManageService.selectCmmnDetailCodeList(cvo);
 		
-		model.addAttribute("foxBsshInfoManageVO", foxBsshInfoManageVO);
+		
+		String bsshEsntlId = foxBsshInfoManageVO.getBsshEsntlId();
+		
+		FoxBsshInfoManageVO resultFoxBsshInfo = foxBsshInfoManageService.retrieveBsshInfo(bsshEsntlId);
+		
+		
+		model.addAttribute("codeList", codeList);
+		model.addAttribute("result", resultFoxBsshInfo);
+		
 		return "egovframework/fox/bsh/FoxUpdateBsshInfoView";
 	}
+	
+	/**
+	 * 업소기본정보수정
+	 * @parm bsshEsntlId	상세조회대상 업소고id
+	 * @return foxBsshInfoManageVO 일반회원상세정보
+	 * @throws Exception
+	 */
+	@RequestMapping("/fox/bsh/updateBsshInfo.fo")
+	public String updateBsshInfo (@ModelAttribute("foxBsshInfoManageVO") FoxBsshInfoManageVO foxBsshInfoManageVO, HttpServletRequest request, Model model)
+			throws Exception{
+		
+		//------------------------------
+	    // 업체카테고리 정보 조회 (공통코드) 
+	    //------------------------------
+	    CmmnDetailCodeVO cvo = new CmmnDetailCodeVO();
+	    cvo.setCodeId("FOX001"); // 
+	    List<CmmnDetailCodeVO> codeList = (List<CmmnDetailCodeVO>) cmmnDetailCodeManageService.selectCmmnDetailCodeList(cvo);
+		
+		
+		String bsshEsntlId = foxBsshInfoManageVO.getBsshEsntlId();
+		foxBsshInfoManageService.updateBsshInfo(foxBsshInfoManageVO);
+		
+		FoxBsshInfoManageVO resultFoxBsshInfo = foxBsshInfoManageService.retrieveBsshInfo(bsshEsntlId);
+		
+		
+		model.addAttribute("codeList", codeList);
+		model.addAttribute("result", resultFoxBsshInfo);
+		
+		//수정화면으로 포워딩
+		return "egovframework/fox/bsh/FoxUpdateBsshInfoView";
+		
+	}
+	
+	/**
+	 * 영업기본정보수정화면 
+	 * @parm bsshEsntlId	상세조회대상 업소고id
+	 * @return foxBsshInfoManageVO 일반회원상세정보
+	 * @throws Exception
+	 */
+	@RequestMapping("/fox/bsh/updateBsnBassInfoView.fo")
+	public String updateBsnBassInfoView (@ModelAttribute("foxBsshInfoManageVO") FoxBsshInfoManageVO foxBsshInfoManageVO, HttpServletRequest request, Model model)
+			throws Exception{
+		
+		// 세션에서 사용자 정보 가져오기 
+		LoginVO logVO = (LoginVO) request.getSession().getAttribute("loginVO");
+		String esntlId = logVO.getEmail();
+		foxBsshInfoManageVO.setEsntlId(esntlId);
+		
+		//------------------------------
+	    // 업체카테고리 정보 조회 (공통코드) 
+	    //------------------------------
+	    CmmnDetailCodeVO cvo = new CmmnDetailCodeVO();
+	    cvo.setCodeId("FOX001"); // 
+	    List<CmmnDetailCodeVO> codeList = (List<CmmnDetailCodeVO>) cmmnDetailCodeManageService.selectCmmnDetailCodeList(cvo);
+		
+		FoxBsshInfoManageVO resultFoxBsshInfo = foxBsshInfoManageService.retrieveBsshInfo(foxBsshInfoManageVO.getBsshEsntlId());
+		
+		
+		model.addAttribute("result", resultFoxBsshInfo);
+		model.addAttribute("codeList", codeList);
+		return "egovframework/fox/bsh/FoxUpdateBsnBassInfoView";
+	}
+	
+	/**
+	 * 영업기본정보수정
+	 * @parm bsshEsntlId	상세조회대상 업소고id
+	 * @return foxBsshInfoManageVO 일반회원상세정보
+	 * @throws Exception
+	 */
+	@RequestMapping("/fox/bsh/updateBsnBassInfo.fo")
+	public String updateBsnBassInfo (final MultipartHttpServletRequest multiRequest, @ModelAttribute("foxBsshInfoManageVO") FoxBsshInfoManageVO foxBsshInfoManageVO, HttpServletRequest request, Model model)
+			throws Exception{
+		
+		// 세션에서 사용자 정보 가져오기 
+		LoginVO logVO = (LoginVO) request.getSession().getAttribute("loginVO");
+		String esntlId = logVO.getEsntlId();
+		foxBsshInfoManageVO.setEsntlId(esntlId);
+		
+		
+		/* 파일 처리 */
+	    List<FileVO> result = null;
+	    String atchFileId = "";
+
+	    final Map<String, MultipartFile> files = multiRequest.getFileMap();
+	    if (!files.isEmpty()) {
+			result = fileUtil.parseFileInf(files, "BBS_", 0, "", "");
+			atchFileId = fileMngService.insertFileInfs(result);
+	    }
+	    foxBsshInfoManageVO.setBsshPhotoId(atchFileId);
+	    
+	    /* 영업정보 업데이트 */
+	    foxBsshInfoManageService.updateBsnBassInfo(foxBsshInfoManageVO);
+	    
+		
+		
+		//------------------------------
+	    // 업체카테고리 정보 조회 (공통코드) 
+	    //------------------------------
+	    CmmnDetailCodeVO cvo = new CmmnDetailCodeVO();
+	    cvo.setCodeId("FOX001"); // 
+	    List<CmmnDetailCodeVO> codeList = (List<CmmnDetailCodeVO>) cmmnDetailCodeManageService.selectCmmnDetailCodeList(cvo);
+		
+		FoxBsshInfoManageVO resultFoxBsshInfo = foxBsshInfoManageService.retrieveBsshInfo(foxBsshInfoManageVO.getBsshEsntlId());
+		
+		
+		model.addAttribute("result", resultFoxBsshInfo);
+		model.addAttribute("codeList", codeList);
+		return "egovframework/fox/bsh/FoxUpdateBsnBassInfoView";
+	}
+	
+	
 	
 	
 	/**
@@ -207,6 +354,8 @@ public class FoxBsshInfoManageController {
 	@RequestMapping("/fox/bsh/retrieveBsshInfoList.fo")
 	public String retrieveBsshInfoList(@ModelAttribute("foxBsshInfoDefaultVO") FoxBsshInfoDefaultVO foxBsshInfoDefaultVO, Model model)
 			throws Exception{
+		
+		//foxBsshInfoManageService.retrieveBsshInfoList();
 		
 		
 		model.addAttribute("resultList", "");

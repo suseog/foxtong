@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="FoxSvcGoodsInfo">
+
+    <typeAlias  alias="egovMap"      				type = "egovframework.rte.psl.dataaccess.util.EgovMap"/>
+    <typeAlias  alias="foxSvcGoodsInfoDefaultVO" 	type = "egovframework.fox.bsh.service.FoxSvcGoodsInfoDefaultVO"/>
+    <typeAlias  alias="foxSvcGoodsInfoVO"       	type = "egovframework.fox.bsh.service.FoxSvcGoodsInfoVO"/>
+
+    
+    
+   <insert id="foxSvcGoodsInfoManageDAO.insertSvcGoodsInfo" parameterClass="foxSvcGoodsInfoVO">
+        <![CDATA[
+        INSERT INTO FOXTNSVCGOODSINFO 
+        (   
+                     SVC_ID         	
+                    ,BSSH_ESNTL_ID 		
+                    ,SVC_LRGE_CL		
+                    ,SVC_SMALL_CL         		
+                    ,SVC_GOODS_NM    			
+                    ,SVC_TIME      			
+                    ,SVC_SUMRY_DC			
+                    ,SVC_CNSMR_PC    			
+                    ,SVC_DSCNT_RT     		
+                    ,LAST_DSCNT_PC		
+                    ,ADIT_DC		
+                    ,EXTRA_ONE		
+                    ,EXTRA_TWO		
+                    ,FRST_REGIST_PNTTM		
+                    ,FRST_REGISTER_ID        
+          )VALUES( 
+                     #svcId#
+                    ,#bsshEsntlId#
+                    ,#svcLrgeclas#
+                    ,#svcSmallclas#
+                    ,#svcGoodsNm#
+                    ,#svcTime#
+                    ,#svcSumryDc#
+                    ,#svcCnsmrPc#
+                    ,#svcDscntRt#
+                    ,#lastDscntPc# 
+                    ,#aditDc# 
+                    ,#extraOne# 
+                    ,#extraTwo# 
+                    ,sysdate() 
+                    ,#frstRegistId# 
+             )  
+        ]]>
+    </insert>
+    
+     <select id="foxSvcGoodsInfoManageDAO.selectSvcGoodsInfo" resultClass="foxSvcGoodsInfoVO">
+        <![CDATA[
+         SELECT 
+	         	 SVC_ID   			AS    svcId
+				,BSSH_ESNTL_ID   	AS    bsshEsntlId
+				,SVC_LRGE_CL   		AS    svcLrgeclas
+				,SVC_SMALL_CL   	AS    svcSmallclas
+				,SVC_GOODS_NM   	AS    svcGoodsNm
+				,SVC_TIME   		AS    svcTime
+				,SVC_SUMRY_DC   	AS    svcSumryDc
+				,SVC_CNSMR_PC   	AS    svcCnsmrPc
+				,SVC_DSCNT_RT   	AS    svcDscntRt
+				,LAST_DSCNT_PC  	AS    lastDscntPc
+				,ADIT_DC   			AS    aditDc
+				,EXTRA_ONE   		AS    extraOne
+				,EXTRA_TWO   		AS    extraTwo
+           FROM FOXTNSVCGOODSINFO
+          WHERE 1=1
+            AND SVC_ID		  = #svcId#
+        ]]>
+    </select>
+    
+    
+    
+   	<select id="foxSvcGoodsInfoManageDAO.selectSvcGoodsInfoList" parameterClass="foxSvcGoodsInfoVO" resultClass="egovMap">
+        <![CDATA[
+         SELECT 
+	         	 SVC_ID   			AS    svcId
+				,BSSH_ESNTL_ID   	AS    bsshEsntlId
+				,SVC_LRGE_CL   		AS    svcLrgeclas
+				,SVC_SMALL_CL   	AS    svcSmallclas
+				,SVC_GOODS_NM   	AS    svcGoodsNm
+				,SVC_TIME   		AS    svcTime
+				,SVC_SUMRY_DC   	AS    svcSumryDc
+				,SVC_CNSMR_PC   	AS    svcCnsmrPc
+				,SVC_DSCNT_RT   	AS    svcDscntRt
+				,LAST_DSCNT_PC  	AS    lastDscntPc
+				,ADIT_DC   			AS    aditDc
+				,EXTRA_ONE   		AS    extraOne
+				,EXTRA_TWO   		AS    extraTwo
+           FROM FOXTNSVCGOODSINFO
+          WHERE 1=1
+            AND BSSH_ESNTL_ID		  = #bsshEsntlId#
+        ]]>
+    </select>
+  
+    
+     <update id="foxSvcGoodsInfoManageDAO.updateBsshInfo" parameterClass="foxSvcGoodsInfoVO">
+            <![CDATA[
+            
+            ]]>
+    </update>
+    
+     <update id="foxSvcGoodsInfoManageDAO.updateBsnBassInfo" parameterClass="foxSvcGoodsInfoVO">
+            <![CDATA[
+           
+            ]]>
+    </update>
+    
+    <update id="foxSvcGoodsInfoManageDAO.updateCoprtnSttus" parameterClass="foxSvcGoodsInfoVO">
+           <![CDATA[
+           
+           
+	         
+           ]]>
+    </update>  
+    
+    <update id="foxSvcGoodsInfoManageDAO.updatePostscriptCo" parameterClass="foxSvcGoodsInfoVO">
+           <![CDATA[
+
+
+           ]]>
+    </update>
+    
+    <update id="foxSvcGoodsInfoManageDAO.updatePreferCo" parameterClass="foxSvcGoodsInfoVO">
+           <![CDATA[
+           
+           
+           ]]>
+    </update>
+    
+        
+	 <select id="foxSvcGoodsInfoManageDAO.selectBsshInfoList" parameterClass="foxSvcGoodsInfoDefaultVO" resultClass="egovMap">
+		
+    </select>
+    
+    
+    <select id="foxSvcGoodsInfoManageDAO.selectBsshInfoListTotCnt" parameterClass="foxSvcGoodsInfoDefaultVO" resultClass="int">
+            <![CDATA[
+
+
+
+               ]]>
+   	</select>
+    
+   
+     <update id="foxSvcGoodsInfoManageDAO.deleteBsshInfo" parameterClass="foxSvcGoodsInfoVO">
+           <![CDATA[
+	        
+
+
+
+           ]]>
+    </update>
+    
+</sqlMap>
