@@ -37,6 +37,15 @@ public interface FoxLoginService {
 	 */
     LoginVO actionLogin(LoginVO vo) throws Exception;
     
+	/**
+	 * 카카오톡 로그인을 처리한다
+	 * @param vo LoginVO
+	 * @return LoginVO
+	 * @exception Exception
+	 */
+	LoginVO actionAPILogin(LoginVO loginVO) throws Exception;
+	
+    
 //    /**
 //	 * 인증서 로그인을 처리한다
 //	 * @param vo LoginVO

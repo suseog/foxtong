@@ -71,6 +71,41 @@ public interface FoxSvcGoodsInfoManageService {
      * @throws Exception
      */
     public int retrieveSvcGoodsInfoListTotCnt(FoxSvcGoodsInfoDefaultVO foxSvcGoodsInfoDefaultVO) throws Exception;
+
+    
+    /**
+	 * 서비스상품분류관리: 등록
+	 * @param foxSvcGoodsInfVO 서비스상품정보
+	 * @return String 
+	 * @throws Exception   
+	 */
+	public void createSvcGoodsCl(FoxSvcGoodsInfoVO foxSvcGoodsInfoVO)throws Exception;
+	
+	/**
+	 * 서비스상품분류관리: 목록조회
+	 * @param foxSvcGoodsInfVO 서비스상품정보
+	 * @return String 
+	 * @throws Exception   
+	 */
+	public List<FoxSvcGoodsInfoVO> retrieveSvcGoodsClList(FoxSvcGoodsInfoVO foxSvcGoodsInfoVO)throws Exception;
+	
+	/**
+	 * 서비스상품분류관리: 수정
+	 * @param foxSvcGoodsInfVO 서비스상품정보
+	 * @return String 
+	 * @throws Exception   
+	 */
+	public void updateSvcGoodsCl(FoxSvcGoodsInfoVO foxSvcGoodsInfoVO)throws Exception;
+	
+	/**
+	 * 서비스상품분류관리: 삭제
+	 * @param foxSvcGoodsInfVO 서비스상품정보
+	 * @return String 
+	 * @throws Exception   
+	 */
+	public void deleteSvcGoodsCl(FoxSvcGoodsInfoVO foxSvcGoodsInfoVO)throws Exception;
+
+    
     
     
 	

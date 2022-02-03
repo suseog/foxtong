@@ -43,6 +43,47 @@
 			
 		}
 		
+		function modifySvcGoodsInfo(frm) {
+			frm.action="${pageContext.request.contextPath}/fox/bsh/updateSvcGoodsInfo.fo";
+			frm.submit();
+		}
+		
+		function addSvcGoods(){
+			document.frm1.action="${pageContext.request.contextPath}/fox/bsh/createSvcGoodsInfo.fo";
+			document.frm1.submit();
+		}
+		
+		function deleteSvcGoodsInfo(frm){
+			frm.action="${pageContext.request.contextPath}/fox/bsh/deleteSvcGoodsInfo.fo";
+			frm.submit();
+		}
+		
+		function deleteSvcGoodsInfo(frm){
+			frm.action="${pageContext.request.contextPath}/fox/bsh/deleteSvcGoodsInfo.fo";
+			frm.submit();
+		}
+		
+		function addSvcGoodsCl(){
+			
+			if($("#svcSmallclasNm").val() == ""){
+				alert('추가할 분류명을 먼저입력하고 요청하세요');
+				return false;
+			}else{
+				frmCl.action="${pageContext.request.contextPath}/fox/bsh/createSvcGoodsCl.fo";
+				frmCl.submit();
+			}
+		}
+		
+		function deleteSvcGoodsCl(frm){
+			frm.action="${pageContext.request.contextPath}/fox/bsh/deleteSvcGoodsCl.fo";
+			frm.submit();
+		}
+		
+		function modifySvcGoodsCl(frm){
+			frm.action="${pageContext.request.contextPath}/fox/bsh/updateSvcGoodsCl.fo";
+			frm.submit();
+		}
+		
 		//-->
 		</script>
 </head>
@@ -51,6 +92,10 @@
 
 <!-- 메인 페이지 -->
 <div data-role="page">
+<form name="foxBsshInfoManageVO"  method="post" enctype="multipart/form-data">	
+<input type="hidden" id="bsshEsntlId" 	name="bsshEsntlId" 	value="<c:out value='${vo.bsshEsntlId}'/>" />
+<input type="hidden" id="esntlId" 		name="esntlId" 		value="<c:out value='${vo.esntlId}'/>" />
+</form>
 
 <!-- 지역검색 overlay panel start-->
   <div data-role="panel" id="overlayPanel" data-display="overlay" data-position="right" width="50" height="200"> 
@@ -58,19 +103,29 @@
 	  <h1>서비스 상품 분류 관리</h1>
 	  </div>
 	  <div data-role="main" class="ui-content">
-		    <form method="post" action="#">
 			  <fieldset data-role="controlgroup">
 			    <legend>분류관리</legend>
-			    <input type="text" name="svcSmallclas" id="svcSmallclas" value="분류1">
-			    <input type="button" data-inline="true" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left" value="수정">
-			    <input type="button" data-inline="true" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left" value="삭제">
-			    <input type="text" name="svcSmallclas" id="svcSmallclas" value="분류2">
-   			    <input type="button" data-inline="true" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left" value="수정">
-			    <input type="button" data-inline="true" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left" value="삭제">
+			    <form name="frmCl" method="post" enctype="multipart/form-data">	
+		    	  <input type="hidden" id="bsshEsntlId" name="bsshEsntlId" value="<c:out value='${vo.bsshEsntlId}'/>" />
+				  <input type="hidden" id="esntlId" name="esntlId" value="<c:out value='${vo.esntlId}'/>" />
+				  <input type="text" name="svcSmallclasNm" id="svcSmallclasNm" value="">
+			      <input type="button" onClick="javascript:addSvcGoodsCl();" data-inline="true" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left" value="신규추가">
+		        </form>
+			    <c:choose>
+	     			<c:when test="${empty resultCodeList}">
+	            	</c:when>
+	            	<c:otherwise>
+						<c:forEach var="cllist" items="${resultCodeList}">
+				   		 	<form name="frmCl<c:out value='${cllist.svcSmallclas}'/>" method="post" enctype="multipart/form-data">	
+				   		 	<input type="hidden" name="svcSmallclas" id="svcSmallclas" value="<c:out value='${cllist.svcSmallclas}'/>">
+						    <input type="text" name="svcSmallclasNm" id="svcSmallclasNm" value="<c:out value='${cllist.svcSmallclasNm}'/>">
+						    <input type="button" onClick="javascript:modifySvcGoodsCl(frmCl<c:out value='${cllist.svcSmallclas}'/>)"  data-inline="true" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left" value="수정">
+						    <input type="button" onClick="javascript:deleteSvcGoodsCl(frmCl<c:out value='${cllist.svcSmallclas}'/>)"  data-inline="true" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left" value="삭제">
+						    </form>
+						</c:forEach>
+	            	</c:otherwise>
+	            </c:choose>
 			  </fieldset>
-			  <input type="text" name="svcSmallclas" id="svcSmallclas" value="">
-		     <input type="submit" data-inline="true" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left" value="추가">
-		    </form>
 	  </div>
   </div>
 <!-- 지역검색 overlay panel end -->
@@ -89,12 +144,7 @@
 
 
 <!-- content start -->
- <div data-role="content" class="com-logContent">   
-
-	<form name="foxBsshInfoManageVO"  method="post" enctype="multipart/form-data">	
-	<input type="hidden" id="bsshEsntlId" name="bsshEsntlId" value="<c:out value='${vo.bsshEsntlId}'/>" />
-	<input type="hidden" id="esntlId" name="esntlId" value="<c:out value='${vo.esntlId}'/>" />
-	
+ <div data-role="content" class="com-logContent">
 	<br/>
 	<!--  네비게이션 탭영역 strt -->
 	<div data-role = "navbar">
@@ -107,16 +157,19 @@
     <br/>
 	<!--  네비게이션 탭영역	end -->
 	
-	<!--등록된 카테고리 선택 -->
-	<!-- 
-		<span align="left">서비스분류</span><br/>
-		<input type="text" name="svcSmallclas" id="svcSmallclas" value="" data-theme="c" onclick="" />
-	 -->
-    <table border="1" width = "100%">
+	<!--신규 서비스 상품정보 추가  -->
+	<!--서비스 분류 선택  -->
+	<div>
+ 	<form name="frm1" method="post" enctype="multipart/form-data">	
+	<input type="hidden" id="bsshEsntlId" name="bsshEsntlId" value="<c:out value='${vo.bsshEsntlId}'/>" />
+	<input type="hidden" id="esntlId" name="esntlId" value="<c:out value='${vo.esntlId}'/>" />
+		<hr>
+	    <span>서비스/상품 신규 등록 </span>
+		<hr>
+       <table border="1" width = "100%">
 		<tr>
 			<td width = "100%" hdight="100" align="left">
 				<fieldset class="fieldcontain">
-			        <label for="ctgryId">서비스/상품 분류</label>
 			        <select name="ctgryId" id="ctgryId">
 				     	<c:choose> 
 				     		<c:when test="${empty resultCodeList}">
@@ -125,7 +178,7 @@
 			            	<c:otherwise>
 			            		<option value="000000">서비스분류</option>
 								<c:forEach var="result" items="${resultCodeList}">
-								 	<option value="<c:out value='${result.codeId}'/>"><c:out value="${result.codeNm}"/></option>
+								 	<option value="<c:out value='${result.svcSmallclas}'/>"><c:out value="${result.svcSmallclasNm}"/></option>
 								</c:forEach>
 			            	</c:otherwise>
 			            </c:choose>
@@ -133,88 +186,11 @@
 			    </fieldset>
 			</td>
 			<td width = "100%" hdight="100" align="center">
-				<span align="left">  </span><br/>
 				<a href="#overlayPanel" data-role="button" data-thema="z">분류관리</a>
 			</td>
 		</tr>
 	</table>
-	
-   	<!--업체카테고리 선택 -->
-   	
-   	<!--등록된 서비스상품정보 -->	
-	<div>
-		<span align="left">서비스/상품정보</span><br/>
-   		<c:choose> 
-    		<c:when test="${empty svcGoodsInfoList}">
-       	 			<span >서비스정보 없음</span>
-          	</c:when>
-          	<c:otherwise>
-				<c:forEach var="result" items="${svcGoodsInfoList}">
-				   	<input type="hidden" id="svcId" 	name="svcId" 		value="<c:out value='${result.svcId}'/>"/>
-					<table width="100%">
-						<tr>
-							<th>서비스/상품명</th><td colspan="3"><input type="text" id="svcGoodsNm" 	name="svcGoodsNm" value="<c:out value='${result.svcGoodsNm}'/>"/></td>
-						</tr>
-						<tr>
-							<th>시간</th>
-							<th>소비자가격</th>
-							<th>할인율</th>
-							<th>최종할인가격</th>
-						</tr>
-						<tr>
-							<td><input type="text" id="svcTime" 	name="svcTime" 		value="<c:out value='${result.svcTime}'/>"/></td>
-							<td><input type="text" id="svcCnsmrPc" 	name="svcCnsmrPc" 	value="<c:out value='${result.svcCnsmrPc}'/>"/></td>
-							<td><input type="text" id="svcDscntRt" 	name="svcDscntRt" 	value="<c:out value='${result.svcDscntRt}'/>"/></td>
-							<td><input type="text" id="lastDscntPc" name="lastDscntPc" 	value="<c:out value='${result.lastDscntPc}'/>"/></td>
-						</tr>
-					</table>
-					<div data-role="fieldcontain" class="com-logLogin" >   
-						<a href="javascript:alert('추가');" data-role="button" data-thema="z">수정</a>
-					</div>
-				</c:forEach>
-          	</c:otherwise>
-          </c:choose>
-	</div>
-	<br/>
-	<hr size="2">
-	<br/>
-   	<!-- 서비스상품정보 -->	
-	</form>	
-   	
-	<!--업체카테고리 선택 -->
-	<!-- 
-		<span align="left">서비스분류</span><br/>
-		<input type="text" name="svcSmallclas" id="svcSmallclas" value="" data-theme="c" onclick="" />
-	 -->
- 	<form method="post" enctype="multipart/form-data">	
-    <table border="1" width = "100%">
-		<tr>
-			<td width = "100%" hdight="100" align="left">
-				<fieldset class="fieldcontain">
-			        <label for="ctgryId">서비스상품정보 신규 추가</label>
-			        <select name="ctgryId" id="ctgryId">
-				     	<c:choose> 
-				     		<c:when test="${empty resultCodeList}">
-			           	 			<option value="000000">선택사항없음</option>
-			            	</c:when>
-			            	<c:otherwise>
-			            		<option value="000000">업종분류선택</option>
-								<c:forEach var="result" items="${resultCodeList}">
-								 	<option value="<c:out value='${result.codeId}'/>"><c:out value="${result.codeNm}"/></option>
-								</c:forEach>
-			            	</c:otherwise>
-			            </c:choose>
-			        </select>
-			    </fieldset>
-			</td>
-			<td width = "100%" hdight="100" align="center">
-				<span align="left">  </span><br/>
-				<a href="#overlayPanel" data-role="button" data-thema="z">분류관리</a>
-			</td>
-		</tr>
-	</table>
-   	<!--업체카테고리 선택 -->
-   	
+   	<!--서비스 분류 선택  -->
    	<!-- 서비스상품정보 -->	
 	<div>
 		<table width="100%">
@@ -237,10 +213,80 @@
 	</div>
    	<!-- 서비스상품정보 -->	
 	<div data-role="fieldcontain" class="com-logLogin" >   
-		<a href="javascript:alert('추가');" data-role="button" data-thema="z">서비스상품정보추가</a>
+		<a href="javascript:addSvcGoods();" data-role="button" data-thema="z">서비스상품정보신규등록</a>
 	</div>
 	<br/>
 	</form>
+	</div>
+	<!--신규 서비스 상품정보 추가  -->
+	
+	
+	
+   	<!--등록된 서비스상품정보 -->	
+	<div>
+		<hr>
+		<span align="left">서비스/상품정보 관리</span>
+		<hr>
+   		<c:choose> 
+    		<c:when test="${empty svcGoodsInfoList}">
+       	 			<span >서비스정보 없음</span>
+          	</c:when>
+          	<c:otherwise>
+				<c:forEach var="result" items="${svcGoodsInfoList}">
+					<form name="frm<c:out value='${result.svcId}'/>"  method="post" enctype="multipart/form-data">	
+					<input type="hidden" id="bsshEsntlId" 	name="bsshEsntlId" 	value="<c:out value='${vo.bsshEsntlId}'/>" />
+					<input type="hidden" id="esntlId" 		name="esntlId" 		value="<c:out value='${vo.esntlId}'/>" />
+				   	<input type="hidden" id="svcId" 		name="svcId" 		value="<c:out value='${result.svcId}'/>"/>
+					<table width="100%">
+						<tr>
+							<fieldset class="fieldcontain">
+						        <select name="ctgryId" id="ctgryId">
+							     	<c:choose> 
+							     		<c:when test="${empty resultCodeList}">
+						           	 			<option value="000000">분류 관리를 먼저 하시기 바랍니다.</option>
+						            	</c:when>
+						            	<c:otherwise>
+						            		<option value="000000">서비스분류</option>
+											<c:forEach var="cllist" items="${resultCodeList}">
+											 	<option value="<c:out value='${cllist.svcSmallclas}'/>"><c:out value="${cllist.svcSmallclasNm}"/></option>
+											</c:forEach>
+						            	</c:otherwise>
+						            </c:choose>
+						        </select>
+						    </fieldset>
+						</tr>
+						<tr>
+							<th>서비스/상품명</th><td colspan="3"><input type="text" id="svcGoodsNm" 	name="svcGoodsNm" value="<c:out value='${result.svcGoodsNm}'/>"/></td>
+						</tr>
+						<tr>
+							<th>시간 or 회</th>
+							<th>소비자가격</th>
+							<th>할인율</th>
+							<th>최종할인가격</th>
+						</tr>
+						<tr>
+							<td><input type="text" id="svcTime" 	name="svcTime" 		value="<c:out value='${result.svcTime}'/>"/></td>
+							<td><input type="text" id="svcCnsmrPc" 	name="svcCnsmrPc" 	value="<c:out value='${result.svcCnsmrPc}'/>"/></td>
+							<td><input type="text" id="svcDscntRt" 	name="svcDscntRt" 	value="<c:out value='${result.svcDscntRt}'/>"/></td>
+							<td><input type="text" id="lastDscntPc" name="lastDscntPc" 	value="<c:out value='${result.lastDscntPc}'/>"/></td>
+						</tr>
+					</table>
+					<div data-role="controlgroup" data-type="horizontal" align="center">
+						<a href="javascript:modifySvcGoodsInfo(frm<c:out value='${result.svcId}'/>);" class="ui-btn ui-icon-delete ui-corner-all " data-thema="z">수정</a>
+						<a href="javascript:deleteSvcGoodsInfo(frm<c:out value='${result.svcId}'/>);" class="ui-btn ui-icon-delete ui-corner-all " data-thema="z">삭제</a>
+					</div>
+					<br/>
+					</form>	
+					<hr>
+				</c:forEach>
+          	</c:otherwise>
+          </c:choose>
+	</div>
+	<br/>
+	<br/>
+   	<!-- 서비스상품정보 -->	
+   	
+	
 	
 </div>
 <!-- content end -->

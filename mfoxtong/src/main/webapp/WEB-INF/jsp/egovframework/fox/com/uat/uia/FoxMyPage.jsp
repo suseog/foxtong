@@ -95,19 +95,19 @@
 	</div>
 	
      <c:choose> 
-      	<c:when test="${empty sessionScope.BsshEsntlIdList}">
+      	<c:when test="${empty sessionScope.foxBsshInfoManageVO}">
 			<!-- 일반회원인경우 -->
 			<div >   
 				<a href="${pageContext.request.contextPath}/fox/bsh/entrpsEmplyrSbscrbRequstView.fo" class="ui-btn ui-corner-all ui-shadow ui-icon-gear ui-btn-icon-right"  rel="external">업체사용자가입요청</a>
 			</div>		
 		</c:when>
 		<c:otherwise>
-			<c:forEach var="list" items="${sessionScope.BsshEsntlIdList}">
+			
 		 		<!-- 업체관리자인경우-->
 				<div >   
-					<a href="javascript:modifyBsnBassInfoView('<c:out value="${list.bsshEsntlId}"/>')" class="ui-btn ui-corner-all ui-shadow ui-icon-gear ui-btn-icon-right"  rel="external"><c:out value="${list.mtltyNm}"/>(영업점관리)</a>
+					<a href="javascript:modifyBsnBassInfoView('<c:out value="${sessionScope.foxBsshInfoManageVO.bsshEsntlId}"/>')" class="ui-btn ui-corner-all ui-shadow ui-icon-gear ui-btn-icon-right"  rel="external"><c:out value="${sessionScope.foxBsshInfoManageVO.mtltyNm}"/>(영업점관리)</a>
 				</div>
-			</c:forEach>
+	
      	   </c:otherwise>
 	</c:choose>
 	<br/>

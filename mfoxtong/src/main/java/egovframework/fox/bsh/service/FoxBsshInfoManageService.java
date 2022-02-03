@@ -92,6 +92,13 @@ public interface FoxBsshInfoManageService {
 	 * @return List<FoxBsshInfoManageVO> 
 	 */
 	public void updateBsnBassInfo(FoxBsshInfoManageVO foxBsshInfoManageVO)throws Exception;
+
+	/**
+	 *  회원의 업소고유 ID  조회 
+	 * @param 
+	 * @return List<FoxBsshInfoManageVO> 
+	 */
+	public FoxBsshInfoManageVO retrievBsshEsntlId(String esntlId);
 	
 	
 }

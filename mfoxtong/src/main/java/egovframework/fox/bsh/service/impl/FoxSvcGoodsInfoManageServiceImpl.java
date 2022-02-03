@@ -87,7 +87,7 @@ public class FoxSvcGoodsInfoManageServiceImpl extends EgovAbstractServiceImpl im
 	 */
 	@Override
 	public void updateSvcGoodsInfo(FoxSvcGoodsInfoVO foxSvcGoodsInfoVO) throws Exception{
-		
+		foxSvcGoodsInfoManageDAO.updateSvcGoodsInfo(foxSvcGoodsInfoVO);
 	}
 	
 	/**
@@ -98,7 +98,7 @@ public class FoxSvcGoodsInfoManageServiceImpl extends EgovAbstractServiceImpl im
 	 */
 	@Override
 	public void deleteSvcGoodsInfo(FoxSvcGoodsInfoVO foxSvcGoodsInfoVO) throws Exception{
-		
+		foxSvcGoodsInfoManageDAO.deleteSvcGoodsInfo(foxSvcGoodsInfoVO);
 	}
 	
 	
@@ -110,8 +110,6 @@ public class FoxSvcGoodsInfoManageServiceImpl extends EgovAbstractServiceImpl im
 	 */
 	@Override
 	public List<FoxSvcGoodsInfoVO> retrieveSvcGoodsInfoList(FoxSvcGoodsInfoVO foxSvcGoodsInfoVO) throws Exception{
-		
-		//List<FoxSvcGoodsInfoVO> list = new ArrayList<FoxSvcGoodsInfoVO>();
 		
 		return (List<FoxSvcGoodsInfoVO>) foxSvcGoodsInfoManageDAO.retrieveSvcGoodsInfoList(foxSvcGoodsInfoVO);
 		
@@ -131,6 +129,46 @@ public class FoxSvcGoodsInfoManageServiceImpl extends EgovAbstractServiceImpl im
     	
     	return cnt;
     }
+	
+	 /**
+		 * 서비스상품분류관리: 등록
+		 * @param foxSvcGoodsInfVO 서비스상품정보
+		 * @return String 
+		 * @throws Exception   
+		 */
+		public void createSvcGoodsCl(FoxSvcGoodsInfoVO foxSvcGoodsInfoVO)throws Exception{
+			foxSvcGoodsInfoManageDAO.createSvcGoodsCl(foxSvcGoodsInfoVO);
+		}
+		
+		/**
+		 * 서비스상품분류관리: 목록조회
+		 * @param foxSvcGoodsInfVO 서비스상품정보
+		 * @return String 
+		 * @throws Exception   
+		 */
+		public List<FoxSvcGoodsInfoVO> retrieveSvcGoodsClList(FoxSvcGoodsInfoVO foxSvcGoodsInfoVO)throws Exception{
+			return (List<FoxSvcGoodsInfoVO>) foxSvcGoodsInfoManageDAO.retrieveSvcGoodsClList(foxSvcGoodsInfoVO);
+		}
+		
+		/**
+		 * 서비스상품분류관리: 수정
+		 * @param foxSvcGoodsInfVO 서비스상품정보
+		 * @return String 
+		 * @throws Exception   
+		 */
+		public void updateSvcGoodsCl(FoxSvcGoodsInfoVO foxSvcGoodsInfoVO)throws Exception{
+			foxSvcGoodsInfoManageDAO.updateSvcGoodsCl(foxSvcGoodsInfoVO);
+		}
+		
+		/**
+		 * 서비스상품분류관리: 삭제
+		 * @param foxSvcGoodsInfVO 서비스상품정보
+		 * @return String 
+		 * @throws Exception   
+		 */
+		public void deleteSvcGoodsCl(FoxSvcGoodsInfoVO foxSvcGoodsInfoVO)throws Exception{
+			foxSvcGoodsInfoManageDAO.deleteSvcGoodsCl(foxSvcGoodsInfoVO);
+		}
     
     
 

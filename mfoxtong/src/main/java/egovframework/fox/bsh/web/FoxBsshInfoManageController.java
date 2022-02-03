@@ -211,8 +211,13 @@ public class FoxBsshInfoManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/fox/bsh/updateBsshInfoView.fo")
-	public String updateBsshInfoView (@ModelAttribute("foxBsshInfoManageVO") FoxBsshInfoManageVO foxBsshInfoManageVO,  Model model)
+	public String updateBsshInfoView (@ModelAttribute("foxBsshInfoManageVO") FoxBsshInfoManageVO foxBsshInfoManageVO, HttpServletRequest request, Model model)
 			throws Exception{
+		
+		// 세션에서 사용자 정보 가져오기 
+		FoxBsshInfoManageVO sfoxBsshInfoManageVO = (FoxBsshInfoManageVO) request.getSession().getAttribute("foxBsshInfoManageVO"); // 업소 고유 아이디 
+		String bsshEsntlId = sfoxBsshInfoManageVO.getBsshEsntlId();
+		
 		
 		//------------------------------
 	    // 업체카테고리 정보 조회 (공통코드) 
@@ -221,9 +226,7 @@ public class FoxBsshInfoManageController {
 	    cvo.setCodeId("FOX001"); // 
 	    List<CmmnDetailCodeVO> codeList = (List<CmmnDetailCodeVO>) cmmnDetailCodeManageService.selectCmmnDetailCodeList(cvo);
 		
-		
-		String bsshEsntlId = foxBsshInfoManageVO.getBsshEsntlId();
-		
+	    // 업소 기본정보 조회 
 		FoxBsshInfoManageVO resultFoxBsshInfo = foxBsshInfoManageService.retrieveBsshInfo(bsshEsntlId);
 		
 		
@@ -355,7 +358,7 @@ public class FoxBsshInfoManageController {
 	public String retrieveBsshInfoList(@ModelAttribute("foxBsshInfoDefaultVO") FoxBsshInfoDefaultVO foxBsshInfoDefaultVO, Model model)
 			throws Exception{
 		
-		//foxBsshInfoManageService.retrieveBsshInfoList();
+		
 		
 		
 		model.addAttribute("resultList", "");

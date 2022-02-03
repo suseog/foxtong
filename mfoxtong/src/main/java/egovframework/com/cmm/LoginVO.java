@@ -78,6 +78,23 @@ public class LoginVO implements Serializable{
 	/** 회원고유ID 2022-01-04*/
 	private String esntlId; 
 
+	/** 업소고유ID 2022-02-02*/
+	private String bsshEsntlId; 
+
+	
+		
+	/**
+	 * @return the bsshEsntlId
+	 */
+	public String getBsshEsntlId() {
+		return bsshEsntlId;
+	}
+	/**
+	 * @param bsshEsntlId the bsshEsntlId to set
+	 */
+	public void setBsshEsntlId(String bsshEsntlId) {
+		this.bsshEsntlId = bsshEsntlId;
+	}
 	/**
 	 * @return the mberSe
 	 */

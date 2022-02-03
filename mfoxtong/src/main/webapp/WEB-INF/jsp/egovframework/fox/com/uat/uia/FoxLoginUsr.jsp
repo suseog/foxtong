@@ -83,13 +83,19 @@
                   success: function (response) {
                 	  console.log(response)
                 	  document.getElementById("kakaoserial").value = response.id;
-                	  document.getElementById("nickname").value = response.properties.nickname;
-                	  document.getElementById("kakaoimg").value = response.properties.profile_image;
-                	  document.getElementById("kakaoemail").value = response.kakao_account.email;
+                	  document.getElementById("ncnm").value = response.properties.nickname;
+                	  document.getElementById("sbscrbSe").value = "03";  // 01 : 일반, 02 : 네이버, 03 : 카카오
                 	  document.getElementById("mberEmailAddres").value = response.kakao_account.email;
-                	  var imgroot = response.properties.profile_image;
-                	  document.getElementById("kkoicon").src = imgroot;
-                	  document.getElementById("spankkoicon").style.display = "true";
+                	  
+                	  //document.getElementById("kakaoimg").value = response.properties.profile_image;
+                	  //document.getElementById("kakaoemail").value = response.kakao_account.email;
+                	  //var imgroot = response.properties.profile_image;
+                	  //document.getElementById("kkoicon").src = imgroot;
+                	  //document.getElementById("spankkoicon").style.display = "true";
+                	  
+                	  document.loginForm.action="${pageContext.request.contextPath}/uat/uia/actionAPILogin.fo"; 
+                	  //document.loginForm.action="${pageContext.request.contextPath}/uss/umt/foxStplatAgre.fo";  // 회원가입페이지
+      				  document.loginForm.submit(); 
                 	
                   },
                   fail: function (error) {
@@ -157,10 +163,13 @@
 		</table>
 	</div>
 
-	<form name="loginForm" method="post">
+	<form name="loginForm" action ="${pageContext.request.contextPath}/mbl/com/uat/uia/actionLogin.do" method="post">
 	<input type="hidden" id="userSe" name="userSe" value="USR"/>
 	<input type="hidden" id="searchSe" name="searchSe" value=""/>
 	<input type="hidden" id="searchSeNm" name="searchSeNm" value=""/>
+	<input type="hidden" id="ncnm" name="ncnm" value=""/>
+	<input type="hidden" id="sbscrbSe" name="sbscrbSe" value=""/>
+	
 	
 	<input type="hidden" id="kakaoserial" name="kakaoserial" value=""/>
 	<input type="hidden" id="nickname" name="nickname" value=""/>
@@ -200,16 +209,20 @@
 	
 	<div align="center">   
 		<span>간편로그인</span> </br>
-			<span id = "spankkoicon" >
+		<!-- 
+			<<span id = "spankkoicon" >
 				<img id = kkoicon src= "" width="70" height="70"></img>
-			</span>
+			</span> 
 					<ul>
-						<!-- <li id=login2 onclick="kakaoLogin();">
+						<li id=login2 onclick="kakaoLogin();">
 					      <a href="javascript:void(0)">
 					          <span>카카오 로그인</span>
 					      </a>
-						</li> -->
+						</li> 
+					</ul>
 						<br></br>
+						-->
+						<ui>
 						<li id=logout onclick="kakaoLogout();">
 					      <a href="javascript:void(0)">
 					          <span>카카오 로그아웃</span>

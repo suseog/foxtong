@@ -49,6 +49,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sun.star.ucb.Error;
+
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.service.EgovCmmUseService;
@@ -156,25 +158,22 @@ public class FoxLoginController implements Serializable{
     		                   ModelMap model)
             throws Exception {
 
-
-
     	// 1. 일반 로그인 처리
         LoginVO resultVO = foxLoginService.actionLogin(loginVO);
         String id = resultVO.getEsntlId();
-
 
         if (resultVO != null && resultVO.getMberEmailAddres() != null && !resultVO.getMberEmailAddres().equals("")) {
 
         	// 2-1. 로그인 정보를 세션에 저장
         	request.getSession().setAttribute("loginVO", resultVO);
         	
-        	
         	// 2-2. 업소정보 확인 및 조회 
         	if(resultVO.getMberSe().equals("02") && !resultVO.getEsntlId().equals("")) {
         		
-        		List <FoxBsshInfoManageVO> list = foxBsshInfoManageService.retrievBsshEsntlIdList(resultVO.getEsntlId());
-        		request.getSession().setAttribute("BsshEsntlIdList", list);
-        		
+        		FoxBsshInfoManageVO foxBsshInfoManageVO =  foxBsshInfoManageService.retrievBsshEsntlId(resultVO.getEsntlId());
+        		if(foxBsshInfoManageVO != null) {
+	        		request.getSession().setAttribute("foxBsshInfoManageVO", foxBsshInfoManageVO); // 세션에 담는 영업점 정보 1개 
+        		}
         	}
 
     		return "redirect:/uat/uia/actionMain.fo";
@@ -185,6 +184,40 @@ public class FoxLoginController implements Serializable{
         	return "egovframework/fox/com/uat/uia/FoxLoginUsr";
         }
     }
+    
+    /**
+	 *  카카오톡 로그인을 처리한다
+	 * @param vo - 아이디, 비밀번호가 담긴 LoginVO
+	 * @param request - 세션처리를 위한 HttpServletRequest
+	 * @return result - 로그인결과(세션정보)
+	 * @exception Exception
+	 */
+    @RequestMapping(value="/uat/uia/actionAPILogin.fo")
+    public String actionAPILogin(@ModelAttribute("loginVO") LoginVO loginVO,
+    		                   HttpServletRequest request,
+    		                   ModelMap model)
+            throws Exception {
+
+
+
+    	// 1. 일반 로그인 처리
+        LoginVO resultVO = foxLoginService.actionAPILogin(loginVO);
+
+                
+        if (resultVO != null && resultVO.getMberEmailAddres() != null) {
+
+        	// 2-1. 로그인 정보를 세션에 저장
+        	request.getSession().setAttribute("loginVO", resultVO);
+
+    		return "redirect:/uat/uia/actionMain.fo";
+
+        } else {
+
+        	model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+        	return "egovframework/fox/com/uat/uia/FoxLoginUsr";
+        }
+    }
+    
 
     /**
 	 * 일반(스프링 시큐리티) 로그인을 처리한다
@@ -468,7 +501,7 @@ public class FoxLoginController implements Serializable{
 		requestUrl += serviceId + requestUrlType;
 		String apiUrl = hostNameUrl + requestUrl;
 		
-		int randomNumber = (int)((Math.random()* (9999 - 1000 + 1)) + 1000);//난수 생성 
+		int randomNumber = (int)((Math.random()* (999999 - 100000 + 1)) + 100000);//난수 생성 
 		
 		
 		// JSON 을 활용한 body data 생성
@@ -486,7 +519,7 @@ public class FoxLoginController implements Serializable{
 	    bodyJson.put("countryCode","82");					// Optional, 국가 전화번호, (default: 82)
 	    bodyJson.put("from","01028688051");					// Mandatory, 발신번호, 사전 등록된 발신번호만 사용 가능		
 	    //bodyJson.put("subject","");						// Optional, 기본 메시지 제목, LMS, MMS에서만 사용 가능
-	    bodyJson.put("content","[통통통]인증번호는 [" + randomNumber + "]입니다.");	// Mandatory(필수), 기본 메시지 내용, SMS: 최대 80byte, LMS, MMS: 최대 2000byte
+	    bodyJson.put("content","[여우통]인증번호는 [" + randomNumber + "]입니다.");	// Mandatory(필수), 기본 메시지 내용, SMS: 최대 80byte, LMS, MMS: 최대 2000byte
 	    bodyJson.put("messages", toArr);					// Mandatory(필수), 아래 항목들 참조 (messages.XXX), 최대 1,000개
 	    
 	    //String body = bodyJson.toJSONString();

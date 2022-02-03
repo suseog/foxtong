@@ -99,6 +99,20 @@
 		                ON  A.BSSH_ESNTL_ID = B.BSSH_ESNTL_ID
 		        WHERE 	1=1
 		          AND 	A.ESNTL_ID=#esntlId# 
+		          LIMIT 1
+       ]]>
+    </select>
+    
+    <select id="foxBsshInfoManageDAO.selectBsshEsntlId" parameterClass="java.lang.String" resultClass="foxBsshInfoManageVO">
+       <![CDATA[
+		       SELECT 	A.BSSH_ESNTL_ID  	AS    bsshEsntlId
+		       		,	B.MTLTY_NM  		AS    mtltyNm
+		         FROM	FOXTNMBERBSSHMAPNG 		AS A 
+		                JOIN FOXTNBSSHBASSINFO 	AS B 
+		                ON  A.BSSH_ESNTL_ID = B.BSSH_ESNTL_ID
+		        WHERE 	1=1
+		          AND 	A.ESNTL_ID=#esntlId# 
+		          LIMIT 1
        ]]>
     </select>
     

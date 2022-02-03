@@ -34,6 +34,9 @@ public class FoxSvcGoodsInfoVO {
 
 	/** 서비스소분류 */
 	private String svcSmallclas = "";
+	
+	/** 서비스소분류 */
+	private String svcSmallclasNm = "";
 
 	/** 서비스상품명 */
 	private String svcGoodsNm = "";
@@ -57,7 +60,6 @@ public class FoxSvcGoodsInfoVO {
 	/** 추가설명 */
 	private String aditDc = "";
 	
-	
 	/** 여분1 */
 	private String extraOne = "";
 	
@@ -76,6 +78,27 @@ public class FoxSvcGoodsInfoVO {
 	
 	/** 최종수정자ID  */
 	private String lastUpdtId = "";
+	
+	/** 삭제여부 추가 */
+	private String deleteAt = "";
+	
+
+	
+	public String getSvcSmallclasNm() {
+		return svcSmallclasNm;
+	}
+
+	public void setSvcSmallclasNm(String svcSmallclasNm) {
+		this.svcSmallclasNm = svcSmallclasNm;
+	}
+
+	public String getDeleteAt() {
+		return deleteAt;
+	}
+
+	public void setDeleteAt(String deleteAt) {
+		this.deleteAt = deleteAt;
+	}
 
 	/**
 	 * @return the svcId
@@ -105,7 +128,6 @@ public class FoxSvcGoodsInfoVO {
 		this.bsshEsntlId = bsshEsntlId;
 	}
 
-	
 
 	/**
 	 * @return the svcLrgeclas

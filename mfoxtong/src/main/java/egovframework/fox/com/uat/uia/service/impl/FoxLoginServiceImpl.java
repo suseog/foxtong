@@ -11,7 +11,10 @@ import egovframework.com.utl.fcc.service.EgovNumberUtil;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sim.service.EgovFileScrty;
 import egovframework.fox.com.uat.uia.service.FoxLoginService;
+import egovframework.fox.com.uss.umt.service.FoxMberManageVO;
+import egovframework.fox.com.uss.umt.service.impl.FoxMberManageDAO;
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import egovframework.rte.fdl.idgnr.EgovIdGnrService;
 
 /**
  * 일반 로그인, 인증서 로그인을 처리하는 비즈니스 구현 클래스
@@ -34,10 +37,20 @@ public class FoxLoginServiceImpl extends EgovAbstractServiceImpl implements FoxL
 
     @Resource(name="foxLoginDAO")
     private FoxLoginDAO foxLoginDAO;
+    
+	/** foxMberManageDAO */
+	@Resource(name="foxMberManageDAO")
+	private FoxMberManageDAO foxMberManageDAO;
+	
 
     /** EgovSndngMailRegistService */
 	@Resource(name = "sndngMailRegistService")
     private EgovSndngMailRegistService sndngMailRegistService;
+	
+	/** egovUsrCnfrmIdGnrService */
+	@Resource(name="egovUsrCnfrmIdGnrService")
+	private EgovIdGnrService idgenService;
+
 
 
 
@@ -90,6 +103,48 @@ public class FoxLoginServiceImpl extends EgovAbstractServiceImpl implements FoxL
 
     	return loginVO;
     }
+    
+	@Override
+	public LoginVO actionAPILogin(LoginVO loginVO) throws Exception {
+
+		// 1. 카카오 아이디(이메일) 정보확인
+		LoginVO resultVO = foxLoginDAO.actionAPILogin(loginVO);
+		
+		// 2. 카카오 아이디(이메일)가 없으면, 사용자 등록 : 카카오에서 제공되는 항목만으로 등록 : resultTempVO로 비교 null 체크 
+		//LoginVO loginVO = foxLoginDAO.actionAPILogin(vo);
+		
+		if(resultVO == null) {
+			
+				//고유아이디 셋팅
+				String esntlId = idgenService.getNextStringId();
+				FoxMberManageVO mvo = new FoxMberManageVO();
+				mvo.setEsntlId(esntlId);
+				mvo.setMberEmailAdres(loginVO.getMberEmailAddres());  //이메일 
+				mvo.setNcnm(loginVO.getNcnm());	       //닉네임 
+				//mvo.setMberNm(loginVO.getMberNm());  //회원명 
+				mvo.setMberSe("01");
+				mvo.setSbscrbSe("03");
+				mvo.setMberSttus("01");
+			
+				String result = foxMberManageDAO.insertMber(mvo);
+				
+				//3.카카오 가입사용자의 정보 조회 
+				LoginVO resultTempVO = foxLoginDAO.actionAPILogin(loginVO);
+				
+				resultVO = resultTempVO;
+		}
+
+    	// 3. 결과를 리턴한다.
+    	if (resultVO != null && !resultVO.getMberEmailAddres().equals("")) {
+    		return resultVO;
+    	} else {
+    		resultVO = new LoginVO();
+    	}
+
+    	return loginVO;
+    	
+	}
+	
 
 //    /**
 //	 * 인증서 로그인을 처리한다
@@ -133,6 +188,7 @@ public class FoxLoginServiceImpl extends EgovAbstractServiceImpl implements FoxL
     	}
     	return loginVO;
     }
+    
 
     /**
 	 * 비밀번호를 찾는다.
@@ -183,5 +239,6 @@ public class FoxLoginServiceImpl extends EgovAbstractServiceImpl implements FoxL
 
     	return result;
     }
-    
+
+
 }

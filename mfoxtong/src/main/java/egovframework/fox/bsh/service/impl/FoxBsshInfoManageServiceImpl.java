@@ -170,6 +170,17 @@ public class FoxBsshInfoManageServiceImpl extends EgovAbstractServiceImpl implem
 	public List<FoxBsshInfoManageVO> retrievBsshEsntlIdList(String esntlId) throws Exception{
 		return foxBsshInfoManageDAO.retrievBsshEsntlIdList(esntlId);
 	}
+	
+	/**
+	 *  회원의 업소고유 ID  조회 
+	 * @param 
+	 * @return List<FoxBsshInfoManageVO> 
+	 */
+	public FoxBsshInfoManageVO retrievBsshEsntlId(String esntlId) {
+		
+		return foxBsshInfoManageDAO.retrievBsshEsntlId(esntlId);
+		
+	}
 	 
 	
 

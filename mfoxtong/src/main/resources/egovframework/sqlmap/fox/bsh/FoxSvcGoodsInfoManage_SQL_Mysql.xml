@@ -67,6 +67,7 @@
            FROM FOXTNSVCGOODSINFO
           WHERE 1=1
             AND SVC_ID		  = #svcId#
+          	AND DELETE_AT	  = 'N'
         ]]>
     </select>
     
@@ -90,67 +91,97 @@
 				,EXTRA_TWO   		AS    extraTwo
            FROM FOXTNSVCGOODSINFO
           WHERE 1=1
+          	AND DELETE_AT		  	  = 'N'
             AND BSSH_ESNTL_ID		  = #bsshEsntlId#
         ]]>
     </select>
   
     
-     <update id="foxSvcGoodsInfoManageDAO.updateBsshInfo" parameterClass="foxSvcGoodsInfoVO">
+     <update id="foxSvcGoodsInfoManageDAO.updateSvcGoodsInfo" parameterClass="foxSvcGoodsInfoVO">
             <![CDATA[
-            
-            ]]>
+           	   UPDATE 	FOXTNSVCGOODSINFO 
+	              SET   SVC_LRGE_CL 	= #svcLrgeclas#
+	              	  , SVC_SMALL_CL 	= #svcSmallclas#
+	              	  , SVC_GOODS_NM 	= #svcGoodsNm#
+	              	  , SVC_TIME 		= #svcTime#
+	              	  , SVC_SUMRY_DC 	= #svcSumryDc#
+	              	  , SVC_CNSMR_PC 	= #svcCnsmrPc#
+	              	  , SVC_DSCNT_RT 	= #svcDscntRt#
+	              	  , LAST_DSCNT_PC 	= #lastDscntPc#
+	              	  , ADIT_DC		 	= #aditDc#
+	              	  , EXTRA_ONE 		= #extraOne#
+	              	  , EXTRA_TWO 		= #extraTwo#
+	              	  , LAST_UPDUSR_ID 	= #esntlId#
+              	  , LAST_UPDT_PNTTM 	= sysdate()
+	            WHERE 1=1
+	              AND BSSH_ESNTL_ID=#bsshEsntlId#
+	              AND SVC_ID=#svcId#
+           ]]>     
     </update>
-    
-     <update id="foxSvcGoodsInfoManageDAO.updateBsnBassInfo" parameterClass="foxSvcGoodsInfoVO">
-            <![CDATA[
-           
-            ]]>
-    </update>
-    
-    <update id="foxSvcGoodsInfoManageDAO.updateCoprtnSttus" parameterClass="foxSvcGoodsInfoVO">
-           <![CDATA[
-           
-           
-	         
-           ]]>
-    </update>  
-    
-    <update id="foxSvcGoodsInfoManageDAO.updatePostscriptCo" parameterClass="foxSvcGoodsInfoVO">
-           <![CDATA[
-
-
-           ]]>
-    </update>
-    
-    <update id="foxSvcGoodsInfoManageDAO.updatePreferCo" parameterClass="foxSvcGoodsInfoVO">
-           <![CDATA[
-           
-           
-           ]]>
-    </update>
-    
-        
-	 <select id="foxSvcGoodsInfoManageDAO.selectBsshInfoList" parameterClass="foxSvcGoodsInfoDefaultVO" resultClass="egovMap">
-		
-    </select>
-    
-    
-    <select id="foxSvcGoodsInfoManageDAO.selectBsshInfoListTotCnt" parameterClass="foxSvcGoodsInfoDefaultVO" resultClass="int">
-            <![CDATA[
-
-
-
-               ]]>
-   	</select>
     
    
-     <update id="foxSvcGoodsInfoManageDAO.deleteBsshInfo" parameterClass="foxSvcGoodsInfoVO">
-           <![CDATA[
-	        
-
-
-
-           ]]>
+     <update id="foxSvcGoodsInfoManageDAO.updateSvcGoodsInfoDelAt" parameterClass="foxSvcGoodsInfoVO">
+             <![CDATA[
+           	   UPDATE 	FOXTNSVCGOODSINFO 
+	              SET   DELETE_AT 		= 'Y'
+	              	  , LAST_UPDUSR_ID 	= #esntlId#
+              	  	  , LAST_UPDT_PNTTM = sysdate()
+	            WHERE 1=1
+	              AND BSSH_ESNTL_ID=#bsshEsntlId#
+	              AND SVC_ID=#svcId#
+           ]]>     
     </update>
+    
+      
+   <insert id="foxSvcGoodsInfoManageDAO.insertSvcGoodsCl" parameterClass="foxSvcGoodsInfoVO">
+        <![CDATA[
+        INSERT INTO FOXTNSVCGOODSCI 
+        (   
+                     BSSH_ESNTL_ID 		
+                    ,SVC_SMALL_CL_NM 			
+                    ,FRST_REGIST_PNTTM		
+                    ,FRST_REGISTER_ID        
+         )VALUES( 
+                     #bsshEsntlId#
+                    ,#svcSmallclasNm#
+                    ,sysdate() 
+                    ,#frstRegistId# 
+         )  
+        ]]>
+    </insert>
+    
+    <update id="foxSvcGoodsInfoManageDAO.updateSvcGoodsCl" parameterClass="foxSvcGoodsInfoVO">
+             <![CDATA[
+           	   UPDATE 	FOXTNSVCGOODSCI 
+	              SET   SVC_SMALL_CL_NM 		= #svcSmallclasNm#
+	              	  , LAST_UPDUSR_ID 			= #esntlId#
+              	  	  , LAST_UPDT_PNTTM			= sysdate()
+	            WHERE 1=1
+	              AND BSSH_ESNTL_ID=#bsshEsntlId#
+	              AND SVC_SMALL_CL=#svcSmallclas#
+           ]]>     
+    </update>
+    
+    
+   	<delete id="foxSvcGoodsInfoManageDAO.deleteSvcGoodsCl" parameterClass="foxSvcGoodsInfoVO" >
+		<![CDATA[
+			DELETE FROM FOXTNSVCGOODSCI
+            WHERE 1=1
+              AND BSSH_ESNTL_ID=#bsshEsntlId#
+              AND SVC_SMALL_CL=#svcSmallclas#		
+		]]>	
+	</delete>
+	
+   	<select id="foxSvcGoodsInfoManageDAO.selectSvcGoodsClList" parameterClass="foxSvcGoodsInfoVO" resultClass="egovMap">
+        <![CDATA[
+         SELECT 
+				 BSSH_ESNTL_ID   	AS    bsshEsntlId
+				,SVC_SMALL_CL   	AS    svcSmallclas
+				,SVC_SMALL_CL_NM   	AS    svcSmallclasNm
+           FROM FOXTNSVCGOODSCI
+          WHERE 1=1
+            AND BSSH_ESNTL_ID		  = #bsshEsntlId#
+        ]]>
+    </select>
     
 </sqlMap>

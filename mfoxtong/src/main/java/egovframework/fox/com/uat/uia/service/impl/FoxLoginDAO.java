@@ -71,4 +71,15 @@ public class FoxLoginDAO extends EgovComAbstractDAO {
     public void updatePassword(LoginVO vo) throws Exception {
     	update("foxLoginDAO.updatePassword", vo);
     }
+    
+    /**
+	 * 카카오 로그인
+	 * @param vo LoginVO
+	 * @return boolean
+	 * @exception Exception
+	 */
+	public LoginVO actionAPILogin(LoginVO loginVO) {
+		return (LoginVO)select("foxLoginDAO.actionAPILogin", loginVO);
+	}
+	
 }

@@ -57,6 +57,26 @@
 			]]>
 	</select>
 	
+	<!-- 카카오 로그인 -->
+	<select id="foxLoginDAO.actionAPILogin" resultMap="login">
+			<![CDATA[
+			SELECT mber_email_adres AS mberEmailAddres
+			     , mber_nm 		AS mberNm
+			     , NCNM 		AS ncnm
+			     , '01' 		AS userSe
+			     , '-' 			AS orgnztId
+			     , esntl_id 	AS esntlId
+   			     , esntl_id 	AS uniqId
+			     , password 	AS password
+			     , MOBLPHON_NO 	AS moblPhonNo
+   			     , MBER_SE	 	AS mberSe
+			  FROM COMTNGNRLMBERNEW
+			 WHERE 1=1
+			   AND mber_email_adres = #mberEmailAddres#
+			   AND mber_sttus = '01'
+			]]>
+	</select>
+	
 
 	<!-- 아이디 찾기 -->
 	<!-- 

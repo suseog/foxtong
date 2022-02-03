@@ -59,7 +59,7 @@ public class FoxSvcGoodsInfoManageDAO extends EgovComAbstractDAO {
 	 */
 	public void deleteSvcGoodsInfo(FoxSvcGoodsInfoVO foxSvcGoodsInfoVO) throws Exception{
 		
-		 update("foxSvcGoodsInfoManageDAO.updateSvcGoodsInfo",foxSvcGoodsInfoVO);
+		 update("foxSvcGoodsInfoManageDAO.updateSvcGoodsInfoDelAt",foxSvcGoodsInfoVO);
 		 
 	}
 	
@@ -88,7 +88,59 @@ public class FoxSvcGoodsInfoManageDAO extends EgovComAbstractDAO {
    	return (Integer)select("foxSvcGoodsInfoManageDAO.selectBsshInfoListTotCnt", foxSvcGoodsInfoDefaultVO);
    	
    }
+   
+	 /**
+	 * 서비스상품분류관리: 등록
+	 * @param foxSvcGoodsInfVO 서비스상품정보
+	 * @return String 
+	 * @throws Exception   
+	 */
+	public String createSvcGoodsCl(FoxSvcGoodsInfoVO foxSvcGoodsInfoVO) {
+		return (String)insert("foxSvcGoodsInfoManageDAO.insertSvcGoodsCl", foxSvcGoodsInfoVO);
+	}
 	
+	/**
+	 * 서비스상품분류관리: 목록조회
+	 * @param foxSvcGoodsInfVO 서비스상품정보
+	 * @return String 
+	 * @throws Exception   
+	 */
+	public List<FoxSvcGoodsInfoVO> retrieveSvcGoodsClList(FoxSvcGoodsInfoVO foxSvcGoodsInfoVO) {
+		// TODO Auto-generated method stub
+		return (List<FoxSvcGoodsInfoVO>) list("foxSvcGoodsInfoManageDAO.selectSvcGoodsClList", foxSvcGoodsInfoVO);
+	}
+	
+	/**
+	 * 서비스상품분류관리: 삭제
+	 * @param foxSvcGoodsInfVO 서비스상품정보
+	 * @return String 
+	 * @throws Exception   
+	 */
+	public void deleteSvcGoodsCl(FoxSvcGoodsInfoVO foxSvcGoodsInfoVO) {
+		// TODO Auto-generated method stub
+		delete("foxSvcGoodsInfoManageDAO.deleteSvcGoodsCl", foxSvcGoodsInfoVO);
+	}
+	
+	/**
+	 * 서비스상품분류관리: 수정
+	 * @param foxSvcGoodsInfVO 서비스상품정보
+	 * @return String 
+	 * @throws Exception   
+	 */
+	public void updateSvcGoodsCl(FoxSvcGoodsInfoVO foxSvcGoodsInfoVO) {
+		// TODO Auto-generated method stub
+		update("foxSvcGoodsInfoManageDAO.updateSvcGoodsCl",foxSvcGoodsInfoVO);
+	}
+	
+
+	
+	
+	
+
+	
+	
+
+		
 	
 
 }
