@@ -31,6 +31,7 @@
             <bean class="egovframework.com.cmm.web.EgovBindingInitializer"/>
         </property>
     </bean>
+    
     <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"/>
 
     <!-- 로그인 체크가 필요한 URL과 로그인 여부를 체크해줄 인터셉터를 등록한다. -->

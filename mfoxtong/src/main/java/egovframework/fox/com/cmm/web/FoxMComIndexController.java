@@ -1,32 +1,32 @@
 package egovframework.fox.com.cmm.web;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import egovframework.com.cmm.IncludedCompInfoVO;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
-import egovframework.com.cop.bbs.service.BoardVO;
 import egovframework.com.sym.ccm.cde.service.CmmnDetailCodeVO;
 import egovframework.com.sym.ccm.cde.service.EgovCcmCmmnDetailCodeManageService;
-import egovframework.mbl.com.cmm.annotation.IncludedMblInfo;
+import egovframework.fox.bsh.service.FoxBsshInfoDefaultVO;
+import egovframework.fox.bsh.service.FoxBsshInfoManageService;
+import egovframework.fox.bsh.service.FoxBsshInfoManageVO;
 
 
 @Controller
 public class FoxMComIndexController  {
+	
+	
+	/** FoxBsshInfoManageService */
+	@Resource(name = "foxBsshInfoManageService")
+	private FoxBsshInfoManageService foxBsshInfoManageService;
 	
 	@Resource(name = "CmmnDetailCodeManageService")
     private EgovCcmCmmnDetailCodeManageService cmmnDetailCodeManageService;
@@ -37,7 +37,7 @@ public class FoxMComIndexController  {
 	
 	
 	@RequestMapping("/FoxMobileMain.fo")
-    public String mobileMain( ModelMap model) throws Exception {
+    public String mobileMain(@ModelAttribute FoxBsshInfoDefaultVO foxBsshInfoDefaultVO, ModelMap model) throws Exception {
 	
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
@@ -48,12 +48,27 @@ public class FoxMComIndexController  {
 //        }
 		
 	    //------------------------------
-	    // 게시물주제구분코드 목록 조회 설정 
+	    // 업체 카테고리 목록 조회 
 	    //------------------------------
 	    CmmnDetailCodeVO cvo = new CmmnDetailCodeVO();
 	    cvo.setCodeId("FOX001"); // 
 	    List<CmmnDetailCodeVO> codeList = (List<CmmnDetailCodeVO>) cmmnDetailCodeManageService.selectCmmnDetailCodeList(cvo);
 	    
+	    //------------------------------
+	    // 시도/시군구 공통코드 목록 조회 (고정으로 걸려있음) 
+	    //------------------------------
+	    List<FoxBsshInfoManageVO> signguCodeList = (List<FoxBsshInfoManageVO>)foxBsshInfoManageService.retrieveSignguCodeList(foxBsshInfoDefaultVO) ;
+	    
+	    
+	    //------------------------------
+	    // 업체정보 목록조회 
+	    //------------------------------    
+	    List<FoxBsshInfoManageVO> bsshInfoList = (List<FoxBsshInfoManageVO>) foxBsshInfoManageService.retrieveBsshInfoList(foxBsshInfoDefaultVO);
+	    
+	    
+	    model.addAttribute("signguCodeList", signguCodeList);
+	    model.addAttribute("searchVo", foxBsshInfoDefaultVO);
+	    model.addAttribute("resultBsshInfoList", bsshInfoList);
 		model.addAttribute("resultCodeList", codeList);
 	    
 		return "egovframework/fox/com/cmm/FoxUnitMain";

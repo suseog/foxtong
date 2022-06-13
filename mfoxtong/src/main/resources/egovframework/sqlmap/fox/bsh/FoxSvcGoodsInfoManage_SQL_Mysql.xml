@@ -77,10 +77,11 @@
         <![CDATA[
          SELECT 
 	         	 SVC_ID   			AS    svcId
-				,BSSH_ESNTL_ID   	AS    bsshEsntlId
-				,SVC_LRGE_CL   		AS    svcLrgeclas
-				,SVC_SMALL_CL   	AS    svcSmallclas
-				,SVC_GOODS_NM   	AS    svcGoodsNm
+				,A.BSSH_ESNTL_ID   	AS    bsshEsntlId
+				,A.SVC_LRGE_CL   	AS    svcLrgeclas
+				,A.SVC_SMALL_CL   	AS    svcSmallclas
+				,B.SVC_SMALL_CL_NM 	AS    svcSmallclasNm
+				,A.SVC_GOODS_NM   	AS    svcGoodsNm
 				,SVC_TIME   		AS    svcTime
 				,SVC_SUMRY_DC   	AS    svcSumryDc
 				,SVC_CNSMR_PC   	AS    svcCnsmrPc
@@ -89,10 +90,12 @@
 				,ADIT_DC   			AS    aditDc
 				,EXTRA_ONE   		AS    extraOne
 				,EXTRA_TWO   		AS    extraTwo
-           FROM FOXTNSVCGOODSINFO
+           FROM FOXTNSVCGOODSINFO A, FOXTNSVCGOODSCI B
           WHERE 1=1
-          	AND DELETE_AT		  	  = 'N'
-            AND BSSH_ESNTL_ID		  = #bsshEsntlId#
+          	AND A.DELETE_AT		  	  = 'N'
+       	  	AND A.BSSH_ESNTL_ID		  = B.BSSH_ESNTL_ID
+  			AND A.SVC_SMALL_CL        = B.SVC_SMALL_CL
+            AND A.BSSH_ESNTL_ID		  = #bsshEsntlId#
         ]]>
     </select>
   

@@ -31,6 +31,9 @@ public class FoxBsshInfoDefaultVO extends FoxBsshInfoManageVO implements Seriali
     /** 검색조건-카테고id */
     private String searchCtgryId = "";
     
+    /** 검색조건-카테고id */
+    private String searchCtgryIdArr;
+    
     /** 검색조건-광역시 */
     private String searcBrtcCode = "";
     
@@ -38,10 +41,9 @@ public class FoxBsshInfoDefaultVO extends FoxBsshInfoManageVO implements Seriali
     private String searchSignguCode = "";
 
     /** 검색조건-동id */
-    private String searchDongliCode = "";
+    private String searchDongCode = "";
 
-
-    /** 현재페이지 */
+	/** 현재페이지 */
     private int pageIndex = 1;
 
     /** 페이지갯수 */
@@ -59,8 +61,28 @@ public class FoxBsshInfoDefaultVO extends FoxBsshInfoManageVO implements Seriali
     /** recordCountPerPage */
     private int recordCountPerPage = 10;
 
+
+    
     
 
+
+    /**
+	 * @return the searchCtgryIdArr
+	 */
+	public String getSearchCtgryIdArr() {
+		return searchCtgryIdArr;
+	}
+
+	/**
+	 * @param searchCtgryIdArr the searchCtgryIdArr to set
+	 */
+	public void setSearchCtgryIdArr(String searchCtgryIdArr) {
+		this.searchCtgryIdArr = searchCtgryIdArr;
+	}
+
+	
+	
+    
 	/**
 	 * @return the searchCoprtnSttus
 	 */
@@ -134,15 +156,15 @@ public class FoxBsshInfoDefaultVO extends FoxBsshInfoManageVO implements Seriali
 	/**
 	 * @return the searchDongliCode
 	 */
-	public String getSearchDongliCode() {
-		return searchDongliCode;
+	public String getSearchDongCode() {
+		return searchDongCode;
 	}
 
 	/**
 	 * @param searchDongliCode the searchDongliCode to set
 	 */
-	public void setSearchDongliCode(String searchDongliCode) {
-		this.searchDongliCode = searchDongliCode;
+	public void setSearchDongCode(String searchDongCode) {
+		this.searchDongCode = searchDongCode;
 	}
 
 	/**

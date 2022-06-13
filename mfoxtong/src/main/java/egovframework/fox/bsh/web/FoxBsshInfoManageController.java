@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springmodules.validation.commons.DefaultBeanValidator;
@@ -26,6 +27,9 @@ import egovframework.fox.bsh.service.FoxBsshInfoDefaultVO;
 import egovframework.fox.bsh.service.FoxBsshInfoManageService;
 import egovframework.fox.bsh.service.FoxBsshInfoManageVO;
 import egovframework.fox.bsh.service.FoxEntrpsEmplyrSbscrbRequstVO;
+import egovframework.fox.bsh.service.FoxSvcGoodsInfoDefaultVO;
+import egovframework.fox.bsh.service.FoxSvcGoodsInfoManageService;
+import egovframework.fox.bsh.service.FoxSvcGoodsInfoVO;
 import egovframework.fox.com.uss.umt.service.FoxMberManageVO;
 import egovframework.rte.fdl.property.EgovPropertyService;
 
@@ -52,6 +56,11 @@ public class FoxBsshInfoManageController {
 	/** FoxBsshInfoManageService */
 	@Resource(name = "foxBsshInfoManageService")
 	private FoxBsshInfoManageService foxBsshInfoManageService;
+	
+	/** FoxSvcGoodsInfoManageService */
+	@Resource(name = "foxSvcGoodsInfoManageService")
+	private FoxSvcGoodsInfoManageService foxSvcGoodsInfoManageService;
+	
 
 	/** cmmUseService */
 	@Resource(name = "EgovCmmUseService")
@@ -196,10 +205,33 @@ public class FoxBsshInfoManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/fox/bsh/retrieveBsshInfo.fo")
-	public String retrieveBsshInfo (@ModelAttribute("foxBsshInfoManageVO") FoxBsshInfoManageVO foxBsshInfoManageVO, Model model)
+	public String retrieveBsshInfo (@ModelAttribute("foxBsshInfoManageVO") FoxBsshInfoDefaultVO foxBsshInfoDefaultVO, HttpServletRequest request, Model model)
 			throws Exception{
 		
-		model.addAttribute("foxBsshInfoManageVO", foxBsshInfoManageVO);
+		// 세션에서 사용자 정보 가져오기 
+		FoxBsshInfoManageVO foxBsshInfoManageVO = new FoxBsshInfoManageVO();
+		FoxSvcGoodsInfoDefaultVO foxSvcGoodsInfoVO = new FoxSvcGoodsInfoDefaultVO();
+		
+		// 로그인 하지 않은 사용자도 조회 가능하도록 하자 
+//		LoginVO slogVO = (LoginVO) request.getSession().getAttribute("loginVO");// 사용자 고유 아이디 
+//		foxSvcGoodsInfoVO.setEsntlId(slogVO.getUniqId());
+		
+		// 업소id, 서비스 id 설정
+		foxBsshInfoManageVO.setBsshEsntlId(foxBsshInfoDefaultVO.getBsshEsntlId());
+		foxSvcGoodsInfoVO.setBsshEsntlId(foxBsshInfoDefaultVO.getBsshEsntlId());
+
+		
+		// 업소 정보 조회 
+		FoxBsshInfoManageVO resultFoxBsshInfo = foxBsshInfoManageService.retrieveBsshInfo(foxBsshInfoManageVO.getBsshEsntlId());
+		
+		// 서비스 목록 조회 
+		List<FoxSvcGoodsInfoVO> foxSvcGoodsInfoVOList = foxSvcGoodsInfoManageService.retrieveSvcGoodsInfoList(foxSvcGoodsInfoVO);
+		
+		
+		model.addAttribute("bsshInfo", resultFoxBsshInfo);
+		model.addAttribute("foxSvcGoodsInfoVOList", foxSvcGoodsInfoVOList);
+		
+		model.addAttribute("foxBsshInfoDefaultVO", foxBsshInfoDefaultVO);
 		return "egovframework/fox/bsh/FoxRetrieveBsshInfo";
 	}
 	
@@ -262,6 +294,7 @@ public class FoxBsshInfoManageController {
 		
 		model.addAttribute("codeList", codeList);
 		model.addAttribute("result", resultFoxBsshInfo);
+		model.addAttribute("message", "Success");
 		
 		//수정화면으로 포워딩
 		return "egovframework/fox/bsh/FoxUpdateBsshInfoView";
@@ -355,14 +388,17 @@ public class FoxBsshInfoManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/fox/bsh/retrieveBsshInfoList.fo")
-	public String retrieveBsshInfoList(@ModelAttribute("foxBsshInfoDefaultVO") FoxBsshInfoDefaultVO foxBsshInfoDefaultVO, Model model)
+	public String retrieveBsshInfoList(@ModelAttribute("foxBsshInfoDefaultVO") FoxBsshInfoDefaultVO foxBsshInfoDefaultVO,@RequestParam Map<String, Object> searchMap, Model model)
 			throws Exception{
 		
-		
-		
+		/*반드시 수정하세요*/ 
+//		String atchFileId = (String)searchMap.get("atchFileId");
+//		foxBsshInfoDefaultVO.setBrtcCode(atchFileId);
+//
+		foxBsshInfoManageService.retrieveBsshInfoList(foxBsshInfoDefaultVO);
 		
 		model.addAttribute("resultList", "");
-		return "egovframework/fox/bsh/FoxRetrieveBsshInfoList";
+		return "egovframework/fox/bsh/FoxBsshInfoList";
 	}
 	
 	

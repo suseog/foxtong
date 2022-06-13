@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="FoxGcctInfo">
+
+    <typeAlias  alias="egovMap"      			type = "egovframework.rte.psl.dataaccess.util.EgovMap"/>
+    <typeAlias  alias="foxGcctInfoDefaultVO" 	type = "egovframework.fox.gct.service.FoxGcctInfoDefaultVO"/>   
+    <typeAlias  alias="foxGcctInfoVO"       type = "egovframework.fox.gct.service.FoxGcctInfoVO"/>
+    
+
+   	<select id="foxGcctInfoManageDAO.selectGcctInfoList" parameterClass="foxGcctInfoDefaultVO" resultClass="egovMap">
+      <![CDATA[
+   SELECT A.gcctId         as gcctId
+            ,  A.esntlId  as esntlId
+            , A.bsshEsntlId as bsshEsntlId
+            , A.gcctAmount as gcctAmount
+            , A.distbBeginDe as distbBeginDe
+            , A.distbEndDe as distbEndDe
+            , A.usePnttm as usePnttm
+            , A.gcctSttus as gcctSttus
+            , A.frstRegistPnttm as frstRegistPnttm
+            , A.frstRegistId as frstRegistId
+            , A.lastUpdtPnttm as lastUpdtPnttm
+            , A.lastUpdtId as lastUpdtId
+            , A.dongCode as dongCode
+            , A.mtltyNm as mtltyNm
+            , A.tlphonNo as tlphonNo
+            , A.moblphonNo as moblphonNo
+            , A.adRes as adRes
+            , A.laadRes     as laadRes       
+            , A.distance   as distance
+            , A.emplyrgcctflag    as emplyrgcctflag        
+         FROM (SELECT A.GCCT_ID	    AS gcctId    
+				    , A.ESNTL_ID	    AS esntlId	    
+				    , A.BSSH_ESNTL_ID	 AS bsshEsntlId	    
+					, A.GCCT_AMOUNT	     AS gcctAmount		
+					, A.DISTB_BEGIN_DE	 AS distbBeginDe		
+					, A.DISTB_END_DE	 AS distbEndDe		
+					, A.USE_PNTTM	     AS usePnttm		
+					, A.GCCT_STTUS	     AS gcctSttus		
+					, A.FRST_REGIST_PNTTM	AS frstRegistPnttm		
+					, A.FRST_REGISTER_ID	AS frstRegistId		
+					, A.LAST_UPDT_PNTTM	  AS lastUpdtPnttm		
+					, A.LAST_UPDUSR_ID AS lastUpdtId
+					, B.DONG_CODE_NM  AS dongCode 
+					, B.MTLTY_NM  AS mtltyNm
+					, B.TLPHON_NO AS tlphonNo
+					, B.MOBLPHON_NO AS moblphonNo
+					, B.ADRES AS adRes
+					, B.LOCPLC_ALL_ADRES AS laadRes
+					, ST_Distance_Sphere(POINT(#nowlongitude#, #nowlatitude#), POINT(B.LONGITUDE , B.LATITUDE)) AS sort
+					, CASE WHEN length(round(ST_Distance_Sphere(POINT(#nowlongitude#, #nowlatitude#), POINT(B.LONGITUDE , B.LATITUDE)))) >= 4 THEN
+							CONCAT(ROUND(ST_Distance_Sphere(POINT(#nowlongitude#, #nowlatitude#), POINT(B.LONGITUDE , B.LATITUDE))/1000, 1),"Km")
+						   WHEN length(round(ST_Distance_Sphere(POINT(#nowlongitude#, #nowlatitude#), POINT(B.LONGITUDE , B.LATITUDE)))) < 4 THEN	
+						    CONCAT(ROUND(ST_Distance_Sphere(POINT(#nowlongitude#, #nowlatitude#), POINT(B.LONGITUDE , B.LATITUDE))),"m")
+					  ELSE ST_Distance_Sphere(POINT(#nowlongitude#, #nowlatitude#), POINT(B.LONGITUDE , B.LATITUDE))
+				      END AS distance
+					, (SELECT GCCT_ID 
+					    FROM FOXTNEMPLYRGCCTINFO C 
+					   WHERE 1=1
+					     AND C.GCCT_ID = A.GCCT_ID 
+					     AND C.ESNTL_ID = #esntlId#					       
+					     AND C.BSSH_ESNTL_ID = A.BSSH_ESNTL_ID) AS emplyrgcctflag	   
+			   FROM FOXTNGCCTINFO A
+			      , FOXTNBSSHBASSINFO B
+			  WHERE 1=1
+			    AND A.BSSH_ESNTL_ID = B.BSSH_ESNTL_ID
+			    AND (B.DONG_CODE_NM LIKE CONCAT('%', #dongCode#,'%')  OR B.MTLTY_NM LIKE CONCAT('%', #mtltyNm#,'%') ) ) A
+			 ORDER BY A.sort is null asc
+			      		  
+       ]]>
+    </select>
+    
+   	<select id="foxGcctInfoManageDAO.selectGcctInfo" parameterClass="foxGcctInfoVO" resultClass="foxGcctInfoVO">
+       <![CDATA[
+			   SELECT A.GCCT_ID	    AS gcctId    
+				    , A.ESNTL_ID	    AS esntlId	    
+				    , A.BSSH_ESNTL_ID	 AS bsshEsntlId	    
+					, A.GCCT_AMOUNT	     AS gcctAmount		
+					, A.DISTB_BEGIN_DE	 AS distbBeginDe		
+					, A.DISTB_END_DE	 AS distbEndDe		
+					, A.USE_PNTTM	     AS usePnttm		
+					, A.GCCT_STTUS	     AS gcctSttus		
+					, A.FRST_REGIST_PNTTM	AS frstRegistPnttm		
+					, A.FRST_REGISTER_ID	AS frstRegistId		
+					, A.LAST_UPDT_PNTTM	  AS lastUpdtPnttm		
+					, A.LAST_UPDUSR_ID AS lastUpdtId
+					, B.DONG_CODE_NM  AS dongCode 
+					, B.MTLTY_NM  AS mtltyNm
+					, B.TLPHON_NO AS tlphonNo
+					, B.MOBLPHON_NO AS moblphonNo
+					, B.ADRES AS adRes
+					, B.LOCPLC_ALL_ADRES AS laadRes
+			   FROM FOXTNGCCTINFO A
+			      , FOXTNBSSHBASSINFO B
+			  WHERE A.BSSH_ESNTL_ID = B.BSSH_ESNTL_ID
+			    AND A.GCCT_ID =  #gcctId#
+			    AND A.BSSH_ESNTL_ID = #bsshEsntlId#
+		  
+       ]]>
+    </select>  
+     
+    
+   <insert id="foxGcctInfoManageDAO.insertGcctInfo" parameterClass="foxGcctInfoVO">
+        <![CDATA[
+     INSERT INTO FOXTNGCCTINFO 
+         (   
+                     GCCT_ID	
+                   , ESNTL_ID
+                   , BSSH_ESNTL_ID
+                   , GCCT_AMOUNT
+                   , DISTB_BEGIN_DE	
+                   , DISTB_END_DE
+                   , GCCT_STTUS	
+                   , FRST_REGIST_PNTTM	
+                   , FRST_REGISTER_ID	                         
+          )VALUES( 
+                     #gcctId#
+                    ,#esntlId#
+                    ,#bsshEsntlId#
+                    ,#gcctAmount#
+                    ,#distbBeginDe#
+                    ,#distbEndDe#
+                    ,#gcctSttus#
+                    ,sysdate() 
+                    ,#frstRegistId#                     
+             )  
+        ]]>
+    </insert>
+       
+    <update id="foxGcctInfoManageDAO.updateGcctInfo" parameterClass="foxGcctInfoVO">
+           <![CDATA[
+	     		UPDATE FOXTNGCCTINFO
+	     		   SET GCCT_AMOUNT = #gcctAmount#
+                     , DISTB_BEGIN_DE = #distbBeginDe#	
+                     , DISTB_END_DE = #distbEndDe#
+                     , GCCT_STTUS = #gcctSttus#
+                     , LAST_UPDT_PNTTM = sysdate()
+                     , LAST_UPDUSR_ID = #bsshEsntlId#                     
+				 WHERE 1=1
+				   AND BSSH_ESNTL_ID = #bsshEsntlId#
+				   AND GCCT_ID = #gcctId#
+           ]]>
+    </update>
+       
+    <delete id="foxGcctInfoManageDAO.deleteGcctInfo" parameterClass="foxGcctInfoVO">
+        <![CDATA[
+	       	DELETE 
+				  FROM FOXTNGCCTINFO
+				 WHERE 1=1
+				   AND BSSH_ESNTL_ID = #bsshEsntlId#
+				   AND GCCT_ID = #gcctId#
+           ]]>
+    </delete>  
+    
+     <insert id="foxGcctInfoManageDAO.insertEmplyrGcctInfo" parameterClass="foxGcctInfoVO">
+        <![CDATA[
+     INSERT INTO FOXTNEMPLYRGCCTINFO 
+         (   
+                     GCCT_ID	
+                   , ESNTL_ID
+                   , BSSH_ESNTL_ID                   
+                   , USE_PNTTM	
+                   , FRST_REGIST_PNTTM	
+                   , FRST_REGISTER_ID	                         
+          )VALUES( 
+                     #gcctId#
+                    ,#esntlId#
+                    ,#bsshEsntlId#
+                    ,null
+                    ,sysdate() 
+                    ,#esntlId#                     
+             )  
+        ]]>
+    </insert>
+    
+      <delete id="foxGcctInfoManageDAO.deleteEmplyrGcctInfo" parameterClass="foxGcctInfoVO">
+        <![CDATA[
+	       	DELETE 
+				  FROM FOXTNEMPLYRGCCTINFO
+				 WHERE 1=1
+				   AND GCCT_ID = #gcctId#
+				   AND ESNTL_ID = #esntlId#
+				   AND BSSH_ESNTL_ID = #bsshEsntlId#
+           ]]>
+     </delete>  
+     
+     
+<select id="foxGcctInfoManageDAO.selectGcctInfoList_new" parameterClass="foxGcctInfoDefaultVO" resultClass="egovMap">
+      <![CDATA[
+			  SELECT ''	    AS gcctId    
+				    , ''	    AS esntlId	    
+				    , BSSH_ESNTL_ID	 AS bsshEsntlId	    
+					, ''	     AS gcctAmount		
+					, ''	 AS distbBeginDe		
+					, ''	 AS distbEndDe		
+					, ''	     AS usePnttm		
+					, ''	     AS gcctSttus		
+					, FRST_REGIST_PNTTM	AS frstRegistPnttm		
+					, FRST_REGISTER_ID	AS frstRegistId		
+					, LAST_UPDT_PNTTM	  AS lastUpdtPnttm		
+					, LAST_UPDUSR_ID AS lastUpdtId
+					, DONG_CODE_NM  AS dongCode 
+					, MTLTY_NM  AS mtltyNm
+					, TLPHON_NO AS tlphonNo
+					, MOBLPHON_NO AS moblphonNo
+					, ADRES AS adRes
+					, LOCPLC_ALL_ADRES AS laadRes
+					, '' AS emplyrgcctflag
+			   FROM FOXTNBSSHBASSINFO
+			  WHERE 1=1
+				AND BRTC_CODE = 27
+				AND LATITUDE IS NULL
+				AND LONGITUDE IS NULL
+				AND ADRES IS NOT NULL 
+              AND LOCPLC_ALL_ADRES IS NOT NULL
+				LIMIT 1
+			    	  
+       ]]>
+    </select> 
+    
+     <update id="foxGcctInfoManageDAO.updatelatlongGcctInfo" parameterClass="foxGcctInfoVO">
+           <![CDATA[
+	     		UPDATE FOXTNBSSHBASSINFO
+	     		   SET LATITUDE =  CASE WHEN #latiTude# IS NULL THEN 'N/A'
+                                   WHEN #latiTude# = '' THEN 'N/A'
+                                   ELSE SUBSTRING_INDEX(REPLACE(REPLACE(replace(trim(#latiTude#), ' ',''), '(', ''), ')', ''),',', 1) END
+                   , LONGITUDE =  CASE WHEN #longiTude# IS NULL THEN 'N/A'
+                                   WHEN #longiTude# = '' THEN 'N/A'
+                                   ELSE SUBSTRING_INDEX(REPLACE(REPLACE(replace(trim(#longiTude#), ' ',''), '(', ''), ')', ''),',', -1) END
+                   , LAST_UPDT_PNTTM = sysdate()
+                   , LAST_UPDUSR_ID = 'System_modify'     
+				 WHERE 1=1
+				   AND BSSH_ESNTL_ID = #bsshEsntlId#
+           ]]>
+    </update>
+        
+    
+    
+        
+</sqlMap>

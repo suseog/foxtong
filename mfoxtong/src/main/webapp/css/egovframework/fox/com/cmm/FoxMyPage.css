@@ -1,0 +1,231 @@
+@charset "UTF-8";
+.container {
+    width: 100%;
+    max-width: 717px;
+    margin: 0 auto;
+    background: #f0f0f0;
+}
+
+.top_docbar {
+    width: 100%;
+    height: 52px;
+    border-bottom: 1px solid #ccc;
+    background: #fff;
+}
+
+.top_docbar .inner {
+    position: relative;
+    height: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.top_docbar .title h2 {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.top_docbar figure {
+    position: absolute;
+    left: 15px;
+    cursor: pointer;
+}
+
+/* bottom */
+
+.bottom_docbar {
+    width: 100%;
+    height: 60px;
+    background: #fff;
+    box-shadow: 4px 0 11px rgb(0,0,0, 0.5);
+    position: fixed;
+    left: 50%;
+    transform: translatex(-50%);
+    bottom: 0;
+}
+
+.bottom_docbar .inner {
+    height: 100%;
+}
+
+.bottom_docbar ul {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+}
+
+.bottom_docbar ul li {
+    width: 25%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    cursor: pointer;
+}
+
+.bottom_docbar ul li a {
+    display: block;
+}
+
+.bottom_docbar ul li p {
+    font-weight: bold;
+    font-size: 11px;
+}
+
+.bottom_link.active svg path {
+    fill: #F5833C;
+}
+
+.bottom_link.active p {
+    color: #F5833C;
+}
+
+/* main_content */
+
+.main_content {
+    height: 100%;
+    margin-top: 10px;
+}
+
+.main_content .top_area {
+    width: 100%;
+    height: 130px;
+    background: #fff;
+    padding: 15px;
+}
+
+.main_content .top_area .title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #ccc;
+}
+
+.main_content .top_area .title h2 {
+    font-size: 20px;
+    font-weight: 500;
+    color: #333;
+}
+
+.main_content .top_area .title span {
+    font-size: 17px;
+}
+
+.main_content .top_area  .chk_btn {
+    width: 60px;
+    height: 20px;
+    border: 1px solid #F5833C;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+.main_content .top_area .chk_btn span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    font-size: 11px;
+    color: #F5833C;
+}
+
+.main_content .top_area .content ul {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #ccc;
+
+}
+
+.main_content .top_area .content li {
+    width: 25%;
+    height: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.main_content .top_area .content li::after {
+    content: "";
+    display: inline-block;
+    width: 1px;
+    height: 30px;
+    background: #ccc;
+    position: absolute;
+    right: 0;
+}
+
+.main_content .top_area .content li:last-child::after {
+    display: none;
+}
+
+.main_content .top_area .content li em {
+    display: block;
+    font-size: 14px;
+    color: #333;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.main_content .top_area .content li strong {
+    font-size: 14px;
+    color: #F5833C;
+    font-weight: bold;
+}
+
+/* center_area */
+.main_content .center_area {
+    width: 100%;
+    height: 90px;
+    margin-top: 10px;
+    background: #fff;
+    padding: 0 15px;
+}
+
+.main_content .center_area li {
+    border-bottom: 1px solid #ccc;
+    padding: 15px 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.main_content .center_area li:last-child {
+    border-bottom: 0;
+}
+
+.main_content .center_area li strong {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+}
+
+.main_content .bottom_area {
+    width: 100%;
+    height: 100%;
+    margin-top: 10px;
+    background: #fff;
+    padding: 0 15px;
+}
+
+.main_content .bottom_area li {
+    border-bottom: 1px solid #ccc;
+    padding: 15px 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.main_content .bottom_area li:last-child {
+    border-bottom: 0;
+}
+
+.main_content .bottom_area li strong {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+}

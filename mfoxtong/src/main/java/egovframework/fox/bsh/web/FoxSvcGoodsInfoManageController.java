@@ -148,12 +148,12 @@ public class FoxSvcGoodsInfoManageController {
 		// 서비스 생성 
 		foxSvcGoodsInfoManageService.updateSvcGoodsInfo(foxSvcGoodsInfoVO);
 		
-		 //------------------------------
+	    
+	    //------------------------------
 	    // 업체카테고리 정보 조회 (공통코드) 
 	    //------------------------------
-	    CmmnDetailCodeVO cvo = new CmmnDetailCodeVO();
-	    cvo.setCodeId("FOX001"); // 
-	    List<CmmnDetailCodeVO> codeList = (List<CmmnDetailCodeVO>) cmmnDetailCodeManageService.selectCmmnDetailCodeList(cvo);
+	    List<FoxSvcGoodsInfoVO> codeList = (List<FoxSvcGoodsInfoVO>) foxSvcGoodsInfoManageService.retrieveSvcGoodsClList(foxSvcGoodsInfoVO);
+	    
 		
 		// 서비스 목록 조회 
 		List<FoxSvcGoodsInfoVO> svcGoodsInfoList = foxSvcGoodsInfoManageService.retrieveSvcGoodsInfoList(foxSvcGoodsInfoVO);

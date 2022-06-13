@@ -301,9 +301,21 @@ public class FoxBBSManageController {
 	    master.setTmplatCours("/css/egovframework/cop/tpl/egovBaseTemplate.css");
 	}
 	////-----------------------------
+	
+	
+	//------------------------------
+    // 게시판 주제목록 조회
+    //------------------------------
+    CmmnDetailCodeVO cvo = new CmmnDetailCodeVO();
+    cvo.setCodeId("FOX002"); // 
+    List<CmmnDetailCodeVO> codeList = (List<CmmnDetailCodeVO>) cmmnDetailCodeManageService.selectCmmnDetailCodeList(cvo);
+    
+    
 
 	model.addAttribute("resultList", map.get("resultList"));
 	model.addAttribute("resultCnt", map.get("resultCnt"));
+	model.addAttribute("resultCodeList", codeList);
+	
 	model.addAttribute("boardVO", boardVO);
 	model.addAttribute("brdMstrVO", master);
 	model.addAttribute("paginationInfo", paginationInfo);
@@ -339,7 +351,7 @@ public class FoxBBSManageController {
 
 	BoardMasterVO vo = new BoardMasterVO();
 	vo.setBbsId(boardVO.getBbsId());
-	vo.setUniqId(user.getUniqId());
+	vo.setUniqId(user.getUniqId());							//사용자 정보를 얻지 못하면 임시값을 할당한다. USRCNFRM_00000000000, USRCNFRM_99999999999
 	BoardMasterVO master = bbsAttrbService.selectBBSMasterInf(vo);
 	
 //	//-------------------------------
@@ -398,15 +410,13 @@ public class FoxBBSManageController {
 	////-----------------------------
 	
 	
-	
-	
 	model.addAttribute("resultList", map.get("resultList"));
 	model.addAttribute("resultCnt", map.get("resultCnt"));
 	model.addAttribute("boardVO", boardVO);
 	model.addAttribute("brdMstrVO", master);
 	model.addAttribute("paginationInfo", paginationInfo);
 
-	return "egovframework/fox/com/cop/bbs/FoxNoticeSearcView";
+	return "egovframework/fox/com/cop/FoxNoticeSearcView";
     }
     
     /**
@@ -622,7 +632,6 @@ public class FoxBBSManageController {
     }
 
     /**
-     *
      *
      * 사용안함:::::사용안함:::::사용안함:::::사용안함:::::사용안함:::::사용안함:::::사용안함:::::사용안함:::::사용안함:::::
      *

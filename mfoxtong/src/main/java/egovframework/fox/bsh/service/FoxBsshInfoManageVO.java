@@ -32,13 +32,21 @@ public class FoxBsshInfoManageVO {
 	
 	/** 광역시도코드 */
 	private String brtcCode = "";
-	
-	
+
+	/** 광역시도코드 */
+	private String brtcCodNeNm = "";
+
 	/** 시군구코드 */
 	private String signguCode = "";
 	
+	/** 광역시도코드 */
+	private String signguCodNm = "";
+	
 	/** 동리코드 */
 	private String dongCode = "";
+	
+	/** 동리코드 */
+	private String dongCodeNm = "";
 	
 	/** 상호명 */
 	private String mtltyNm = "";
@@ -92,13 +100,57 @@ public class FoxBsshInfoManageVO {
 	private String postscriptCo = "";
 	
 	private String frstRegistPnttm = "";
+	
 	private String frstRegisterId = "";
+	
 	private String lastUpdtPnttm = "";
+	
 	private String lastUpduseId = "";
 	
+
 	
 	
-	
+	/**
+	 * @return the brtcCodNeNm
+	 */
+	public String getBrtcCodNeNm() {
+		return brtcCodNeNm;
+	}
+
+	/**
+	 * @param brtcCodNeNm the brtcCodNeNm to set
+	 */
+	public void setBrtcCodNeNm(String brtcCodNeNm) {
+		this.brtcCodNeNm = brtcCodNeNm;
+	}
+
+	/**
+	 * @return the signguCodNm
+	 */
+	public String getSignguCodNm() {
+		return signguCodNm;
+	}
+
+	/**
+	 * @param signguCodNm the signguCodNm to set
+	 */
+	public void setSignguCodNm(String signguCodNm) {
+		this.signguCodNm = signguCodNm;
+	}
+
+	/**
+	 * @return the dongCodeNm
+	 */
+	public String getDongCodeNm() {
+		return dongCodeNm;
+	}
+
+	/**
+	 * @param dongCodeNm the dongCodeNm to set
+	 */
+	public void setDongCodeNm(String dongCodeNm) {
+		this.dongCodeNm = dongCodeNm;
+	}
 
 	/**
 	 * @return the esntlId

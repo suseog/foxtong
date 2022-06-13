@@ -125,13 +125,16 @@ public class FoxBsshInfoManageDAO extends EgovComAbstractDAO {
 		update("foxBsshInfoManageDAO.updateBsnBassInfo",foxBsshInfoManageVO);
 		
 	}
-
 	
+	/**
+	 * 업소의 시군구 코드 리스트 조회 
+	 * @param 
+	 * @return List<FoxBsshInfoManageVO> 
+	 */
+	public List<FoxBsshInfoManageVO> retrieveSignguCodeList(FoxBsshInfoDefaultVO foxBsshInfoDefaultVO) {
 
-                      
-
-   
-
+		return (List<FoxBsshInfoManageVO>) list("foxBsshInfoManageDAO.retrieveSignguCodeList");
+	}
    
 
   

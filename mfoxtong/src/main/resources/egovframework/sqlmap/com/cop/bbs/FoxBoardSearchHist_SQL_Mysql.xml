@@ -48,7 +48,7 @@
 			       A.SRCHWRD
 			  FROM (
 					 SELECT SRCHWRD, COUNT(*) as Cnt
-					   FROM FOXTHNTTSEARCHHIST a 
+					   FROM FOXTHNTTSEARCHHIST A 
 					 WHERE 1=1 
 					   AND A.USE_AT = 'Y'   
 					 GROUP BY SRCHWRD
@@ -62,9 +62,9 @@
 	<select id="FoxSearchHistManageDAO.selectBoarSearchHistList" parameterClass="searchBoardHist" resultMap="searchHistList" >
 		<![CDATA[
 			SELECT
-				a.SN, a.MBER_ID, a.SRCHWRD, a.FRST_REGISTER_ID
+				A.SN, A.MBER_ID, A.SRCHWRD, A.FRST_REGISTER_ID
 			FROM
-				FOXTHNTTSEARCHHIST a
+				FOXTHNTTSEARCHHIST A
 		   WHERE 1=1 
 		]]>				   
 		<isEqual  property="searchFlag" compareValue="1">
@@ -72,9 +72,9 @@
 			LIMIT 5 OFFSET 0
 		</isEqual>
 		<isEqual  property="searchFlag" compareValue="2">
-			AND a.MBER_ID = #mberId#
+			AND A.MBER_ID = #mberId#
 			AND A.USE_AT = 'Y'
-			ORDER BY a.SN DESC
+			ORDER BY A.SN DESC
 			LIMIT 20 OFFSET 0
 		</isEqual>				
 	</select>	
@@ -82,16 +82,16 @@
 	<select id="FoxSearchHistManageDAO.selectBoarSearchHistListCnt" parameterClass="searchBoardHist" resultClass="java.lang.Integer" >
 		<![CDATA[
 			SELECT
-				COUNT(a.SN)
+				COUNT(A.SN)
 			FROM
-				FOXTHNTTSEARCHHIST a
+				FOXTHNTTSEARCHHIST A
 			WHERE 1=1
 		]]>
 		<isEqual  property="searchFlag" compareValue="1">
 			AND A.USE_AT = 'Y'
 		</isEqual>
 		<isEqual  property="searchFlag" compareValue="2">
-			AND a.MBER_ID = #mberId#
+			AND A.MBER_ID = #mberId#
 			AND A.USE_AT = 'Y'
 		</isEqual>	
 	</select>	

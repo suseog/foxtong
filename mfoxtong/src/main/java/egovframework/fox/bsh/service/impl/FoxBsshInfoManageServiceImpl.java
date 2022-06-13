@@ -41,7 +41,7 @@ public class FoxBsshInfoManageServiceImpl extends EgovAbstractServiceImpl implem
 	private FoxBsshInfoManageDAO foxBsshInfoManageDAO;
 
 	/** egovUsrCnfrmIdGnrService */
-	@Resource(name="egovUsrCnfrmIdGnrService")
+	@Resource(name="foxBsshInfoIdGnrService")
 	private EgovIdGnrService idgenService;
 	
 	/** mberManageService */
@@ -226,6 +226,21 @@ public class FoxBsshInfoManageServiceImpl extends EgovAbstractServiceImpl implem
 //			}
 //		}
 		foxBsshInfoManageDAO.deleteBsshInfo(bsshEsntlId);
+	}
+
+    
+
+	/**
+	 * 시군구 코드 리스트 조회 
+	 * @param 
+	 * @throws Exception
+	 */
+	@Override
+	public List<FoxBsshInfoManageVO> retrieveSignguCodeList(FoxBsshInfoDefaultVO foxBsshInfoDefaultVO) {
+		
+		List<FoxBsshInfoManageVO> signguCodeList = (List<FoxBsshInfoManageVO>)foxBsshInfoManageDAO.retrieveSignguCodeList(foxBsshInfoDefaultVO) ;
+		
+		return signguCodeList;
 	}
 
 

@@ -99,6 +99,13 @@ public interface FoxBsshInfoManageService {
 	 * @return List<FoxBsshInfoManageVO> 
 	 */
 	public FoxBsshInfoManageVO retrievBsshEsntlId(String esntlId);
+
+	/**
+	 * 업소의 시군구 코드 리스트 조회 
+	 * @param 
+	 * @return List<FoxBsshInfoManageVO> 
+	 */
+	public List<FoxBsshInfoManageVO> retrieveSignguCodeList(FoxBsshInfoDefaultVO foxBsshInfoDefaultVO);
 	
 	
 }
